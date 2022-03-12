@@ -1,2 +1,2 @@
-# Hollow-Knight
+# Hollow Knight
 Hollow Knight Imitation
