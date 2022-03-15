@@ -1,0 +1,11 @@
+diff a/winAPI_2D_imitation/winAPI_2D_imitation/framework.h b/winAPI_2D_imitation/winAPI_2D_imitation/framework.h	(rejected hunks)
+@@ -14,8 +14,8 @@
+ #include <memory.h>
+ #include <tchar.h>
+ 
+-#include "CCore.h"
+ #include "SingleTon.h"
++#include "CCore.h"
+ #include "Logger.h"
+ 
+ //////////////////////

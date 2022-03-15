@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{85a2660f-20b1-431f-9c72-ecf51f2bd406}</ProjectGuid>
-    <RootNamespace>HollowKnightCopy</RootNamespace>
+    <ProjectGuid>{997feba6-d333-49cd-9897-9bc2b8b43d16}</ProjectGuid>
+    <RootNamespace>winAPI2Dimitation</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -78,9 +78,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)Output\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)Output\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -88,6 +90,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Create</PrecompiledHeader>
+      <PrecompiledHeaderFile>framework.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -102,6 +106,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Create</PrecompiledHeader>
+      <PrecompiledHeaderFile>framework.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -116,6 +122,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Create</PrecompiledHeader>
+      <PrecompiledHeaderFile>framework.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -130,6 +138,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Create</PrecompiledHeader>
+      <PrecompiledHeaderFile>framework.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -139,20 +149,83 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CAnimation.h" />
+    <ClInclude Include="CAnimator.h" />
+    <ClInclude Include="CButtonUI.h" />
+    <ClInclude Include="CCameraManager.h" />
+    <ClInclude Include="CCollider.h" />
+    <ClInclude Include="CCollisionManager.h" />
+    <ClInclude Include="CCore.h" />
+    <ClInclude Include="CEventManager.h" />
+    <ClInclude Include="CGameObject.h" />
+    <ClInclude Include="CKeyManager.h" />
+    <ClInclude Include="CMissile.h" />
+    <ClInclude Include="CMonster.h" />
+    <ClInclude Include="CPanelUI.h" />
+    <ClInclude Include="CPathManager.h" />
+    <ClInclude Include="CPlayer.h" />
+    <ClInclude Include="CResource.h" />
+    <ClInclude Include="CResourceManager.h" />
+    <ClInclude Include="CScene.h" />
+    <ClInclude Include="CSceneManager.h" />
+    <ClInclude Include="CScene_Start.h" />
+    <ClInclude Include="CScene_Tool.h" />
+    <ClInclude Include="CSound.h" />
+    <ClInclude Include="CSoundManager.h" />
+    <ClInclude Include="CTexture.h" />
+    <ClInclude Include="CTile.h" />
+    <ClInclude Include="CTimeManager.h" />
+    <ClInclude Include="CUI.h" />
+    <ClInclude Include="CUIManager.h" />
     <ClInclude Include="framework.h" />
-    <ClInclude Include="HollowKnight_Copy.h" />
+    <ClInclude Include="Logger.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="SelectGDI.h" />
+    <ClInclude Include="SingleTon.h" />
+    <ClInclude Include="struct.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="winAPI_2D_imitation.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="HollowKnight_Copy.cpp" />
+    <ClCompile Include="CAnimation.cpp" />
+    <ClCompile Include="CAnimator.cpp" />
+    <ClCompile Include="CButtonUI.cpp" />
+    <ClCompile Include="CCameraManager.cpp" />
+    <ClCompile Include="CCollider.cpp" />
+    <ClCompile Include="CCollisionManager.cpp" />
+    <ClCompile Include="CCore.cpp" />
+    <ClCompile Include="CEventManager.cpp" />
+    <ClCompile Include="CGameObject.cpp" />
+    <ClCompile Include="CKeyManager.cpp" />
+    <ClCompile Include="CMissile.cpp" />
+    <ClCompile Include="CMonster.cpp" />
+    <ClCompile Include="CPanelUI.cpp" />
+    <ClCompile Include="CPathManager.cpp" />
+    <ClCompile Include="CPlayer.cpp" />
+    <ClCompile Include="CResource.cpp" />
+    <ClCompile Include="CResourceManager.cpp" />
+    <ClCompile Include="CScene.cpp" />
+    <ClCompile Include="CSceneManager.cpp" />
+    <ClCompile Include="CScene_Start.cpp" />
+    <ClCompile Include="CScene_Tool.cpp" />
+    <ClCompile Include="CSound.cpp" />
+    <ClCompile Include="CSoundManager.cpp" />
+    <ClCompile Include="CTexture.cpp" />
+    <ClCompile Include="CTile.cpp" />
+    <ClCompile Include="CTimeManager.cpp" />
+    <ClCompile Include="CUI.cpp" />
+    <ClCompile Include="CUIManager.cpp" />
+    <ClCompile Include="winAPI_2D_imitation.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="HollowKnight_Copy.rc" />
+    <ResourceCompile Include="winAPI_2D_imitation.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="HollowKnight_Copy.ico" />
     <Image Include="small.ico" />
+    <Image Include="winAPI_2D_imitation.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
