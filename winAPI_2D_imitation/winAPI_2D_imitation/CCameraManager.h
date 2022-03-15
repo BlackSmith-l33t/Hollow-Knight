@@ -1,7 +1,7 @@
 #pragma once
 
 class CGameObject;
-class CTexture;
+class CD2DImage;
 
 enum class CAM_EFFECT
 {
@@ -9,6 +9,13 @@ enum class CAM_EFFECT
 	FADE_OUT,
 
 	NONE
+};
+
+struct tCamEffect
+{
+	CAM_EFFECT m_eEffect;
+	float fDuration;
+	float fCurTime;
 };
 
 class CCameraManager
@@ -23,19 +30,16 @@ private:
 
 	fPoint m_fptDiff;			// 해상도 중심과 카메라 LookAt 사이의 차이
 
-	float m_fTime = 1;			// 타겟을 따라가는 총시간
+	float m_fTime = 0.1f;			// 타겟을 따라가는 총시간
 	float m_fAccTime;			// 타겟을 따라간 소요시간
 	float m_fSpeed;				// 타겟을 따라가는 속도
 
-	CAM_EFFECT m_eEffect;
-	CTexture* m_pTex;
-	float m_fEffectDuration;
-	float m_fCurTime;
+	list<tCamEffect> m_listCamEffect;
 
 public:
 	void init();
 	void update();
-	void render(HDC hDC);
+	void render();
 
 	void SetLookAt(fPoint lookAt);
 	void SetTargetObj(CGameObject* target);

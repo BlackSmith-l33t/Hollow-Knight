@@ -11,11 +11,6 @@ CCameraManager::CCameraManager()
 	m_pTargetObj = nullptr;
 	m_fAccTime = m_fTime;
 	m_fSpeed = 0;
-
-	m_eEffect = CAM_EFFECT::NONE;
-	m_pTex = nullptr;
-	m_fEffectDuration = 0.f;
-	m_fCurTime = 0.f;
 }
 
 CCameraManager::~CCameraManager()
@@ -25,7 +20,6 @@ CCameraManager::~CCameraManager()
 
 void CCameraManager::init()
 {
-	m_pTex = CResourceManager::getInst()->CreateTexture(L"CameraTex", WINSIZEX, WINSIZEY);
 }
 
 void CCameraManager::update()
@@ -46,46 +40,44 @@ void CCameraManager::update()
 	CalDiff();
 }
 
-void CCameraManager::render(HDC hDC)
+void CCameraManager::render()
 {
-	if (CAM_EFFECT::NONE == m_eEffect)
-		return;
-
-	m_fCurTime += fDT;
-	if (m_fEffectDuration < m_fCurTime)
+	if (m_listCamEffect.empty())
 	{
-		m_eEffect = CAM_EFFECT::NONE;
 		return;
 	}
+
+	tCamEffect& effect = m_listCamEffect.front();
+	effect.fCurTime += fDT;
 
 	float fRatio = 0.f;
-	int iAlpha = 0;
-	fRatio = m_fCurTime / m_fEffectDuration;
-	if (CAM_EFFECT::FADE_OUT == m_eEffect)
-	{
-		iAlpha = (int)(255.f * fRatio);
-	}
-	else if (CAM_EFFECT::FADE_IN == m_eEffect)
-	{
-		iAlpha = (int)(255.f * (1.f - fRatio));
-	}
+	fRatio = effect.fCurTime / effect.fDuration;
+	if (fRatio < 0.f)
+		fRatio = 0.f;
+	else if (fRatio > 1.f)
+		fRatio = 1.f;
 
-	BLENDFUNCTION bf = {};
 
-	bf.BlendOp = AC_SRC_OVER;
-	bf.BlendFlags = 0;
-	bf.AlphaFormat = 0;
-	bf.SourceConstantAlpha = iAlpha;
+	else if (CAM_EFFECT::FADE_IN == effect.m_eEffect)
+		fRatio = 1.f - fRatio;
 
+	CRenderManager::getInst()->RenderFillRectangle(0, 0, WINSIZEX, WINSIZEY, RGB(0, 0, 0), fRatio);
+	/*
 	AlphaBlend(hDC
 		, 0, 0
-		, (int)(m_pTex->GetBmpWidth())
-		, (int)(m_pTex->GetBmpHeight())
-		, m_pTex->GetDC()
+		, (int)(m_pImg->GetBmpWidth())
+		, (int)(m_pImg->GetBmpHeight())
+		, m_pImg->GetDC()
 		, 0, 0
-		, (int)(m_pTex->GetBmpWidth())
-		, (int)(m_pTex->GetBmpHeight())
+		, (int)(m_pImg->GetBmpWidth())
+		, (int)(m_pImg->GetBmpHeight())
 		, bf);
+		*/
+
+	if (effect.fDuration < effect.fCurTime)
+	{
+		m_listCamEffect.pop_front();
+	}
 }
 
 void CCameraManager::SetLookAt(fPoint lookAt)
@@ -120,10 +112,14 @@ fPoint CCameraManager::GetRealPos(fPoint renderPos)
 
 void CCameraManager::FadeIn(float duration)
 {
-	m_eEffect = CAM_EFFECT::FADE_IN;
-	m_fEffectDuration = duration;
+	tCamEffect ef = {};
+	ef.m_eEffect = CAM_EFFECT::FADE_IN;
+	ef.fDuration = duration;
+	ef.fCurTime = 0.f;
 
-	if (0.f == m_fEffectDuration)
+	m_listCamEffect.push_back(ef);
+
+	if (0.f == duration)
 	{
 		assert(nullptr);
 	}
@@ -131,10 +127,14 @@ void CCameraManager::FadeIn(float duration)
 
 void CCameraManager::FadeOut(float duration)
 {
-	m_eEffect = CAM_EFFECT::FADE_OUT;
-	m_fEffectDuration = duration;
+	tCamEffect ef = {};
+	ef.m_eEffect = CAM_EFFECT::FADE_OUT;
+	ef.fDuration = duration;
+	ef.fCurTime = 0.f;
 
-	if (0.f == m_fEffectDuration)
+	m_listCamEffect.push_back(ef);
+
+	if (0.f == duration)
 	{
 		assert(nullptr);
 	}

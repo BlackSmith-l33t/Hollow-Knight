@@ -1,7 +1,7 @@
 #pragma once
 #include "FMOD/inc/fmod.hpp"
-#pragma comment(lib, "FMOD/lib/fmod_vc.lib")
 #include "CResource.h"
+#pragma comment(lib,"FMOD/lib/fmod_vc.lib")
 
 using namespace FMOD;
 
@@ -21,11 +21,11 @@ public:
 	void Pause();
 	void Resume();
 
-	bool IsPlay();
-	bool IsPause();	
+	bool IsPlaying();
+	bool IsPaused();
 
 	void SetLoop(bool loop);
 
-	void Load(const wstring& strFilePath);	
+	void Load(const wstring& strRelativePath, bool bgm);
 };
 

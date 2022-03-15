@@ -2,7 +2,7 @@
 
 class CGameObject;
 class CAnimation;
-class CTexture;
+class CD2DImage;
 
 class CAnimator
 {
@@ -10,8 +10,8 @@ class CAnimator
 
 private:
 	map<wstring, CAnimation*>	m_mapAni;
-	CAnimation*					m_pCurAni;
-	CGameObject*				m_pOwner;
+	CAnimation* m_pCurAni;
+	CGameObject* m_pOwner;
 
 public:
 	CAnimator();
@@ -20,10 +20,10 @@ public:
 	CGameObject* GetObj();
 
 	void update();
-	void render(HDC hDC);
+	void render();
 
-	void CreateAnimation(const wstring& strName, CTexture* tex, fPoint lt, fPoint slice,
-						fPoint step, float duration, UINT frmCount);
+	void CreateAnimation(const wstring& strName, CD2DImage* tex, fPoint lt, fPoint slice,
+		fPoint step, float duration, UINT frmCount);
 	CAnimation* FindAnimation(const wstring& strName);
 	void Play(const wstring& strName);
 };

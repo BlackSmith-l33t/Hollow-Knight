@@ -1,14 +1,5 @@
 #include "framework.h"
 #include "CUI.h"
-#include "SelectGDI.h"
-
-CUI::CUI()
-{
-	m_pParentUI = nullptr;
-	m_bCameraAffected = false;
-	m_bMouseOn = false;
-	m_bLbtnDown = false;
-}
 
 CUI::CUI(bool bCameraAffected)
 {
@@ -62,7 +53,7 @@ void CUI::finalupdate()
 	finalupdate_child();
 }
 
-void CUI::render(HDC hDC)
+void CUI::render()
 {
 	fPoint fptPos = GetFinalPos();
 	fPoint fptScale = GetScale();
@@ -74,24 +65,24 @@ void CUI::render(HDC hDC)
 
 	if (m_bLbtnDown)
 	{
-		SelectGDI green(hDC, TYPE_PEN::GREEN);
-
-		Rectangle(hDC,
-			(int)(fptPos.x),
-			(int)(fptPos.y),
-			(int)(fptPos.x + fptScale.x),
-			(int)(fptPos.y + fptScale.y));
+		CRenderManager::getInst()->RenderRectangle(
+			fptPos.x,
+			fptPos.y,
+			fptPos.x + fptScale.x,
+			fptPos.y + fptScale.y,
+			RGB(0, 255, 0));
 	}
 	else
 	{
-		Rectangle(hDC,
-			(int)(fptPos.x),
-			(int)(fptPos.y),
-			(int)(fptPos.x + fptScale.x),
-			(int)(fptPos.y + fptScale.y));
+		CRenderManager::getInst()->RenderRectangle(
+			fptPos.x,
+			fptPos.y,
+			fptPos.x + fptScale.x,
+			fptPos.y + fptScale.y,
+			RGB(0, 0, 0));
 	}
 
-	render_child(hDC);
+	render_child();
 }
 
 void CUI::update_child()
@@ -110,11 +101,11 @@ void CUI::finalupdate_child()
 	}
 }
 
-void CUI::render_child(HDC hDC)
+void CUI::render_child()
 {
 	for (UINT i = 0; i < m_vecChildUI.size(); i++)
 	{
-		m_vecChildUI[i]->render(hDC);
+		m_vecChildUI[i]->render();
 	}
 }
 
@@ -172,14 +163,6 @@ void CUI::AddChild(CUI* pUI)
 const vector<CUI*>& CUI::GetChildUI()
 {
 	return m_vecChildUI;
-}
-
-fPoint CUI::GetCenterPos()
-{
-	m_centerPos.x = GetScale().x / 2.f;
-	m_centerPos.y = GetScale().y / 2.f;
-
-	return m_centerPos;
 }
 
 void CUI::MouseOnCheck()

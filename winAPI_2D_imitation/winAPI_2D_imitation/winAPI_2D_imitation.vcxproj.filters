@@ -88,6 +88,18 @@
     <ClCompile Include="CSoundManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
+    <ClCompile Include="CD2DImage.cpp">
+      <Filter>Resource\CD2DImage</Filter>
+    </ClCompile>
+    <ClCompile Include="CRenderManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="CBackGround.cpp">
+      <Filter>Object\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="CMap.cpp">
+      <Filter>Object\Map</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -103,9 +115,6 @@
       <Filter>헤더파일</Filter>
     </ClInclude>
     <ClInclude Include="struct.h">
-      <Filter>Util</Filter>
-    </ClInclude>
-    <ClInclude Include="SelectGDI.h">
       <Filter>Util</Filter>
     </ClInclude>
     <ClInclude Include="SingleTon.h">
@@ -198,6 +207,18 @@
     <ClInclude Include="CSoundManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
+    <ClInclude Include="CD2DImage.h">
+      <Filter>Resource\CD2DImage</Filter>
+    </ClInclude>
+    <ClInclude Include="CRenderManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="CBackGround.h">
+      <Filter>Object\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="CMap.h">
+      <Filter>Object\Map</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -261,6 +282,12 @@
     </Filter>
     <Filter Include="Component\Animator\Animation">
       <UniqueIdentifier>{4c08a4f8-f22f-49d8-992e-bb2e576fc50e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\CD2DImage">
+      <UniqueIdentifier>{a5cd8ee9-9965-4e54-8ae2-4e374bdf71c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Map">
+      <UniqueIdentifier>{cc2c35db-0bf8-4418-918c-bc6e9bdff238}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -1,11 +1,14 @@
 #include "framework.h"
 #include "CTile.h"
-#include "CTexture.h"
+#include "CD2DImage.h"
 
 CTile::CTile()
 {
-	m_pTex = nullptr;
+	m_pImg = nullptr;
+	m_iX = 0;
+	m_iY = 0;
 	m_iIdx = 0;
+	m_group = GROUP_TILE::NONE;
 	SetScale(fPoint(SIZE_TILE, SIZE_TILE));
 }
 
@@ -22,15 +25,15 @@ void CTile::update()
 {
 }
 
-void CTile::render(HDC hDC)
+void CTile::render()
 {
-	if (nullptr == m_pTex)
+	if (nullptr == m_pImg)
 	{
 		return;
 	}
 
-	UINT iWidth = m_pTex->GetBmpWidth();
-	UINT iHeight = m_pTex->GetBmpHeight();
+	UINT iWidth = m_pImg->GetWidth();
+	UINT iHeight = m_pImg->GetHeight();
 
 	UINT iMaxRow = iHeight / SIZE_TILE;
 	UINT iMaxCol = iWidth / SIZE_TILE;
@@ -41,31 +44,43 @@ void CTile::render(HDC hDC)
 	fPoint fptRenderPos = CCameraManager::getInst()->GetRenderPos(GetPos());
 	fPoint fptScale = GetScale();
 
-	/*TransparentBlt(hDC,
-		(int)(fptRenderPos.x),
-		(int)(fptRenderPos.y),
-		(int)(fptScale.x),
-		(int)(fptScale.y),
-		m_pTex->GetDC(),
-		(int)(iCurCol * SIZE_TILE),
-		(int)(iCurRow * SIZE_TILE),
-		(int)(fptScale.x),
-		(int)(fptScale.y),
-		RGB(255, 0, 255));*/
-	BitBlt(hDC,
-		(int)(fptRenderPos.x),
-		(int)(fptRenderPos.y),
-		(int)(fptScale.x),
-		(int)(fptScale.y),
-		m_pTex->GetDC(),
-		iCurCol * SIZE_TILE,
-		iCurRow * SIZE_TILE,
-		SRCCOPY);
+	CRenderManager::getInst()->RenderFrame(
+		m_pImg,
+		fptRenderPos.x,
+		fptRenderPos.y,
+		fptRenderPos.x + fptScale.x,
+		fptRenderPos.y + fptScale.y,
+		iCurCol * fptScale.x,
+		iCurRow * fptScale.y,
+		(iCurCol + 1) * fptScale.x,
+		(iCurRow + 1) * fptScale.y
+	);
+
+	if (m_group == GROUP_TILE::GROUND)
+	{
+		CRenderManager::getInst()->RenderEllipse(
+			fptRenderPos.x + fptScale.x / 2.f,
+			fptRenderPos.y + fptScale.y / 2.f,
+			fptScale.x / 2.f,
+			fptScale.y / 2.f,
+			RGB(255, 0, 0)
+		);
+	}
+	else if (m_group == GROUP_TILE::WALL)
+	{
+		CRenderManager::getInst()->RenderEllipse(
+			fptRenderPos.x + fptScale.x / 2.f,
+			fptRenderPos.y + fptScale.y / 2.f,
+			fptScale.x / 2.f,
+			fptScale.y / 2.f,
+			RGB(0, 0, 255)
+		);
+	}
 }
 
-void CTile::SetTexture(CTexture* pTex)
+void CTile::SetTexture(CD2DImage* pImg)
 {
-	m_pTex = pTex;
+	m_pImg = pImg;
 }
 
 void CTile::SetImgIdx(UINT idx)
@@ -73,12 +88,33 @@ void CTile::SetImgIdx(UINT idx)
 	m_iIdx = idx;
 }
 
+int CTile::GetX()
+{
+	return m_iX;
+}
+
+int CTile::GetY()
+{
+	return m_iY;
+}
+
 void CTile::Save(FILE* pFile)
 {
+	fwrite(&m_iX, sizeof(int), 1, pFile);
+	fwrite(&m_iY, sizeof(int), 1, pFile);
 	fwrite(&m_iIdx, sizeof(int), 1, pFile);
+
+	int group = (int)m_group;
+	fwrite(&group, sizeof(int), 1, pFile);
 }
 
 void CTile::Load(FILE* pFile)
 {
+	fread(&m_iX, sizeof(int), 1, pFile);
+	fread(&m_iY, sizeof(int), 1, pFile);
 	fread(&m_iIdx, sizeof(int), 1, pFile);
+
+	int group;
+	fread(&group, sizeof(int), 1, pFile);
+	m_group = (GROUP_TILE)group;
 }

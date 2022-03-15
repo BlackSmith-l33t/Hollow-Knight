@@ -20,9 +20,9 @@ public:
 
 	virtual void update();
 	virtual void finalupdate();
-	virtual void render(HDC hDC);
+	virtual void render();
 
-	void render_tile(HDC hDC);
+	void render_tile();
 
 	virtual void Enter() = 0;	// 해당 씬에 진입시 호출
 	virtual void Exit() = 0;	// 해당 씬을 탈출시 호출

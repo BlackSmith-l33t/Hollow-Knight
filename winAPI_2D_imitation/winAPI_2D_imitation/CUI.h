@@ -9,14 +9,12 @@ private:
 	CUI* m_pParentUI;
 
 	fPoint m_fptFinalPos;
-	fPoint m_centerPos;
 
 	bool m_bCameraAffected;
 	bool m_bMouseOn;
 	bool m_bLbtnDown;			// UI에서 이전에 눌렸다.
 
 public:
-	CUI();
 	CUI(bool bCameraAffected);	// 카메라의 영향여부를 반드시 받기 위해 기본생성자 대신 구현한 생성자 사용
 	CUI(const CUI& other);
 	virtual ~CUI();
@@ -25,11 +23,11 @@ public:
 
 	virtual void update();
 	virtual void finalupdate();
-	virtual void render(HDC hDC);
+	virtual void render();
 
 	void update_child();
 	void finalupdate_child();
-	void render_child(HDC hDC);
+	void render_child();
 
 	virtual void MouseOn();
 	virtual void MouseLbtnDown();
@@ -44,8 +42,6 @@ public:
 	CUI* GetParent();
 	void AddChild(CUI* pUI);
 	const vector<CUI*>& GetChildUI();
-
-	fPoint GetCenterPos();
 
 private:
 	void MouseOnCheck();

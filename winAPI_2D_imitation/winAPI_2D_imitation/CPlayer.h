@@ -2,12 +2,12 @@
 
 #include "CGameObject.h"
 
-class CTexture;
+class CD2DImage;
 
 class CPlayer : public CGameObject
 {
 private:
-	CTexture* m_pTex;
+	CD2DImage* m_pImg;
 	float m_fVelocity = 300;
 
 	void CreateMissile();
@@ -18,8 +18,8 @@ public:
 	virtual CPlayer* Clone();
 
 	virtual void update();
-	virtual void render(HDC hDC);
+	virtual void render();
 
-	
+
 };
 

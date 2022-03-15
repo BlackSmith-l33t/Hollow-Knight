@@ -35,7 +35,7 @@ public:
 	CCollider& operator=(CCollider& other) = delete;	// 함수를 사용할 수 없게 막음.
 
 	void finalupdate();
-	void render(HDC hDC);
+	void render();
 
 	// 충돌 시점 함수
 	void OnCollision(CCollider* pOther);

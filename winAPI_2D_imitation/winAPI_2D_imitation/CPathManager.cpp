@@ -39,7 +39,12 @@ const wchar_t* CPathManager::GetContentPath()
 	return m_strContentPath;
 }
 
-const wchar_t* CPathManager::GetContentRelativePath()
+const wchar_t* CPathManager::GetRelativeContentPath()
 {
+#ifdef _DEBUG
 	return L"..\\Release\\content\\";
+#else
+	return L"content\\";
+#endif
+
 }

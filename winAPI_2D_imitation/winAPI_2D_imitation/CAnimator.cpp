@@ -31,15 +31,15 @@ void CAnimator::update()
 	}
 }
 
-void CAnimator::render(HDC hDC)
+void CAnimator::render()
 {
 	if (nullptr != m_pCurAni)
 	{
-		m_pCurAni->render(hDC);
+		m_pCurAni->render();
 	}
 }
 
-void CAnimator::CreateAnimation(const wstring& strName, CTexture* tex, fPoint lt, fPoint slice, fPoint step, float duration, UINT frmCount)
+void CAnimator::CreateAnimation(const wstring& strName, CD2DImage* tex, fPoint lt, fPoint slice, fPoint step, float duration, UINT frmCount)
 {
 	CAnimation* pAni = FindAnimation(strName);
 	assert(nullptr == pAni);

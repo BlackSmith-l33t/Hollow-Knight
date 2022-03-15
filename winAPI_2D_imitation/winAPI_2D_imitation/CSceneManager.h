@@ -5,7 +5,7 @@ class CScene;
 class CSceneManager
 {
 	SINGLETON(CSceneManager);
-	
+
 	friend class CEventManager;
 
 private:
@@ -13,11 +13,11 @@ private:
 	CScene* m_pCurScene;							// ÇöÀç ¾À
 
 	void ChangeScene(GROUP_SCENE scene);			// ¾À ÀüÈ¯
-	
+
 
 public:
 	void update();
-	void render(HDC hDC);
+	void render();
 	void init();
 
 	CScene* GetCurScene();							//ÇöÀç ¾À ¹ÝÈ¯

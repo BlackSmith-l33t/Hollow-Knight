@@ -3,66 +3,73 @@
 
 CSound::CSound()
 {
-	
 	m_pSound = nullptr;
 	m_pChannel = nullptr;
 }
 
 CSound::~CSound()
 {
-	m_pSound->release();
+	Stop();
+	if (nullptr != m_pSound)
+	{
+		m_pSound->release();
+	}
+}
+
+void CSound::Load(const wstring& strFilePath, bool bgm)
+{
+	char str[255];
+	wcstombs_s(nullptr, str, strFilePath.c_str(), 255);
+
+	if (bgm)
+	{
+		CSoundManager::getInst()->GetSystem()->createStream(str, FMOD_LOOP_NORMAL, 0, &m_pSound);
+	}
+	else
+	{
+		CSoundManager::getInst()->GetSystem()->createSound(str, FMOD_LOOP_OFF, 0, &m_pSound);
+	}
 }
 
 void CSound::Play()
 {
-	CSoundManager::getInst()->GetSystem()->playSound(m_pSound, nullptr, false, &m_pChannel);
-}
-
-
-void CSound::Stop()
-{
-	if (nullptr != m_pChannel)
-	{
-		m_pChannel->stop();
-	}
+	CSoundManager::getInst()->GetSystem()->playSound(m_pSound, 0, false, &m_pChannel);
+	assert(m_pChannel);
 }
 
 void CSound::Pause()
 {
-	if (nullptr != m_pChannel)
-	{
-		m_pChannel->setPaused(true);
-	}
+
+	assert(m_pChannel);
+	m_pChannel->setPaused(true);
+}
+
+void CSound::Stop()
+{
+	assert(m_pChannel);
+	m_pChannel->stop();
 }
 
 void CSound::Resume()
 {
-	if (nullptr != m_pChannel)
-	{
-		m_pChannel->setPaused(false);
-	}
+	assert(m_pChannel);
+	m_pChannel->setPaused(true);
 }
 
-bool CSound::IsPlay()
+bool CSound::IsPlaying()
 {
-	bool paused;
-	if (nullptr != m_pChannel)
-	{
-		m_pChannel->getPaused(&paused);
-		return !paused;
-	}
-	assert(nullptr);
+	bool playing = false;
+	assert(m_pChannel);
+	m_pChannel->isPlaying(&playing);
+	return playing;
 }
 
-bool CSound::IsPause()
+bool CSound::IsPaused()
 {
-	bool paused;
-	if (nullptr != m_pChannel)
-	{
-		m_pChannel->getPaused(&paused);
-		return paused;
-	}
-	assert(nullptr);
+	bool paused = false;
+	assert(m_pChannel);
+	m_pChannel->getPaused(&paused);
+	return paused;
 }
 
 void CSound::SetLoop(bool loop)
@@ -76,12 +83,3 @@ void CSound::SetLoop(bool loop)
 		m_pSound->setMode(FMOD_LOOP_OFF);
 	}
 }
-
-void CSound::Load(const wstring& strFilePath)
-{
-	char str[255];
-	wcstombs_s(nullptr, str, strFilePath.c_str(), 255);
-	CSoundManager::getInst()->GetSystem()->createSound(str, FMOD_DEFAULT, nullptr, &m_pSound);
-}
-
-

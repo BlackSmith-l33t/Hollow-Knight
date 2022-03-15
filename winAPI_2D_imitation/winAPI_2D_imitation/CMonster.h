@@ -1,6 +1,8 @@
 #pragma once
 #include "CGameObject.h"
 
+class CD2DImage;
+
 class CMonster : public CGameObject
 {
 private:
@@ -9,11 +11,14 @@ private:
 	float m_fDistance;
 	bool m_bIsUPDir;
 
+	CD2DImage* m_pImg;
+
 public:
 	CMonster();
 	~CMonster();
 	virtual CMonster* Clone();
 
+	virtual void render();
 	virtual void update();
 
 	void SetCenterPos(fPoint point);
