@@ -7,9 +7,6 @@
     <ClCompile Include="CScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="CScene_Start.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
     <ClCompile Include="CScene_Tool.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
@@ -61,15 +58,6 @@
     <ClCompile Include="CGameObject.cpp">
       <Filter>Object</Filter>
     </ClCompile>
-    <ClCompile Include="CMissile.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="CMonster.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="CPlayer.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
     <ClCompile Include="CCore.cpp">
       <Filter>Engine\Core</Filter>
     </ClCompile>
@@ -100,6 +88,15 @@
     <ClCompile Include="CMap.cpp">
       <Filter>Object\Map</Filter>
     </ClCompile>
+    <ClCompile Include="CScene_Title.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="CScene_Stage_01.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="CScene_Boss.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -121,9 +118,6 @@
       <Filter>Util</Filter>
     </ClInclude>
     <ClInclude Include="CScene.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="CScene_Start.h">
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="CScene_Tool.h">
@@ -180,15 +174,6 @@
     <ClInclude Include="CGameObject.h">
       <Filter>Object</Filter>
     </ClInclude>
-    <ClInclude Include="CMissile.h">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="CMonster.h">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="CPlayer.h">
-      <Filter>Object</Filter>
-    </ClInclude>
     <ClInclude Include="CCore.h">
       <Filter>Engine\Core</Filter>
     </ClInclude>
@@ -218,6 +203,15 @@
     </ClInclude>
     <ClInclude Include="CMap.h">
       <Filter>Object\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="CScene_Title.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="CScene_Stage_01.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="CScene_Boss.h">
+      <Filter>Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -288,6 +282,9 @@
     </Filter>
     <Filter Include="Object\Map">
       <UniqueIdentifier>{cc2c35db-0bf8-4418-918c-bc6e9bdff238}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Character">
+      <UniqueIdentifier>{79df389b-6caf-4011-87c2-d31fc7046c6a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
