@@ -57,15 +57,15 @@ void CScene_Start::Enter()
 	pMonster->SetCenterPos(pMonster->GetPos());
 	AddObject(pMonster, GROUP_GAMEOBJ::MONSTER);
 
-	CMap* map = new CMap;
-	map->Load(L"Map_Start", L"texture\\map\\Yoshis Island 2.png");
-	map->SetPos(fPoint(-200.f, -300.f));
-	AddObject(map, GROUP_GAMEOBJ::MAP);
+	//CMap* map = new CMap;
+	//map->Load(L"Map_Start", L"texture\\map\\Yoshis Island 2.png");
+	//map->SetPos(fPoint(-200.f, -300.f));
+	//AddObject(map, GROUP_GAMEOBJ::MAP);
 
-	CBackGround* backGround = new CBackGround;
-	backGround->Load(L"BackGround_Start", L"texture\\background\\background_start.png");
-	backGround->SetPos(fPoint(-100.f, -500.f));
-	AddObject(backGround, GROUP_GAMEOBJ::BACKGROUND);
+	//CBackGround* backGround = new CBackGround;
+	//backGround->Load(L"BackGround_Start", L"texture\\background\\background_start.png");
+	//backGround->SetPos(fPoint(-100.f, -500.f));
+	//AddObject(backGround, GROUP_GAMEOBJ::BACKGROUND);
 
 	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::PLAYER, GROUP_GAMEOBJ::MONSTER);
 	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::MISSILE_PLAYER, GROUP_GAMEOBJ::MONSTER);
@@ -73,8 +73,8 @@ void CScene_Start::Enter()
 	// Camera Look ÁöÁ¤
 	CCameraManager::getInst()->SetLookAt(fPoint(WINSIZEX / 2.f, WINSIZEY / 2.f));
 	CCameraManager::getInst()->SetTargetObj(pPlayer);
-	CCameraManager::getInst()->FadeOut(5.f);
-	CCameraManager::getInst()->FadeIn(5.f);
+	//CCameraManager::getInst()->FadeOut(5.f);
+	//CCameraManager::getInst()->FadeIn(5.f);
 }
 
 void CScene_Start::Exit()

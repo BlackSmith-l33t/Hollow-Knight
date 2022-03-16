@@ -21,7 +21,7 @@ CMonster::CMonster()
 	CreateCollider();
 	GetCollider()->SetScale(fPoint(90.f, 90.f));
 
-	m_pImg = CResourceManager::getInst()->LoadD2DImage(L"MonsterTex", L"texture\\PlayerStand.png");
+	m_pImg = CResourceManager::getInst()->LoadD2DImage(L"MonsterTex", L"texture\\Animation\\PlayerStand.png");
 
 	CreateAnimator();
 	GetAnimator()->CreateAnimation(L"PlayerStand", m_pImg, fPoint(0, 0), fPoint(32.f, 32.f), fPoint(32.f, 0), 0.1f, 5);
