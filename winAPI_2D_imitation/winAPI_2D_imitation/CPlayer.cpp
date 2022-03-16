@@ -21,7 +21,7 @@ CPlayer::CPlayer()
 	GetAnimator()->CreateAnimation(L"LeftNone", m_pImg, fPoint(0.f, 0.f), fPoint(80.f, 80.f), fPoint(80.f, 80.f), 0.5f, 1);
 	GetAnimator()->CreateAnimation(L"RightNone", m_pImg, fPoint(0.f, 0.f), fPoint(80.f, 80.f), fPoint(80.f, 0.f), 0.5f, 1);
 	GetAnimator()->CreateAnimation(L"LeftMove", m_pImg, fPoint(0.f, 0.f), fPoint(80.f, 80.f), fPoint(80.f, 0.f), 0.01f, 9);
-	GetAnimator()->CreateAnimation(L"RightMove", m_pImg, fPoint(480.f, 480.f), fPoint(80.f, 80.f), fPoint(80.f, 0.f), 0.08f, 6);
+	GetAnimator()->CreateAnimation(L"RightMove", m_pImg, fPoint(0.f, 0.f), fPoint(80.f, 80.f), fPoint(80.f, 0.f), 0.08f, 6);
 	GetAnimator()->CreateAnimation(L"LeftHit", m_pImg, fPoint(160.f, 0.f), fPoint(80.f, 80.f), fPoint(80.f, 0.f), 0.25f, 1);
 	GetAnimator()->CreateAnimation(L"RightHit", m_pImg, fPoint(160.f, 80.f), fPoint(80.f, 80.f), fPoint(80.f, 0.f), 0.25f, 1);
 	GetAnimator()->Play(L"RightNone");

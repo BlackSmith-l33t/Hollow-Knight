@@ -217,8 +217,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             PAINTSTRUCT ps;
             // Device Context 만들어서 ID 를 반환
-            HDC hdc = BeginPaint(hWnd, &ps);
-            // 여기에 hdc를 사용하는 그리기 코드를 추가합니다.            
+            HDC hdc = BeginPaint(hWnd, &ps);           
             EndPaint(hWnd, &ps);
         }
         break;

@@ -44,41 +44,25 @@ void CTile::render()
 	fPoint fptRenderPos = CCameraManager::getInst()->GetRenderPos(GetPos());
 	fPoint fptScale = GetScale();
 
-	CRenderManager::getInst()->RenderFrame(
-		m_pImg,
-		fptRenderPos.x,
-		fptRenderPos.y,
-		fptRenderPos.x + fptScale.x,
-		fptRenderPos.y + fptScale.y,
-		iCurCol * fptScale.x,
-		iCurRow * fptScale.y,
-		(iCurCol + 1) * fptScale.x,
-		(iCurRow + 1) * fptScale.y
-	);
+	if (0 != m_iIdx)
+	{
+		CRenderManager::getInst()->RenderFrame(
+			m_pImg,
+			fptRenderPos.x,
+			fptRenderPos.y,
+			fptRenderPos.x + fptScale.x,
+			fptRenderPos.y + fptScale.y,
+			iCurCol * fptScale.x,
+			iCurRow * fptScale.y,
+			(iCurCol + 1) * fptScale.x,
+			(iCurRow + 1) * fptScale.y
+		);
+	}
 
-	if (m_group == GROUP_TILE::GROUND)
-	{
-		CRenderManager::getInst()->RenderEllipse(
-			fptRenderPos.x + fptScale.x / 2.f,
-			fptRenderPos.y + fptScale.y / 2.f,
-			fptScale.x / 2.f,
-			fptScale.y / 2.f,
-			RGB(255, 0, 0)
-		);
-	}
-	else if (m_group == GROUP_TILE::WALL)
-	{
-		CRenderManager::getInst()->RenderEllipse(
-			fptRenderPos.x + fptScale.x / 2.f,
-			fptRenderPos.y + fptScale.y / 2.f,
-			fptScale.x / 2.f,
-			fptScale.y / 2.f,
-			RGB(0, 0, 255)
-		);
-	}
+	component_render();
 }
 
-void CTile::SetTexture(CD2DImage* pImg)
+void CTile::SetD2DImage(CD2DImage* pImg)
 {
 	m_pImg = pImg;
 }
@@ -86,6 +70,26 @@ void CTile::SetTexture(CD2DImage* pImg)
 void CTile::SetImgIdx(UINT idx)
 {
 	m_iIdx = idx;
+}
+
+void CTile::SetX(int x)
+{
+	m_iX = x;
+}
+
+void CTile::SetY(int y)
+{
+	m_iY = y;
+}
+
+void CTile::SetGroup(GROUP_TILE group)
+{
+	m_group = group;
+}
+
+int CTile::GetIdx()
+{
+	return m_iIdx;
 }
 
 int CTile::GetX()
@@ -96,6 +100,11 @@ int CTile::GetX()
 int CTile::GetY()
 {
 	return m_iY;
+}
+
+GROUP_TILE CTile::GetGroup()
+{
+	return m_group;
 }
 
 void CTile::Save(FILE* pFile)
