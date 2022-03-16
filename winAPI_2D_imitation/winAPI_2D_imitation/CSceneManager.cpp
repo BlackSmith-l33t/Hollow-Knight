@@ -54,11 +54,12 @@ void CSceneManager::init()
 	m_arrScene[(size_t)GROUP_SCENE::STAGE_01] = new CScene_Stage_01;
 	m_arrScene[(size_t)GROUP_SCENE::TITLE]->SetName(L"Stage01_Scene");
 
+	/*
 	m_arrScene[(size_t)GROUP_SCENE::TITLE] = new CScene_Boss;
 	m_arrScene[(size_t)GROUP_SCENE::TITLE]->SetName(L"Boss_Scene");
 
 	m_arrScene[(size_t)GROUP_SCENE::TOOL] = new CScene_Tool;
-	m_arrScene[(size_t)GROUP_SCENE::TOOL]->SetName(L"Tool_Scene");
+	m_arrScene[(size_t)GROUP_SCENE::TOOL]->SetName(L"Tool_Scene");*/
 
 	m_pCurScene = m_arrScene[(size_t)GROUP_SCENE::TITLE];
 	m_pCurScene->Enter();

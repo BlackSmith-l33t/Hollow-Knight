@@ -97,6 +97,7 @@
     <ClCompile Include="CScene_Boss.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
+    <ClCompile Include="CImageObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -213,6 +214,7 @@
     <ClInclude Include="CScene_Boss.h">
       <Filter>Scene</Filter>
     </ClInclude>
+    <ClInclude Include="CImageObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
