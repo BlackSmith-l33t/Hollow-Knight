@@ -97,7 +97,12 @@
     <ClCompile Include="CScene_Boss.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="CImageObject.cpp" />
+    <ClCompile Include="CImageObject.cpp">
+      <Filter>Object\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="CImageButton.cpp">
+      <Filter>Object\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -214,7 +219,12 @@
     <ClInclude Include="CScene_Boss.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="CImageObject.h" />
+    <ClInclude Include="CImageObject.h">
+      <Filter>Object\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="CImageButton.h">
+      <Filter>Object\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -288,6 +298,9 @@
     <Filter Include="Object\Character">
       <UniqueIdentifier>{79df389b-6caf-4011-87c2-d31fc7046c6a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\Title">
+      <UniqueIdentifier>{e5c0bb8b-c97e-499d-9f4b-b36d46b439b4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="winAPI_2D_imitation.rc">
@@ -296,6 +309,5 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
-    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
 </Project>
