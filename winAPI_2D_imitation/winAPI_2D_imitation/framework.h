@@ -42,10 +42,9 @@ enum class GROUP_GAMEOBJ
 	BACKGROUND,
 	MAP,
 	TILE,
-	PLAYER,
+	KNIGHT,
 	MONSTER,
-	MISSILE_PLAYER,
-	MISSILE_MONSTER,
+	BOSS,
 
 	UI,		// UI는 모든 게임오브젝트 중 최상단 Layer에 위치
 	SIZE,

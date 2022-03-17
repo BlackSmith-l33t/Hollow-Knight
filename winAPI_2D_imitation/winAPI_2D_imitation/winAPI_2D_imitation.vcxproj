@@ -163,6 +163,7 @@
     <ClInclude Include="CImageButton.h" />
     <ClInclude Include="CImageObject.h" />
     <ClInclude Include="CKeyManager.h" />
+    <ClInclude Include="CKnight.h" />
     <ClInclude Include="CMap.h" />
     <ClInclude Include="CPanelUI.h" />
     <ClInclude Include="CPathManager.h" />
@@ -205,6 +206,7 @@
     <ClCompile Include="CImageButton.cpp" />
     <ClCompile Include="CImageObject.cpp" />
     <ClCompile Include="CKeyManager.cpp" />
+    <ClCompile Include="CKnight.cpp" />
     <ClCompile Include="CMap.cpp" />
     <ClCompile Include="CPanelUI.cpp" />
     <ClCompile Include="CPathManager.cpp" />

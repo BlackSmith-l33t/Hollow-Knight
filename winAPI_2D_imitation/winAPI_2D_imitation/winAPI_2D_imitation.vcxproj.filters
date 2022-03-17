@@ -103,6 +103,9 @@
     <ClCompile Include="CImageButton.cpp">
       <Filter>Object\UI</Filter>
     </ClCompile>
+    <ClCompile Include="CKnight.cpp">
+      <Filter>Object\Character</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -224,6 +227,9 @@
     </ClInclude>
     <ClInclude Include="CImageButton.h">
       <Filter>Object\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CKnight.h">
+      <Filter>Object\Character</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
