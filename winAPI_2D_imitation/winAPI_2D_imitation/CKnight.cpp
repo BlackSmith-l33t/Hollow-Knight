@@ -7,7 +7,7 @@
 CKnight::CKnight()
 {
 	m_fVelocity = 200.f;
-	m_pImg = CResourceManager::getInst()->LoadD2DImage(L"KnightImg", L"texture\\Animation\\Knight\\image1.png");
+	m_pImg = CResourceManager::getInst()->LoadD2DImage(L"KnightImg", L"texture\\Animation\\Knight\\Knight.png");
 	SetName(L"Knight");
 	SetScale(fPoint(125.f, 125.f));
 
