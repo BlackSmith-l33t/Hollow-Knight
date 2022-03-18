@@ -13,6 +13,7 @@
 #define IDI_SMALL                       108
 #define IDC_WINAPI2D                    109
 #define IDR_MAINFRAME                   128
+#define IDC_SAVE                        128
 #define IDC_EDIT_SIZEX                  1000
 #define IDC_EDIT_SIZEY                  1001
 #define IDC_EDIT_TILE                   1002
@@ -20,6 +21,9 @@
 #define IDC_BUTTON_TILE                 1004
 #define ID_                             1005
 #define ID_LOADING                      1005
+#define ID_LOAD                         1005
+#define IDC_LOAD                        1005
+#define IDC_MAP                         1006
 #define ID_ACCELERATOR32776             32776
 #define IDC_STATIC                      -1
 
@@ -30,7 +34,7 @@
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        151
 #define _APS_NEXT_COMMAND_VALUE         32772
-#define _APS_NEXT_CONTROL_VALUE         1006
+#define _APS_NEXT_CONTROL_VALUE         1007
 #define _APS_NEXT_SYMED_VALUE           110
 #endif
 #endif

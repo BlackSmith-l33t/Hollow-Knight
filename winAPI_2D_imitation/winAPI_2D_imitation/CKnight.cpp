@@ -6,7 +6,7 @@
 
 CKnight::CKnight()
 {
-	m_fVelocity = 200.f;
+	m_fVelocity = 500.f;
 	m_pImg = CResourceManager::getInst()->LoadD2DImage(L"KnightImg", L"texture\\Animation\\Knight\\Knight.png");
 	SetName(L"Knight");
 	SetScale(fPoint(125.f, 125.f));
@@ -52,10 +52,10 @@ void CKnight::update()
 		pos.x -= m_fVelocity * fDT;
 		GetAnimator()->Play(L"LeftMove");
 	}
-	if (KeyDown(VK_RIGHT))
+	if (Key(VK_RIGHT))
 	{
-		//pos.x += m_fVelocity * fDT;
-		pos.x += 10;
+		pos.x += m_fVelocity * fDT;
+		//pos.x += 10;
 		GetAnimator()->Play(L"RightNone");		
 	}
 	if (Key(VK_UP))
@@ -75,12 +75,10 @@ void CKnight::update()
 		GetAnimator()->Play(L"Jump");
 	}
 
-	if (KeyUp(VK_RIGHT))
+/*	if (KeyUp(VK_RIGHT))
 	{
 		GetAnimator()->Play(L"None");
-	}
-
-	
+	}*/	
 
 	GetAnimator()->update();
 }

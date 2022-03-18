@@ -106,6 +106,12 @@
     <ClCompile Include="CKnight.cpp">
       <Filter>Object\Character</Filter>
     </ClCompile>
+    <ClCompile Include="CMonster.cpp">
+      <Filter>Object\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="CTileButton.cpp">
+      <Filter>Object\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -230,6 +236,12 @@
     </ClInclude>
     <ClInclude Include="CKnight.h">
       <Filter>Object\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="CMonster.h">
+      <Filter>Object\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="CTileButton.h">
+      <Filter>Object\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -36,7 +36,7 @@ void CBackGround::render()
     fPoint pos = GetPos();
     fPoint scale = GetScale();
     fPoint renderPos = CCameraManager::getInst()->GetRenderPos(pos);
-    renderPos = pos + (renderPos - pos) / 5;    // 배경은 살짝 느리게 이동
+    renderPos = pos + (renderPos - pos);    // 배경은 살짝 느리게 이동
 
     CRenderManager::getInst()->RenderImage(
         m_pImg,
