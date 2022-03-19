@@ -35,13 +35,15 @@ void CMap::render()
     }
     fPoint pos = GetPos();
     fPoint scale = GetScale();
-    pos = CCameraManager::getInst()->GetRenderPos(pos);
+    //pos = CCameraManager::getInst()->GetRenderPos(pos);
+    fPoint renderPos = CCameraManager::getInst()->GetRenderPos(pos);
+    renderPos = pos + (renderPos - pos);
 
     CRenderManager::getInst()->RenderImage(
         m_pImg,
-        pos.x,
-        pos.y,
-        pos.x + scale.x,
-        pos.y + scale.y
+        renderPos.x,
+        renderPos.y,
+        renderPos.x + scale.x,
+        renderPos.y + scale.y
     );
 }

@@ -37,31 +37,28 @@ void CScene_Stage_01::Enter()
 	path += L"tile\\Start_01.tile";
 	LoadTile(path);
 
-	// Knight 생성
-	CKnight* pKnight = new CKnight;
-	pKnight->SetPos(fPoint(300, 500));
-	AddObject(pKnight, GROUP_GAMEOBJ::KNIGHT);
-	// TODO : knight를 원하는 위치에 초기화
-
-	/*CMap* map = new CMap;
-	map->Load(L"Map_Stage01", L"texture\\map\\Stage01.png");
-	AddObject(map, GROUP_GAMEOBJ::MAP);*/
-
-	CBackGround* backGround = new CBackGround;
-	backGround->Load(L"Map_Stage01", L"texture\\map\\real.png");
-	backGround->SetPos(fPoint(-100.f, -500.f));
-	AddObject(backGround, GROUP_GAMEOBJ::BACKGROUND);
+	// TODO : 씬이 바뀌었을 때 나이트를 어떻게?
+	//CKnight* pKnight = new CKnight;		
+	//pKnight->SetPos(fPoint(2000, 2000));
+	////pKnight->SetPos(fPoint(200, 500));
+	//AddObject(pKnight, GROUP_GAMEOBJ::KNIGHT);
 
 	// 몬스터 생성
 	CMonster* pMonster = new CMonster;
-	pMonster->SetPos(fPoint(1000, 400));
+	pMonster->SetPos(fPoint(3000, 600));
 	AddObject(pMonster, GROUP_GAMEOBJ::MONSTER);
+		
+	// TODO : 플레이어가 맵을 가장자리로 가면 윈도우가 맵프레임을 벗어나지 않게 설정해야함.
+	CMap* map = new CMap;
+	map->Load(L"Map_Stage01", L"texture\\map\\Stage_01.png");
+	map->SetPos(fPoint(100.f, -500.f));
+	AddObject(map, GROUP_GAMEOBJ::MAP);	
 
 	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::KNIGHT, GROUP_GAMEOBJ::MONSTER);
-	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::KNIGHT, GROUP_GAMEOBJ::TILE);
+	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::KNIGHT, GROUP_GAMEOBJ::TILE);	
 
 	CCameraManager::getInst()->SetLookAt(fPoint(WINSIZEX / 2.f, WINSIZEY / 2.f));
-	CCameraManager::getInst()->SetTargetObj(pKnight);
+	//CCameraManager::getInst()->SetTargetObj(pKnight);
 }
 
 void CScene_Stage_01::Exit()

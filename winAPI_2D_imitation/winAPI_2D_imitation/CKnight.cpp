@@ -9,6 +9,7 @@ CKnight::CKnight()
 	m_fVelocity = 500.f;
 	m_pImg = CResourceManager::getInst()->LoadD2DImage(L"KnightImg", L"texture\\Animation\\Knight\\Knight.png");
 	SetName(L"Knight");
+	//SetPos(fPoint(4000, 700));
 	SetScale(fPoint(125.f, 125.f));
 
 	CreateCollider();

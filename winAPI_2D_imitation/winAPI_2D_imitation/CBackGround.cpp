@@ -16,6 +16,7 @@ void CBackGround::Load(wstring strKey, wstring strPath)
 {
     m_pImg = CResourceManager::getInst()->LoadD2DImage(strKey, strPath);
     SetScale(fPoint(m_pImg->GetWidth(), m_pImg->GetHeight()));
+    //SetPos(fPoint(WINSIZEX, WINSIZEY));
 }
 
 CBackGround* CBackGround::Clone()

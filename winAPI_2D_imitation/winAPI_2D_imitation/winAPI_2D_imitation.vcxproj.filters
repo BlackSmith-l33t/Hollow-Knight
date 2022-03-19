@@ -112,6 +112,9 @@
     <ClCompile Include="CTileButton.cpp">
       <Filter>Object\UI</Filter>
     </ClCompile>
+    <ClCompile Include="CScene_Town.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -242,6 +245,9 @@
     </ClInclude>
     <ClInclude Include="CTileButton.h">
       <Filter>Object\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CScene_Town.h">
+      <Filter>Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
