@@ -9,7 +9,7 @@
 
 void ClickStartButton(DWORD_PTR, DWORD_PTR)
 {
-	ChangeScn(GROUP_SCENE::STAGE_01);
+	ChangeScn(GROUP_SCENE::TOWN);
 }
 
 void ClickExitButton(DWORD_PTR, DWORD_PTR)
@@ -58,7 +58,7 @@ void CScene_Title::Enter()
 	AddObject(m_pExitButton, GROUP_GAMEOBJ::UI);
 
 
-	// TODO : bmp, cur, 모두 다 시도 했지만 커서는 바뀌지 않음. 원인은 아직 모름.
+	// TODO : bmp, cur, 두 개다 시도 했지만 커서는 바뀌지 않음. 원인은 아직 찾기 못함.
 	/*HCURSOR hCursor;
 	hCursor = LoadCursor(hInst, MAKEINTRESOURCE(IDC_CURSOR1));
 	SetCursor(hCursor);*/

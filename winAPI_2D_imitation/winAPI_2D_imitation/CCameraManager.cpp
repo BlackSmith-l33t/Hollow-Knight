@@ -4,8 +4,8 @@
 #include "CTexture.h"
 
 CCameraManager::CCameraManager()
-{
-	m_fptLookAt = fPoint(WINSIZEX / 2.f, WINSIZEY / 2.f);
+{	
+	m_fptLookAt = fPoint(WINSIZEX / 2.f, WINSIZEY / 2.f);	// TODO : 좋은 방법은 아니나 플레이어는 싱글톤 처럼 사용하여 초기화값을 플레이어 Pos로 설정할 예정이다.
 	m_fptCurLookAt = m_fptLookAt;
 	m_fptPrevLookAt = m_fptLookAt;
 	m_pTargetObj = nullptr;
@@ -24,6 +24,7 @@ void CCameraManager::init()
 
 void CCameraManager::update()
 {
+	// TODO : 플레이어가 맵을 가장자리로 가면 윈도우가 맵프레임을 벗어나지 않게 설정해야함.
 	if (m_pTargetObj)
 	{
 		if (m_pTargetObj->isDead())
@@ -82,6 +83,11 @@ void CCameraManager::render()
 
 void CCameraManager::SetLookAt(fPoint lookAt)
 {
+	/*if (lookAt >= fPoint(100, 100))
+	{
+
+	}*/
+
 	m_fptLookAt = lookAt;
 	float fMoveDist = (m_fptLookAt - m_fptPrevLookAt).Length();
 

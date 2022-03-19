@@ -22,6 +22,22 @@ void CScene_Town::update()
 	{
 		// TODO : ESC 키를 누르면 종료창을 뜨게 만든다.
 	}
+
+	// 작업을 위한 임시 사용
+	if (Key(VK_F2))
+	{
+		ChangeScn(GROUP_SCENE::STAGE_01);
+	}
+
+	if (Key(VK_F3))
+	{
+		ChangeScn(GROUP_SCENE::BOSS);
+	}
+
+	if (Key(VK_TAB))
+	{
+		ChangeScn(GROUP_SCENE::TOOL);
+	}
 }
 
 void CScene_Town::Enter()
@@ -29,7 +45,7 @@ void CScene_Town::Enter()
 	// Knight 생성
 	// TODO : knight를 원하는 위치에 초기화
 	CKnight* pKnight = new CKnight;
-	pKnight->SetPos(fPoint(2000, 2000));
+	pKnight->SetPos(fPoint(600, 2090));
 	//pKnight->SetPos(fPoint(200, 500));
 	AddObject(pKnight, GROUP_GAMEOBJ::KNIGHT);
 
@@ -45,7 +61,9 @@ void CScene_Town::Enter()
 	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::KNIGHT, GROUP_GAMEOBJ::TILE);
 
 	CCameraManager::getInst()->SetLookAt(fPoint(WINSIZEX / 2.f, WINSIZEY / 2.f));
-	CCameraManager::getInst()->SetTargetObj(pKnight);
+	//CCameraManager::getInst()->SetLookAt(fPoint(pKnight->GetPos().x, pKnight->GetPos().y));
+	//CCameraManager::getInst()->SetTargetObj(pKnight);
+
 }
 
 void CScene_Town::Exit()

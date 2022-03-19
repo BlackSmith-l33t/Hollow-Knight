@@ -407,12 +407,20 @@ void CScene_Tool::PrintMap()
 	fPoint pos = CCameraManager::getInst()->GetLookAt();
 	pos = pos - fPoint(WINSIZEX / 2.f, WINSIZEY / 2.f);
 
+	//CRenderManager::getInst()->RenderImage(
+	//	m_pMap,
+	//	0 - pos.x,
+	//	0 - pos.y,
+	//	2 * m_pMap->GetWidth() - pos.x,
+	//	2 * m_pMap->GetHeight() - pos.y
+	//);
+
 	CRenderManager::getInst()->RenderImage(
 		m_pMap,
 		0 - pos.x,
 		0 - pos.y,
-		2 * m_pMap->GetWidth() - pos.x,
-		2 * m_pMap->GetHeight() - pos.y
+		m_pMap->GetWidth() - pos.x,
+		m_pMap->GetHeight() - pos.y
 	);
 }
 
@@ -519,7 +527,7 @@ INT_PTR CALLBACK TileWinProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPar
 
 			return (INT_PTR)TRUE;
 		}
-		else if (LOWORD(wParam) == IDC_BUTTON_SIZE)
+		else if (LOWORD(wParam) == IDC_BUTTON_SIZE) 
 		{
 			int x = GetDlgItemInt(hDlg, IDC_EDIT_SIZEX, nullptr, false);
 			int y = GetDlgItemInt(hDlg, IDC_EDIT_SIZEY, nullptr, false);

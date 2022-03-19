@@ -19,9 +19,20 @@ void CScene_Stage_01::update()
 {
 	CScene::update();
 
-	if (Key(VK_ESCAPE))
+	// 작업을 위한 임시 사용
+	if (Key(VK_F1))
 	{
-		ChangeScn(GROUP_SCENE::TITLE);
+		ChangeScn(GROUP_SCENE::TOWN);
+	}
+
+	if (Key(VK_F2))
+	{
+		ChangeScn(GROUP_SCENE::STAGE_01);
+	}
+
+	if (Key(VK_F3))
+	{
+		ChangeScn(GROUP_SCENE::BOSS);
 	}
 
 	if (Key(VK_TAB))
@@ -47,10 +58,9 @@ void CScene_Stage_01::Enter()
 	CMonster* pMonster = new CMonster;
 	pMonster->SetPos(fPoint(3000, 600));
 	AddObject(pMonster, GROUP_GAMEOBJ::MONSTER);
-		
-	// TODO : 플레이어가 맵을 가장자리로 가면 윈도우가 맵프레임을 벗어나지 않게 설정해야함.
+			
 	CMap* map = new CMap;
-	map->Load(L"Map_Stage01", L"texture\\map\\Stage_01.png");
+	map->Load(L"Map_Stage01", L"texture\\Background\\Stage_01.png");
 	map->SetPos(fPoint(100.f, -500.f));
 	AddObject(map, GROUP_GAMEOBJ::MAP);	
 

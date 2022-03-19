@@ -21,7 +21,6 @@
 #define IDC_BUTTON_TILE                 1004
 #define ID_                             1005
 #define ID_LOADING                      1005
-#define ID_LOAD                         1005
 #define IDC_LOAD                        1005
 #define IDC_MAP                         1006
 #define ID_ACCELERATOR32776             32776
