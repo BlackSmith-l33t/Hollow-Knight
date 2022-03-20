@@ -42,6 +42,11 @@ void CScene_Town::update()
 
 void CScene_Town::Enter()
 {
+	// 타일 로딩
+	wstring path = CPathManager::getInst()->GetContentPath();
+	path += L"tile\\Town.tile";
+	LoadTile(path);
+
 	// Knight 생성
 	// TODO : knight를 원하는 위치에 초기화
 	CKnight* pKnight = new CKnight;
@@ -50,19 +55,19 @@ void CScene_Town::Enter()
 	AddObject(pKnight, GROUP_GAMEOBJ::KNIGHT);
 
 	CMap* map = new CMap;
-	map->Load(L"Map_Start", L"texture\\map\\Map_Town1.png");
+	map->Load(L"Map_Town", L"texture\\map\\Map_Town1.png");
 	AddObject(map, GROUP_GAMEOBJ::MAP);
 
 	CBackGround* backGround = new CBackGround;
-	backGround->Load(L"BackGround_Start", L"texture\\background\\Background_Town.png");
+	backGround->Load(L"BackGround_Town", L"texture\\background\\Background_Town.png");
 	//backGround->SetPos(fPoint(-100.f, -500.f));
 	AddObject(backGround, GROUP_GAMEOBJ::BACKGROUND);
 
 	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::KNIGHT, GROUP_GAMEOBJ::TILE);
 
 	CCameraManager::getInst()->SetLookAt(fPoint(WINSIZEX / 2.f, WINSIZEY / 2.f));
-	//CCameraManager::getInst()->SetLookAt(fPoint(pKnight->GetPos().x, pKnight->GetPos().y));
-	//CCameraManager::getInst()->SetTargetObj(pKnight);
+	CCameraManager::getInst()->SetLookAt(fPoint(pKnight->GetPos().x, pKnight->GetPos().y));
+	CCameraManager::getInst()->SetTargetObj(pKnight);
 
 }
 

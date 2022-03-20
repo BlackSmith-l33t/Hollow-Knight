@@ -24,7 +24,7 @@ void CCameraManager::init()
 
 void CCameraManager::update()
 {
-	// TODO : 플레이어가 맵을 가장자리로 가면 윈도우가 맵프레임을 벗어나지 않게 설정해야함.
+	// TODO : 맵프레임을 벗어나지 않게 설정해야함.
 	if (m_pTargetObj)
 	{
 		if (m_pTargetObj->isDead())
