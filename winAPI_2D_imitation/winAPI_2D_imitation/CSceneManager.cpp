@@ -64,7 +64,7 @@ void CSceneManager::init()
 	m_arrScene[(size_t)GROUP_SCENE::TOOL] = new CScene_Tool;
 	m_arrScene[(size_t)GROUP_SCENE::TOOL]->SetName(L"Tool_Scene");
 
-	m_pCurScene = m_arrScene[(size_t)GROUP_SCENE::BOSS];
+	m_pCurScene = m_arrScene[(size_t)GROUP_SCENE::TOWN];
 	m_pCurScene->Enter();
 }
 

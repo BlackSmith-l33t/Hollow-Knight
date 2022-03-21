@@ -1,4 +1,4 @@
-#include "framework.h"
+ï»¿#include "framework.h"
 #include "CScene_Title.h"
 #include "CD2DImage.h"
 #include "CButtonUI.h"
@@ -58,7 +58,7 @@ void CScene_Title::Enter()
 	AddObject(m_pExitButton, GROUP_GAMEOBJ::UI);
 
 
-	// TODO : bmp, cur, µÎ °³´Ù ½Ãµµ ÇßÁö¸¸ Ä¿¼­´Â ¹Ù²îÁö ¾ÊÀ½. ¿øÀÎÀº ¾ÆÁ÷ Ã£±â ¸øÇÔ.
+	// TODO : bmp, cur, ë‘ ê°œë‹¤ ì‹œë„ í–ˆì§€ë§Œ ì»¤ì„œëŠ” ë°”ë€Œì§€ ì•ŠìŒ. ì›ì¸ì€ ì•„ì§ ì°¾ê¸° ëª»í•¨.
 	/*HCURSOR hCursor;
 	hCursor = LoadCursor(hInst, MAKEINTRESOURCE(IDC_CURSOR1));
 	SetCursor(hCursor);*/

@@ -1,4 +1,4 @@
-#include "framework.h"
+ï»¿#include "framework.h"
 #include "CScene_Stage_01.h"
 #include "CKnight.h"
 #include "CMonster.h"
@@ -19,7 +19,7 @@ void CScene_Stage_01::update()
 {
 	CScene::update();
 
-	// ÀÛ¾÷À» À§ÇÑ ÀÓ½Ã »ç¿ë
+	// ìž‘ì—…ì„ ìœ„í•œ ìž„ì‹œ ì‚¬ìš©
 	if (Key(VK_F1))
 	{
 		ChangeScn(GROUP_SCENE::TOWN);
@@ -38,17 +38,17 @@ void CScene_Stage_01::update()
 
 void CScene_Stage_01::Enter()
 {
-	// Å¸ÀÏ ·Îµù
+	// íƒ€ì¼ ë¡œë”©
 	wstring path = CPathManager::getInst()->GetContentPath();
 	path += L"tile\\Start_01.tile";
 	LoadTile(path);
 
-	// TODO : ¾ÀÀÌ ¹Ù²î¾úÀ» ¶§ ³ªÀÌÆ®¸¦ ¾î¶»°Ô?
+	// TODO : ì”¬ì´ ë°”ë€Œì—ˆì„ ë•Œ ë‚˜ì´íŠ¸ë¥¼ ì–´ë–»ê²Œ?
 	CKnight* pKnight = new CKnight;
 	pKnight->SetPos(fPoint(2450, 200));
 	AddObject(pKnight, GROUP_GAMEOBJ::KNIGHT);
 
-	// ¸ó½ºÅÍ »ý¼º
+	// ëª¬ìŠ¤í„° ìƒì„±
 	CMonster* pMonster = new CMonster;
 	pMonster->SetPos(fPoint(3000, 600));
 	AddObject(pMonster, GROUP_GAMEOBJ::MONSTER);

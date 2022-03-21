@@ -6,7 +6,9 @@
 
 CKnight::CKnight()
 {
-	m_fVelocity = 500.f;
+	m_fVelocity = 100.f;
+	m_fGravity = 200.f;
+
 	m_pImg = CResourceManager::getInst()->LoadD2DImage(L"KnightImg", L"texture\\Animation\\Knight\\Knight.png");
 	SetName(L"Knight");
 	//SetPos(fPoint(4000, 700));
@@ -48,15 +50,20 @@ void CKnight::update()
 {
 	fPoint pos = GetPos();
 
-	if (Key(VK_LEFT))
+	if (0)	// TODO : 플레이어의 충돌체가 Ground Tile과 충돌하지 않았다면
 	{
+		pos.y += m_fGravity * fDT;
+	}
+
+
+	if (Key(VK_LEFT))
+	{	
 		pos.x -= m_fVelocity * fDT;
 		GetAnimator()->Play(L"LeftMove");
 	}
 	if (Key(VK_RIGHT))
 	{
 		pos.x += m_fVelocity * fDT;
-		//pos.x += 10;
 		GetAnimator()->Play(L"RightNone");		
 	}
 	if (Key(VK_UP))
@@ -65,12 +72,12 @@ void CKnight::update()
 	}
 	if (Key(VK_DOWN))
 	{
-		pos.y += m_fVelocity * fDT;
+				
 	}	
 
 	SetPos(pos);
 
-	if (KeyDown(VK_SPACE))
+	if (KeyDown('Z'))
 	{
 		// TODO : 점프 구현
 		GetAnimator()->Play(L"Jump");

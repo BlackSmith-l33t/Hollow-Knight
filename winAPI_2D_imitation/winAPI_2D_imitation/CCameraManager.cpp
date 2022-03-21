@@ -1,11 +1,11 @@
-#include "framework.h"
+ï»¿#include "framework.h"
 #include "CCameraManager.h"
 #include "CGameObject.h"
 #include "CTexture.h"
 
 CCameraManager::CCameraManager()
 {	
-	m_fptLookAt = fPoint(WINSIZEX / 2.f, WINSIZEY / 2.f);	// TODO : ÁÁÀº ¹æ¹ıÀº ¾Æ´Ï³ª ÇÃ·¹ÀÌ¾î´Â ½Ì±ÛÅæ Ã³·³ »ç¿ëÇÏ¿© ÃÊ±âÈ­°ªÀ» ÇÃ·¹ÀÌ¾î Pos·Î ¼³Á¤ÇÒ ¿¹Á¤ÀÌ´Ù.
+	m_fptLookAt = fPoint(WINSIZEX / 2.f, WINSIZEY / 2.f);	// TODO : ì¢‹ì€ ë°©ë²•ì€ ì•„ë‹ˆë‚˜ í”Œë ˆì´ì–´ëŠ” ì‹±ê¸€í†¤ ì²˜ëŸ¼ ì‚¬ìš©í•˜ì—¬ ì´ˆê¸°í™”ê°’ì„ í”Œë ˆì´ì–´ Posë¡œ ì„¤ì •í•  ì˜ˆì •ì´ë‹¤.
 	m_fptCurLookAt = m_fptLookAt;
 	m_fptPrevLookAt = m_fptLookAt;
 	m_pTargetObj = nullptr;
@@ -24,7 +24,7 @@ void CCameraManager::init()
 
 void CCameraManager::update()
 {
-	// TODO : ¸ÊÇÁ·¹ÀÓÀ» ¹ş¾î³ªÁö ¾Ê°Ô ¼³Á¤ÇØ¾ßÇÔ.
+	// TODO : ë§µí”„ë ˆì„ì„ ë²—ì–´ë‚˜ì§€ ì•Šê²Œ ì„¤ì •í•´ì•¼í•¨.
 	if (m_pTargetObj)
 	{
 		if (m_pTargetObj->isDead())
@@ -37,7 +37,7 @@ void CCameraManager::update()
 		}
 	}
 
-	// È­¸é Áß¾Ó°ú Ä«¸Ş¶ó LookAt ÁÂÇ¥ »çÀÌÀÇ Â÷ÀÌ °è»ê
+	// í™”ë©´ ì¤‘ì•™ê³¼ ì¹´ë©”ë¼ LookAt ì¢Œí‘œ ì‚¬ì´ì˜ ì°¨ì´ ê³„ì‚°
 	CalDiff();
 }
 
@@ -112,7 +112,7 @@ fPoint CCameraManager::GetRenderPos(fPoint objPos)
 
 fPoint CCameraManager::GetRealPos(fPoint renderPos)
 {
-	// ·»´õ¸µ ÁÂÇ¥¿¡¼­ Â÷ÀÌ°ª¸¸Å­ ´õÇØÁÖ¸é Àı´ë ÁÂÇ¥°¡ ³ª¿È.
+	// ë Œë”ë§ ì¢Œí‘œì—ì„œ ì°¨ì´ê°’ë§Œí¼ ë”í•´ì£¼ë©´ ì ˆëŒ€ ì¢Œí‘œê°€ ë‚˜ì˜´.
 	return renderPos + m_fptDiff;
 }
 
@@ -159,7 +159,7 @@ void CCameraManager::CalDiff()
 {
 	m_fAccTime += fDT;
 
-	// ½Ã°£ÀÌ Áö³ª¸é, µµÂøÇÑ°ÍÀ¸·Î °£ÁÖ
+	// ì‹œê°„ì´ ì§€ë‚˜ë©´, ë„ì°©í•œê²ƒìœ¼ë¡œ ê°„ì£¼
 	if (m_fTime <= m_fAccTime)
 	{
 		m_fptCurLookAt = m_fptLookAt;

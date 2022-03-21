@@ -424,7 +424,7 @@ void CScene_Tool::PrintMap()
 	);
 }
 
-void CScene_Tool::PrintTileLine()  // TODO : 맵 가장가지리가 아닌 뭔하는 위치(ex.중앙)에 타일라인을 나타내야함. 
+void CScene_Tool::PrintTileLine() 
 {
 	fPoint pos = CCameraManager::getInst()->GetLookAt();
 	pos = pos - fPoint(WINSIZEX / 2.f, WINSIZEY / 2.f);

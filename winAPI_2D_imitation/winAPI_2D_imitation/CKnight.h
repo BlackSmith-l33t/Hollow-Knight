@@ -8,6 +8,7 @@ class CKnight : public CGameObject
 private:
 	CD2DImage* m_pImg;
 	float m_fVelocity;
+	float m_fGravity;
 
 public:
 	CKnight();

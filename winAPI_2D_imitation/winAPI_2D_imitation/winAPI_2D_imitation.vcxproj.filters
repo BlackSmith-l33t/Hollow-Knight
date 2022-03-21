@@ -325,6 +325,9 @@
     <Filter Include="Object\Title">
       <UniqueIdentifier>{e5c0bb8b-c97e-499d-9f4b-b36d46b439b4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Component\AI">
+      <UniqueIdentifier>{6779982f-f266-4117-9a98-3e1cd7b57b43}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="winAPI_2D_imitation.rc">

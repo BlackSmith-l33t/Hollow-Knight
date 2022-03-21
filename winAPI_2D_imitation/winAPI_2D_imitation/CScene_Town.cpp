@@ -1,4 +1,4 @@
-#include "framework.h"
+ï»¿#include "framework.h"
 #include "CScene_Town.h"
 #include "CD2DImage.h"
 #include "CMap.h"
@@ -20,10 +20,10 @@ void CScene_Town::update()
 
 	if (KeyDown(VK_ESCAPE))
 	{
-		// TODO : ESC Å°¸¦ ´©¸£¸é Á¾·áÃ¢À» ¶ß°Ô ¸¸µç´Ù.
+		// TODO : ESC í‚¤ë¥¼ ëˆ„ë¥´ë©´ ì¢…ë£Œì°½ì„ ëœ¨ê²Œ ë§Œë“ ë‹¤.
 	}
 
-	// ÀÛ¾÷À» À§ÇÑ ÀÓ½Ã »ç¿ë
+	// ìž‘ì—…ì„ ìœ„í•œ ìž„ì‹œ ì‚¬ìš©
 	if (Key(VK_F2))
 	{
 		ChangeScn(GROUP_SCENE::STAGE_01);
@@ -42,16 +42,14 @@ void CScene_Town::update()
 
 void CScene_Town::Enter()
 {
-	// Å¸ÀÏ ·Îµù
+	// íƒ€ì¼ ë¡œë”©
 	wstring path = CPathManager::getInst()->GetContentPath();
 	path += L"tile\\Town.tile";
 	LoadTile(path);
 
-	// Knight »ý¼º
-	// TODO : knight¸¦ ¿øÇÏ´Â À§Ä¡¿¡ ÃÊ±âÈ­
+	// Knight ìƒì„±
 	CKnight* pKnight = new CKnight;
-	pKnight->SetPos(fPoint(600, 2090));
-	//pKnight->SetPos(fPoint(200, 500));
+	pKnight->SetPos(fPoint(600, 2090));	
 	AddObject(pKnight, GROUP_GAMEOBJ::KNIGHT);
 
 	CMap* map = new CMap;

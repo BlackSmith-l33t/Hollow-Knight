@@ -1,4 +1,4 @@
-#include "framework.h"
+ï»¿#include "framework.h"
 #include "CScene.h"
 #include "CScene_Boss.h"
 #include "CMonster.h"
@@ -22,10 +22,10 @@ void CScene_Boss::update()
 
 	if (KeyDown(VK_ESCAPE))
 	{
-		// TODO : ESC Å°¸¦ ´©¸£¸é Á¾·áÃ¢À» ¶ß°Ô ¸¸µç´Ù.
+		// TODO : ESC í‚¤ë¥¼ ëˆ„ë¥´ë©´ ì¢…ë£Œì°½ì„ ëœ¨ê²Œ ë§Œë“ ë‹¤.
 	}
 
-	// ÀÛ¾÷À» À§ÇÑ ÀÓ½Ã »ç¿ë
+	// ìž‘ì—…ì„ ìœ„í•œ ìž„ì‹œ ì‚¬ìš©
 	if (Key(VK_F1))
 	{
 		ChangeScn(GROUP_SCENE::TOWN);
@@ -44,7 +44,7 @@ void CScene_Boss::update()
 
 void CScene_Boss::Enter()
 {
-	// Å¸ÀÏ ·Îµå
+	// íƒ€ì¼ ë¡œë“œ
 	wstring path = CPathManager::getInst()->GetContentPath();
 	path += L"tile\\Boss.tile";
 	LoadTile(path);
