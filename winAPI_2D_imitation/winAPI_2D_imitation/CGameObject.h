@@ -12,6 +12,8 @@ private:
 	fPoint m_fptPos;
 	fPoint m_fptScale;
 
+	GROUP_GAMEOBJ m_ObjGroup;
+
 	// Component
 	CCollider* m_pCollider;
 	CAnimator* m_pAnimator;
@@ -28,10 +30,12 @@ public:
 	void SetPos(fPoint pos);
 	void SetScale(fPoint scale);
 	void SetName(wstring name);
+	void SetObjType(GROUP_GAMEOBJ type);
 
 	fPoint GetPos();
 	fPoint GetScale();
 	wstring GetName();
+	GROUP_GAMEOBJ GetObjType();
 
 	bool isDead();
 

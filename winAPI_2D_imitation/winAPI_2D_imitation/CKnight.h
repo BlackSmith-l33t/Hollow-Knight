@@ -9,6 +9,7 @@ private:
 	CD2DImage* m_pImg;
 	float m_fVelocity;
 	float m_fGravity;
+	bool m_bGround;
 
 public:
 	CKnight();
@@ -18,5 +19,9 @@ public:
 	
 	virtual void update();
 	virtual void render();
+
+	virtual void OnCollision(CCollider* _pOther);
+	virtual void OnCollisionEnter(CCollider* _pOther);
+	virtual void OnCollisionExit(CCollider* _pOther);
 };
 
