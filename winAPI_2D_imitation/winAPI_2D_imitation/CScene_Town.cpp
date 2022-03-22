@@ -49,7 +49,7 @@ void CScene_Town::Enter()
 
 	// Knight 생성
 	CKnight* pKnight = new CKnight;
-	pKnight->SetPos(fPoint(600, 2090));	
+	pKnight->SetPos(fPoint(600, 2000));	
 	AddObject(pKnight, GROUP_GAMEOBJ::KNIGHT);
 
 	CMap* map = new CMap;

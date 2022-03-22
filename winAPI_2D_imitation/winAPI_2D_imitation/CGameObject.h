@@ -7,7 +7,7 @@ class CGameObject
 {
 	friend class CEventManager;
 
-private:
+protected:
 	wstring m_strName;
 	fPoint m_fptPos;
 	fPoint m_fptScale;

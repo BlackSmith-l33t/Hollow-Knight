@@ -7,9 +7,12 @@ class CKnight : public CGameObject
 {
 private:
 	CD2DImage* m_pImg;
-	float m_fVelocity;
-	float m_fGravity;
-	bool m_bGround;
+	float m_fVelocity; // 속력
+	float m_fGravity;  // 중력
+	float m_fAccel;    // 가속도
+	float m_fAccelA;
+	bool  m_bGround;
+
 
 public:
 	CKnight();

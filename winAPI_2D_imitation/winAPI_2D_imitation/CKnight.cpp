@@ -8,15 +8,18 @@
 CKnight::CKnight()
 {
 	m_fVelocity = 400.f;
-	m_fGravity = 200.f;
+	m_fGravity = 1000.f;
+	m_fAccel = 0.f;
+	m_fAccelA = 0.f;
+	m_bGround = true;
 
 	m_pImg = CResourceManager::getInst()->LoadD2DImage(L"KnightImg", L"texture\\Animation\\Knight\\Knight.png");
 	SetName(L"Knight");
-	//SetPos(fPoint(4000, 700));
+	SetPos(fPoint(200, 700));
 	SetScale(fPoint(125.f, 125.f));
 
 	CreateCollider();
-	GetCollider()->SetScale(fPoint(40.f, 100.f));
+	GetCollider()->SetScale(fPoint(40.f, 90.f));
 	GetCollider()->SetOffsetPos(fPoint(0.f, 10.f));
 
 	CreateAnimator();
@@ -31,11 +34,11 @@ CKnight::CKnight()
 
 	GetAnimator()->Play(L"None");
 
-	/*CAnimation* pAni;
+	CAnimation* pAni;
 	pAni = GetAnimator()->FindAnimation(L"LeftMove");
 	pAni->GetFrame(1).fptOffset = fPoint(0.f, -20.f);
 	pAni = GetAnimator()->FindAnimation(L"RightMove");
-	pAni->GetFrame(1).fptOffset = fPoint(0.f, -20.f);*/
+	pAni->GetFrame(1).fptOffset = fPoint(0.f, -20.f);
 }
 
 CKnight::~CKnight()
@@ -48,7 +51,7 @@ CKnight* CKnight::Clone()
 }
 
 void CKnight::update()
-{
+{	
 	CCameraManager::getInst()->SetLookAt(GetPos());
 
 	fPoint pos = GetPos();
@@ -69,10 +72,11 @@ void CKnight::update()
 	}
 	if (Key(VK_DOWN))
 	{
-		pos.y += m_fVelocity * fDT;
+		if (!m_bGround)
+		{
+			pos.y += m_fVelocity * fDT;
+		}
 	}
-
-	SetPos(pos);
 
 	if (KeyDown('Z'))
 	{
@@ -80,12 +84,12 @@ void CKnight::update()
 		GetAnimator()->Play(L"Jump");
 	}
 
-	/*	if (KeyUp(VK_RIGHT))
-		{
-			GetAnimator()->Play(L"None");
-		}*/
+	pos.y += m_fAccelA * fDT;
+
+	m_fAccelA += m_fGravity * fDT;
 
 	GetAnimator()->update();
+	SetPos(pos);
 }
 
 void CKnight::render()
@@ -95,27 +99,70 @@ void CKnight::render()
 
 void CKnight::OnCollision(CCollider* _pOther)
 {
-	m_bGround = true;
-
-	fPoint pos = GetPos();
-
 	if (GROUP_GAMEOBJ::TILE == _pOther->GetObj()->GetObjType())
 	{
 		CTile* pTile = (CTile*)_pOther->GetObj();
-		fVec2 vObjPos = pTile->GetPos();
-		fVec2 vObjScale;
+		CKnight* pKnight = (CKnight*)this;
+		if (pTile->GetGroup() == GROUP_TILE::GROUND) return;
 
+		if (GROUP_TILE::GROUND == pTile->GetGroup())
+		{			
+			fVec2 vPos = GetCollider()->GetFinalPos();
+			fVec2 vScale = GetCollider()->GetScale();
+
+			fVec2 vObjPos = _pOther->GetFinalPos();
+			fVec2 vObjScale = _pOther->GetScale();
+
+			float fLen = abs(vObjPos.y - vPos.y);
+			float fValue = (vScale.y / 2.f + vObjScale.y / 2.f) - fLen;
+
+			if ((vObjPos.y - vPos.y <= vScale.y / 2.f + vObjScale.y / 2.f))
+			{
+				m_fptPos.y -= fValue;
+				SetPos(m_fptPos);				
+			}
+		}				
 	}
 }
 
 
 void CKnight::OnCollisionEnter(CCollider* _pOther)
-{
-	m_bGround = true;
+{	
+	if (GROUP_GAMEOBJ::TILE == _pOther->GetObj()->GetObjType())
+	{		
+		CTile* pTile = (CTile*)_pOther->GetObj();
+		CKnight* pKnight = (CKnight*)this;
+	
+		if (GROUP_TILE::GROUND == pTile->GetGroup())
+		{
+			m_bGround = true;
+			fVec2 vPos = GetCollider()->GetFinalPos();
+			fVec2 vScale = GetCollider()->GetScale();
+
+			fVec2 vObjPos = _pOther->GetFinalPos();
+			fVec2 vObjScale = _pOther->GetScale();
+
+			float fLen = abs(vObjPos.y - vPos.y);
+			float fValue = (vScale.y / 2.f + vObjScale.y / 2.f) - fLen;
+
+			if ((vObjPos.y - vPos.y <= (vScale.y / 2.f + vObjScale.y / 2.f)))
+			{			
+				m_bGround = true;
+				m_fptPos.y -= fValue;
+				m_fAccelA = 0.f;
+				SetPos(m_fptPos);
+			}	
+		}		
+	}
 }
 
 void CKnight::OnCollisionExit(CCollider* _pOther)
-{
+{	
+	CKnight* pKnight = (CKnight*)this;
 
+	if (GROUP_GAMEOBJ::TILE == _pOther->GetObj()->GetObjType())
+	{
+		m_bGround = false;		
+	}
 }
 
