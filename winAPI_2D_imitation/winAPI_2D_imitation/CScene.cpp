@@ -21,6 +21,17 @@ CScene::~CScene()
     }
 }
 
+void CScene::start()
+{
+    for (int i = 0; i < (int)GROUP_GAMEOBJ::SIZE; i++)
+    {
+        for (int j = 0; j < m_arrObj[i].size(); j++)
+        {
+            m_arrObj[i][j]->start();
+        }
+    }
+}
+
 void CScene::update()
 {
     // 씬이 가진 모든 오브젝트 업데이트

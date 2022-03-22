@@ -68,6 +68,8 @@ void CScene_Boss::Enter()
 	CCameraManager::getInst()->SetLookAt(fPoint(pKnight->GetPos().x, pKnight->GetPos().y));
 	CCameraManager::getInst()->SetTargetObj(pKnight);
 
+	start();
+
 }
 
 void CScene_Boss::Exit()

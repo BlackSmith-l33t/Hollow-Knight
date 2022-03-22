@@ -41,12 +41,12 @@ void CMonster::render()
 
 	component_render();
 
-	/*CRenderManager::getInst()->RenderImage(
+	CRenderManager::getInst()->RenderImage(
 		m_pImg,
 		pos.x,
 		pos.y,
 		pos.x + scale.x,
-		pos.y + scale.y);*/
+		pos.y + scale.y);
 }
 
 void CMonster::update()

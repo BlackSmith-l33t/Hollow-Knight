@@ -42,6 +42,7 @@ enum class GROUP_GAMEOBJ
 	BACKGROUND,
 	MAP,
 	TILE,
+	GROUND,
 	KNIGHT,
 	MONSTER,
 	BOSS,
@@ -122,6 +123,7 @@ enum class TYPE_EVENT
 #define DeleteObj(pObj)			CEventManager::getInst()->EventDeleteObject(pObj)
 #define ChangeScn(scene)		CEventManager::getInst()->EventChangeScene(scene)
 
+#define Gravity         500.f
 //========================================
 //## 전역변수(인스턴스, 윈도우 핸들)	##
 //========================================

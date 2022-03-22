@@ -2,6 +2,8 @@
 
 class CCollider;
 class CAnimator;
+class CGravity;
+class CGround;
 
 class CGameObject
 {
@@ -9,17 +11,22 @@ class CGameObject
 
 protected:
 	wstring m_strName;
-	fPoint m_fptPos;
-	fPoint m_fptScale;
+	fPoint  m_fptPos;
+	fPoint  m_fptScale;
 
 	GROUP_GAMEOBJ m_ObjGroup;
 
 	// Component
 	CCollider* m_pCollider;
 	CAnimator* m_pAnimator;
+	CGravity*  m_pGravity;
 
-	bool m_bAlive;
+	bool	   m_pGround;
+	bool	   m_bAlive;
+
 	void SetDead();
+
+	float m_fGravity;
 
 public:
 	CGameObject();
@@ -39,8 +46,9 @@ public:
 
 	bool isDead();
 
+	virtual void start() {};
 	virtual void update() = 0;			// 반드시 상속받은 객체가 update를 구현하도록 순수가상함수로 선언
-	virtual void finalupdate();			// 상속받는 클래스가 오버라이딩 할 수 없게 막는 final 키워드
+	virtual void finalupdate();			
 	virtual void render();
 	virtual void component_render();	// 컴포넌트들의 영역을 표시하기 위해
 
@@ -53,5 +61,11 @@ public:
 
 	CAnimator* GetAnimator();				// 애니메이터 반환
 	void CreateAnimator();					// 애니메이터 생성
+
+	CGravity* GetGravity();					// 중력 반환
+	void CreateGravity();					// 중력 생성	
+	void SetGravity(float _fGravity);		// 중력 설정
+
+	void GetGround(bool _bGround);
 };
 

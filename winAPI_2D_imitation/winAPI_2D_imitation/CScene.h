@@ -15,6 +15,7 @@ public:
 	CScene();
 	virtual ~CScene();
 
+	virtual void start();
 	virtual void update();
 	virtual void finalupdate();
 	virtual void render();

@@ -7,20 +7,20 @@
 
 CKnight::CKnight()
 {
-	m_fVelocity = 400.f;
-	m_fGravity = 1000.f;
-	m_fAccel = 0.f;
-	m_fAccelA = 0.f;
-	m_bGround = true;
+	m_fVelocity		= 500.f;
+	m_fAccel		= 0.f;
+	m_fGravity		= 1000.f;
+	m_fAccel_G		= 0.f;
+	m_bGround		= false;
 
 	m_pImg = CResourceManager::getInst()->LoadD2DImage(L"KnightImg", L"texture\\Animation\\Knight\\Knight.png");
 	SetName(L"Knight");
-	SetPos(fPoint(200, 700));
 	SetScale(fPoint(125.f, 125.f));
 
+	CreateGravity();
 	CreateCollider();
 	GetCollider()->SetScale(fPoint(40.f, 90.f));
-	GetCollider()->SetOffsetPos(fPoint(0.f, 10.f));
+	//GetCollider()->SetOffsetPos(fPoint(0.f, 0.f));
 
 	CreateAnimator();
 	GetAnimator()->CreateAnimation(L"None", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(0, 0.f), 0.5f, 2);
@@ -34,11 +34,11 @@ CKnight::CKnight()
 
 	GetAnimator()->Play(L"None");
 
-	CAnimation* pAni;
+	/*CAnimation* pAni;
 	pAni = GetAnimator()->FindAnimation(L"LeftMove");
 	pAni->GetFrame(1).fptOffset = fPoint(0.f, -20.f);
 	pAni = GetAnimator()->FindAnimation(L"RightMove");
-	pAni->GetFrame(1).fptOffset = fPoint(0.f, -20.f);
+	pAni->GetFrame(1).fptOffset = fPoint(0.f, -20.f);*/
 }
 
 CKnight::~CKnight()
@@ -52,44 +52,12 @@ CKnight* CKnight::Clone()
 
 void CKnight::update()
 {	
+	update_move();
+	update_ani();
+
 	CCameraManager::getInst()->SetLookAt(GetPos());
 
-	fPoint pos = GetPos();
-
-	if (Key(VK_LEFT))
-	{
-		pos.x -= m_fVelocity * fDT;
-		GetAnimator()->Play(L"LeftMove");
-	}
-	if (Key(VK_RIGHT))
-	{
-		pos.x += m_fVelocity * fDT;
-		GetAnimator()->Play(L"RightNone");
-	}
-	if (Key(VK_UP))
-	{
-		pos.y -= m_fVelocity * fDT;
-	}
-	if (Key(VK_DOWN))
-	{
-		if (!m_bGround)
-		{
-			pos.y += m_fVelocity * fDT;
-		}
-	}
-
-	if (KeyDown('Z'))
-	{
-		// TODO : 점프 구현
-		GetAnimator()->Play(L"Jump");
-	}
-
-	pos.y += m_fAccelA * fDT;
-
-	m_fAccelA += m_fGravity * fDT;
-
-	GetAnimator()->update();
-	SetPos(pos);
+	GetAnimator()->update();		
 }
 
 void CKnight::render()
@@ -97,63 +65,56 @@ void CKnight::render()
 	component_render();
 }
 
+void CKnight::update_move()
+{
+	fPoint pos = GetPos();
+
+	if (Key(VK_LEFT))
+	{
+		pos.x -= m_fVelocity * fDT;
+	}
+	if (Key(VK_RIGHT))
+	{
+		pos.x += m_fVelocity * fDT;
+
+	}
+	if (Key(VK_UP))
+	{
+		// TODO : 카메라 시점 상단 변경
+	}
+	if (Key(VK_DOWN))
+	{
+		// TODO : 카메라 시점 하단 변경
+		pos.y += m_fVelocity * fDT;		
+	}
+
+	if (KeyDown('Z'))
+	{
+		// TODO : JUMP
+	}
+
+	pos.y += m_fAccel_G * fDT;
+
+	SetPos(pos);
+
+	m_fAccel_G += Gravity * fDT;
+	if (m_fAccel_G >= 800.f)
+	{
+		m_fAccel_G = 800.f;
+	}
+}
+
+void CKnight::update_ani()
+{
+}
+
 void CKnight::OnCollision(CCollider* _pOther)
 {
-	if (GROUP_GAMEOBJ::TILE == _pOther->GetObj()->GetObjType())
-	{
-		CTile* pTile = (CTile*)_pOther->GetObj();
-		CKnight* pKnight = (CKnight*)this;
-		if (pTile->GetGroup() == GROUP_TILE::GROUND) return;
-
-		if (GROUP_TILE::GROUND == pTile->GetGroup())
-		{			
-			fVec2 vPos = GetCollider()->GetFinalPos();
-			fVec2 vScale = GetCollider()->GetScale();
-
-			fVec2 vObjPos = _pOther->GetFinalPos();
-			fVec2 vObjScale = _pOther->GetScale();
-
-			float fLen = abs(vObjPos.y - vPos.y);
-			float fValue = (vScale.y / 2.f + vObjScale.y / 2.f) - fLen;
-
-			if ((vObjPos.y - vPos.y <= vScale.y / 2.f + vObjScale.y / 2.f))
-			{
-				m_fptPos.y -= fValue;
-				SetPos(m_fptPos);				
-			}
-		}				
-	}
 }
 
 
 void CKnight::OnCollisionEnter(CCollider* _pOther)
-{	
-	if (GROUP_GAMEOBJ::TILE == _pOther->GetObj()->GetObjType())
-	{		
-		CTile* pTile = (CTile*)_pOther->GetObj();
-		CKnight* pKnight = (CKnight*)this;
-	
-		if (GROUP_TILE::GROUND == pTile->GetGroup())
-		{
-			m_bGround = true;
-			fVec2 vPos = GetCollider()->GetFinalPos();
-			fVec2 vScale = GetCollider()->GetScale();
-
-			fVec2 vObjPos = _pOther->GetFinalPos();
-			fVec2 vObjScale = _pOther->GetScale();
-
-			float fLen = abs(vObjPos.y - vPos.y);
-			float fValue = (vScale.y / 2.f + vObjScale.y / 2.f) - fLen;
-
-			if ((vObjPos.y - vPos.y <= (vScale.y / 2.f + vObjScale.y / 2.f)))
-			{			
-				m_bGround = true;
-				m_fptPos.y -= fValue;
-				m_fAccelA = 0.f;
-				SetPos(m_fptPos);
-			}	
-		}		
-	}
+{		
 }
 
 void CKnight::OnCollisionExit(CCollider* _pOther)
@@ -162,7 +123,7 @@ void CKnight::OnCollisionExit(CCollider* _pOther)
 
 	if (GROUP_GAMEOBJ::TILE == _pOther->GetObj()->GetObjType())
 	{
-		m_bGround = false;		
+		m_fAccel_G = 0.f;
 	}
 }
 

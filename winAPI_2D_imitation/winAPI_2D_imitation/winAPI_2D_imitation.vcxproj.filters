@@ -115,6 +115,12 @@
     <ClCompile Include="CScene_Town.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
+    <ClCompile Include="CGround.cpp">
+      <Filter>Object\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="CGravity.cpp">
+      <Filter>Object\Map</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -248,6 +254,12 @@
     </ClInclude>
     <ClInclude Include="CScene_Town.h">
       <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="CGround.h">
+      <Filter>Object\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="CGravity.h">
+      <Filter>Object\Map</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

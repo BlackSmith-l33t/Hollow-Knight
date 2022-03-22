@@ -5,6 +5,7 @@
 #include "CBackGround.h"
 #include "CGameObject.h"
 #include "CKnight.h"
+#include "CGround.h"
 
 CScene_Town::CScene_Town()
 {
@@ -49,7 +50,7 @@ void CScene_Town::Enter()
 
 	// Knight 생성
 	CKnight* pKnight = new CKnight;
-	pKnight->SetPos(fPoint(600, 2000));	
+	pKnight->SetPos(fPoint(3130, 2090));
 	AddObject(pKnight, GROUP_GAMEOBJ::KNIGHT);
 
 	CMap* map = new CMap;
@@ -61,12 +62,39 @@ void CScene_Town::Enter()
 	//backGround->SetPos(fPoint(-100.f, -500.f));
 	AddObject(backGround, GROUP_GAMEOBJ::BACKGROUND);
 
+	CGround* pGround_01 = new CGround;
+	pGround_01->SetPos(fPoint(1662.f, 2178.f));
+	pGround_01->SetScale(fPoint(2496.f, 64.f));
+	AddObject(pGround_01, GROUP_GAMEOBJ::GROUND);
+
+	CGround* pGround_02 = new CGround;
+	pGround_02->SetPos(fPoint(2990.f, 2210.f));
+	pGround_02->SetScale(fPoint(156.f, 64.f));
+	AddObject(pGround_02, GROUP_GAMEOBJ::GROUND);
+
+	CGround* pGround_03 = new CGround;
+	pGround_03->SetPos(fPoint(3132.f, 2246.f));
+	pGround_03->SetScale(fPoint(130.f, 64.f));
+	AddObject(pGround_03, GROUP_GAMEOBJ::GROUND);
+
+	CGround* pGround_04 = new CGround;
+	pGround_04->SetPos(fPoint(3320.f, 2280.f));
+	pGround_04->SetScale(fPoint(246.f, 64.f));
+	AddObject(pGround_04, GROUP_GAMEOBJ::GROUND);
+
+	CGround* pGround_05 = new CGround;
+	pGround_05->SetPos(fPoint(3800.f, 2280.f));
+	pGround_05->SetScale(fPoint(416.f, 64.f));
+	AddObject(pGround_05, GROUP_GAMEOBJ::GROUND);
+	
+	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::KNIGHT, GROUP_GAMEOBJ::GROUND);
 	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::KNIGHT, GROUP_GAMEOBJ::TILE);
 
 	CCameraManager::getInst()->SetLookAt(fPoint(WINSIZEX / 2.f, WINSIZEY / 2.f));
 	CCameraManager::getInst()->SetLookAt(fPoint(pKnight->GetPos().x, pKnight->GetPos().y));
 	CCameraManager::getInst()->SetTargetObj(pKnight);
 
+	start();
 }
 
 void CScene_Town::Exit()

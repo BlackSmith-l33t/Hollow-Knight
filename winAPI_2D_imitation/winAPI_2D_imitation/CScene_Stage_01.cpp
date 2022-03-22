@@ -64,6 +64,8 @@ void CScene_Stage_01::Enter()
 	//CCameraManager::getInst()->SetLookAt(fPoint(WINSIZEX / 2.f, WINSIZEY / 2.f));
 	CCameraManager::getInst()->SetLookAt(fPoint(pKnight->GetPos().x, pKnight->GetPos().y));
 	CCameraManager::getInst()->SetTargetObj(pKnight);
+
+	start();
 }
 
 void CScene_Stage_01::Exit()
