@@ -21,7 +21,7 @@ protected:
 	CAnimator* m_pAnimator;
 	CGravity*  m_pGravity;
 
-	bool	   m_pGround;
+	bool	   m_bGround;
 	bool	   m_bAlive;
 
 	void SetDead();
@@ -38,6 +38,7 @@ public:
 	void SetScale(fPoint scale);
 	void SetName(wstring name);
 	void SetObjType(GROUP_GAMEOBJ type);
+	void SetGround(bool bGround);
 
 	fPoint GetPos();
 	fPoint GetScale();

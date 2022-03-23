@@ -5,7 +5,7 @@
 
 CCameraManager::CCameraManager()
 {	
-	m_fptLookAt = fPoint(WINSIZEX / 2.f, WINSIZEY / 2.f);	// TODO : 좋은 방법은 아니나 플레이어는 싱글톤 처럼 사용하여 초기화값을 플레이어 Pos로 설정할 예정이다.
+	m_fptLookAt = fPoint(WINSIZEX / 2.f, WINSIZEY / 2.f);	
 	m_fptCurLookAt = m_fptLookAt;
 	m_fptPrevLookAt = m_fptLookAt;
 	m_pTargetObj = nullptr;
@@ -114,6 +114,11 @@ fPoint CCameraManager::GetRealPos(fPoint renderPos)
 {
 	// 렌더링 좌표에서 차이값만큼 더해주면 절대 좌표가 나옴.
 	return renderPos + m_fptDiff;
+}
+
+CGameObject* CCameraManager::GetTarget()
+{
+	return m_pTargetObj;
 }
 
 void CCameraManager::FadeIn(float duration)

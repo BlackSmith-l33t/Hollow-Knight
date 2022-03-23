@@ -86,6 +86,18 @@ enum class STATE_MON
 	SIZE,
 };
 
+enum class PLAYER_STATE
+{
+	IDLE,
+	WAIK,
+	JUMP,
+	FALL,
+	ATTACK,
+	DEAD,
+
+	SIZE,
+};
+
 //========================================
 //## 이벤트 타입					##
 //========================================

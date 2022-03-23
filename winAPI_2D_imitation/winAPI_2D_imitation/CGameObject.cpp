@@ -3,6 +3,7 @@
 #include "CCollider.h"
 #include "CAnimator.h"
 #include "CGravity.h"
+#include "CGround.h"
 
 CGameObject::CGameObject()
 {
@@ -75,6 +76,11 @@ void CGameObject::SetName(wstring name)
 void CGameObject::SetObjType(GROUP_GAMEOBJ type)
 {
 	m_ObjGroup = type;
+}
+
+void CGameObject::SetGround(bool bGround)
+{
+	m_bGround = bGround;	
 }
 
 fPoint CGameObject::GetPos()
@@ -192,5 +198,5 @@ void CGameObject::SetGravity(float _fGravity)
 
 void CGameObject::GetGround(bool _bGround)
 {
-	m_pGround = _bGround;
+	m_bGround = _bGround;
 }

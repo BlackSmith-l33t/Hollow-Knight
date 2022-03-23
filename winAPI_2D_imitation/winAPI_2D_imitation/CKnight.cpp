@@ -10,11 +10,20 @@ CKnight* CKnight::instance = nullptr;
 
 CKnight::CKnight()
 {
-	m_fVelocity		= 500.f;
-	m_fAccel		= 0.f;
+	m_fSpeed		= 300.f;
+	m_fvVelocity	= { 0.f, 0.f };
 	m_fGravity		= 1000.f;
-	m_fAccel_G		= 0.f;
-	m_bGround		= false;
+	m_fAccel		= 0.f;
+	m_fGAccel		= 0.f;
+	m_fFriction		= 200.f;
+	m_fJump			= 700.f;
+	m_bAlive		= true;
+	m_bLeft			= false;
+	m_bAttack		= false;
+
+	m_fptCurView = CCameraManager::getInst()->GetLookAt();
+
+	m_eCurState = PLAYER_STATE::IDLE;
 
 	CD2DImage* m_pImg = CResourceManager::getInst()->LoadD2DImage(L"KnightImg", L"texture\\Animation\\Knight\\Knight.png");
 	SetName(L"Knight");
@@ -26,16 +35,25 @@ CKnight::CKnight()
 	//GetCollider()->SetOffsetPos(fPoint(0.f, 0.f));
 
 	CreateAnimator();
-	GetAnimator()->CreateAnimation(L"None", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(0, 0.f), 0.5f, 2);
-	GetAnimator()->CreateAnimation(L"LeftNone", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.5f, 4);
-	GetAnimator()->CreateAnimation(L"RightNone", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.8f, 3);
-	GetAnimator()->CreateAnimation(L"LeftMove", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 3);
-	GetAnimator()->CreateAnimation(L"RightMove", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 3);
-	GetAnimator()->CreateAnimation(L"LeftHit", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1);
-	GetAnimator()->CreateAnimation(L"RightHit", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1);
-	GetAnimator()->CreateAnimation(L"Jump", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1);
+	GetAnimator()->CreateAnimation(L"Start_Pose",      m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.8f, 3);
+	GetAnimator()->CreateAnimation(L"RightNone",       m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.8f, 3);
+	GetAnimator()->CreateAnimation(L"LeftNone",		   m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.5f, 4);
 
-	GetAnimator()->Play(L"None");
+	GetAnimator()->CreateAnimation(L"LeftMove",		   m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 3);
+	GetAnimator()->CreateAnimation(L"RightMove",	   m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 3);
+	GetAnimator()->CreateAnimation(L"Jump",			   m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1);
+	GetAnimator()->CreateAnimation(L"LongJump",		   m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1);
+	GetAnimator()->CreateAnimation(L"Fall",			   m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1);
+	GetAnimator()->CreateAnimation(L"Be_hit",		   m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1);
+
+	GetAnimator()->CreateAnimation(L"LeftHit",		   m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1);
+	GetAnimator()->CreateAnimation(L"RightHit",		   m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1);	
+	GetAnimator()->CreateAnimation(L"SoulMissile",	   m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1);
+	GetAnimator()->CreateAnimation(L"JumpAttack",      m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1);
+	GetAnimator()->CreateAnimation(L"JumpDownAttack",  m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1);
+	GetAnimator()->CreateAnimation(L"HP_Charge",       m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1);
+
+	GetAnimator()->Play(L"Start_Pose");
 
 	/*CAnimation* pAni;
 	pAni = GetAnimator()->FindAnimation(L"LeftMove");
@@ -47,6 +65,11 @@ CKnight::CKnight()
 CKnight::~CKnight()
 {
 	instance = nullptr;
+
+	if (nullptr != CCameraManager::getInst()->GetTarget())
+	{
+		CCameraManager::getInst()->SetTargetObj(nullptr);
+	}
 }
 
 CKnight* CKnight::Clone()
@@ -56,8 +79,9 @@ CKnight* CKnight::Clone()
 
 void CKnight::update()
 {	
+	update_state();
 	update_move();
-	update_ani();
+	update_animation();
 		
 	CCameraManager::getInst()->SetLookAt(GetPos());
 
@@ -79,66 +103,109 @@ CKnight* CKnight::GetPlayer()
 	return instance;
 }
 
-void CKnight::update_move()
+void CKnight::update_state()
 {
-	fPoint pos = GetPos();
+  /*IDle,
+	WAIK,
+	JUMP,
+	FALL,
+	ATTACK,
+	DEAD,*/
 
-	if (Key(VK_LEFT))
+	if (Key(VK_LEFT) && m_bGround)
 	{
-		pos.x -= m_fVelocity * fDT;
+		m_eCurState = PLAYER_STATE::WAIK;		
+		m_bLeft = true;
 	}
 	if (Key(VK_RIGHT))
 	{
-		pos.x += m_fVelocity * fDT;
+		m_eCurState = PLAYER_STATE::WAIK;
+		m_bLeft = false;
+	}
+	if (Key(VK_UP) && !m_bAttack)
+	{	
 
 	}
-	if (Key(VK_UP))
+	if (Key(VK_DOWN) && !m_bAttack)
 	{
-		// TODO : 카메라 시점 상단 변경
-	}
-	if (Key(VK_DOWN))
-	{
-		// TODO : 카메라 시점 하단 변경
-		pos.y += m_fVelocity * fDT;		
+		
 	}
 
-	if (KeyDown('Z'))
+	if (KeyDown('Z') && m_bGround)
 	{
-		// TODO : JUMP
+		
 	}
 
-	pos.y += m_fAccel_G * fDT;
+
+}
+
+void CKnight::update_move()
+{
+	fPoint pos = GetPos();
+	
+
+	if (Key(VK_LEFT))
+	{
+		pos.x -= m_fSpeed * fDT;
+		m_bLeft = true;
+	
+	}
+	if (Key(VK_RIGHT))
+	{
+		pos.x += m_fSpeed * fDT;
+		m_bLeft = false;
+		
+	}
+	if (Key(VK_UP) && !m_bAttack)
+	{		
+		// TODO : 카메라 시점을 위로 
+		//CCameraManager::getInst()->SetLookAt(fPoint(this->GetPos().x, this->GetPos().y - 500));	
+		
+	}
+	if (Key(VK_DOWN)&& !m_bAttack)
+	{
+		// TODO : 카메라 시점을 아래로
+		//::getInst()->SetLookAt(fPoint(this->GetPos().x, this->GetPos().y + 500));	
+	}
+
+	if (KeyDown('Z') && m_bGround)
+	{		
+		if (Key(VK_LEFT))
+		{
+			pos.x -= m_fSpeed * fDT;
+			m_bLeft = true;
+		}
+		if (Key(VK_RIGHT))
+		{
+			pos.x += m_fSpeed * fDT;
+			m_bLeft = false;
+		}
+
+		m_bGround = false;
+		m_fGAccel -= m_fJump;
+		Logger::debug(L"Jump");
+	}
+
+	pos.y += m_fGAccel * fDT;
 
 	SetPos(pos);
 
-	m_fAccel_G += Gravity * fDT;
-	if (m_fAccel_G >= 800.f)
+	m_fGAccel += Gravity * fDT;
+
+	if (m_fGAccel >= 800.f)
 	{
-		m_fAccel_G = 800.f;
+		m_fGAccel = 800.f;
 	}
 }
 
-void CKnight::update_ani()
+void CKnight::update_animation()
 {
-}
 
-void CKnight::OnCollision(CCollider* _pOther)
-{
-}
-
-
-void CKnight::OnCollisionEnter(CCollider* _pOther)
-{		
 }
 
 void CKnight::OnCollisionExit(CCollider* _pOther)
 {	
-	CKnight* pKnight = (CKnight*)this;
 
-	if (GROUP_GAMEOBJ::TILE == _pOther->GetObj()->GetObjType())
-	{
-		m_fAccel_G = 0.f;
-	}
 }
 
 void CKnight::CreateMissile()

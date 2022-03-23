@@ -6,8 +6,7 @@ class CGravity : public CGameObject
 	friend class CGameObject;
 private:
 	CGameObject* m_pOwner;
-	bool m_bGround;
-	
+	bool m_bGround;	
 
 public:
 	CGravity();

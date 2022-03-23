@@ -2,7 +2,7 @@
 #include "CGround.h"
 #include "CCollider.h"
 #include "CGravity.h"
-
+#include "CKnight.h"
 
 CGround::CGround()
 {
@@ -31,6 +31,7 @@ void CGround::update()
 
 void CGround::OnCollisionEnter(CCollider* _pOther)
 {
+    Logger::debug(L"OnCollisionEnter");
     CGameObject* pOtherObj = _pOther->GetObj();
     if (pOtherObj->GetObjType() == GROUP_GAMEOBJ::KNIGHT  ||
         pOtherObj->GetObjType() == GROUP_GAMEOBJ::MONSTER ||
@@ -55,6 +56,7 @@ void CGround::OnCollisionEnter(CCollider* _pOther)
 
 void CGround::OnCollision(CCollider* _pOther)
 {
+    Logger::debug(L"OnCollision");
     CGameObject* pOtherObj = _pOther->GetObj();
     if (pOtherObj->GetObjType() == GROUP_GAMEOBJ::KNIGHT ||
         pOtherObj->GetObjType() == GROUP_GAMEOBJ::MONSTER ||
@@ -86,5 +88,4 @@ void CGround::OnCollisionExit(CCollider* _pOther)
     {
         pOtherObj->GetGravity()->SetGround(false);
     }
-
 }
