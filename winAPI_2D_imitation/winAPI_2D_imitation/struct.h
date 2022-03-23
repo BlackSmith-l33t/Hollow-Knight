@@ -62,7 +62,7 @@ struct fPoint
 		return fPoint(x / num, y / num);
 	}
 
-	fPoint& normalize()
+	fPoint& Normalize()
 	{
 		float length = (float)sqrt((double)x * x + (double)y * y);
 

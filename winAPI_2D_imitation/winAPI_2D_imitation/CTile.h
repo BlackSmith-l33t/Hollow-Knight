@@ -12,7 +12,7 @@ private:
 	int m_iY;
 	int m_iIdx;			// 텍스쳐 인덱스
 
-	GROUP_TILE m_group;
+	GROUP_TILE m_eGroup;
 
 public:
 	const static int SIZE_TILE = 32;

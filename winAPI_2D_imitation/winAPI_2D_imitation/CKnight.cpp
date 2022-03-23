@@ -4,6 +4,9 @@
 #include "CAnimator.h"
 #include "CAnimation.h"
 #include "CTile.h"
+#include "CMissile.h"
+
+CKnight* CKnight::instance = nullptr;
 
 CKnight::CKnight()
 {
@@ -13,7 +16,7 @@ CKnight::CKnight()
 	m_fAccel_G		= 0.f;
 	m_bGround		= false;
 
-	m_pImg = CResourceManager::getInst()->LoadD2DImage(L"KnightImg", L"texture\\Animation\\Knight\\Knight.png");
+	CD2DImage* m_pImg = CResourceManager::getInst()->LoadD2DImage(L"KnightImg", L"texture\\Animation\\Knight\\Knight.png");
 	SetName(L"Knight");
 	SetScale(fPoint(125.f, 125.f));
 
@@ -43,6 +46,7 @@ CKnight::CKnight()
 
 CKnight::~CKnight()
 {
+	instance = nullptr;
 }
 
 CKnight* CKnight::Clone()
@@ -54,7 +58,7 @@ void CKnight::update()
 {	
 	update_move();
 	update_ani();
-
+		
 	CCameraManager::getInst()->SetLookAt(GetPos());
 
 	GetAnimator()->update();		
@@ -63,6 +67,16 @@ void CKnight::update()
 void CKnight::render()
 {
 	component_render();
+}
+
+void CKnight::RegisterPlayer()
+{
+	instance = this;
+}
+
+CKnight* CKnight::GetPlayer()
+{
+	return instance;
 }
 
 void CKnight::update_move()
@@ -126,4 +140,19 @@ void CKnight::OnCollisionExit(CCollider* _pOther)
 		m_fAccel_G = 0.f;
 	}
 }
+
+void CKnight::CreateMissile()
+{
+	fPoint fpMissilePos = GetPos();
+	fpMissilePos.x += GetScale().x / 2.f;
+
+	// Misiile Object
+	CMissile* pMissile = new CMissile;
+	pMissile->SetPos(fpMissilePos);
+	pMissile->SetDir(fVec2(1, 0));
+	pMissile->SetName(L"Missile_Player");
+
+	CreateObj(pMissile, GROUP_GAMEOBJ::MISSILE_PLAYER);
+}
+
 

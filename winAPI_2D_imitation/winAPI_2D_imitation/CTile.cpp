@@ -8,7 +8,7 @@ CTile::CTile()
 	m_iX = 0;
 	m_iY = 0;
 	m_iIdx = 0;
-	m_group = GROUP_TILE::NONE;
+	m_eGroup = GROUP_TILE::NONE;
 	SetScale(fPoint(SIZE_TILE, SIZE_TILE));
 }
 
@@ -84,7 +84,7 @@ void CTile::SetY(int y)
 
 void CTile::SetGroup(GROUP_TILE group)
 {
-	m_group = group;
+	m_eGroup = group;
 }
 
 int CTile::GetIdx()
@@ -104,7 +104,7 @@ int CTile::GetY()
 
 GROUP_TILE CTile::GetGroup()
 {
-	return m_group;
+	return m_eGroup;
 }
 
 void CTile::Save(FILE* pFile)
@@ -113,7 +113,7 @@ void CTile::Save(FILE* pFile)
 	fwrite(&m_iY, sizeof(int), 1, pFile);
 	fwrite(&m_iIdx, sizeof(int), 1, pFile);
 
-	int group = (int)m_group;
+	int group = (int)m_eGroup;
 	fwrite(&group, sizeof(int), 1, pFile);
 }
 
@@ -125,5 +125,5 @@ void CTile::Load(FILE* pFile)
 
 	int group;
 	fread(&group, sizeof(int), 1, pFile);
-	m_group = (GROUP_TILE)group;
+	m_eGroup = (GROUP_TILE)group;
 }

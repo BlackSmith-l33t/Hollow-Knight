@@ -121,6 +121,21 @@
     <ClCompile Include="CGravity.cpp">
       <Filter>Object\Map</Filter>
     </ClCompile>
+    <ClCompile Include="AI.cpp">
+      <Filter>Component\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="CState.cpp">
+      <Filter>Component\AI\State</Filter>
+    </ClCompile>
+    <ClCompile Include="CIdleState.cpp">
+      <Filter>Component\AI\State</Filter>
+    </ClCompile>
+    <ClCompile Include="CMissile.cpp">
+      <Filter>Object\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="CTraceState.cpp">
+      <Filter>Component\AI\State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -261,6 +276,21 @@
     <ClInclude Include="CGravity.h">
       <Filter>Object\Map</Filter>
     </ClInclude>
+    <ClInclude Include="AI.h">
+      <Filter>Component\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="CState.h">
+      <Filter>Component\AI\State</Filter>
+    </ClInclude>
+    <ClInclude Include="CIdleState.h">
+      <Filter>Component\AI\State</Filter>
+    </ClInclude>
+    <ClInclude Include="CMissile.h">
+      <Filter>Object\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="CTraceState.h">
+      <Filter>Component\AI\State</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -339,6 +369,9 @@
     </Filter>
     <Filter Include="Component\AI">
       <UniqueIdentifier>{6779982f-f266-4117-9a98-3e1cd7b57b43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\AI\State">
+      <UniqueIdentifier>{ed9cbe7c-a289-4082-8475-ee03857c29af}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -52,6 +52,10 @@ void CScene_Stage_01::Enter()
 	CMonster* pMonster = new CMonster;
 	pMonster->SetPos(fPoint(3000, 600));
 	AddObject(pMonster, GROUP_GAMEOBJ::MONSTER);
+
+	// 몬스터 배치
+	CMonster* pMon = CMonster::Create(MON_TYPE::NORMAL, fPoint(500.f, 500.f));
+	AddObject(pMon, GROUP_GAMEOBJ::MONSTER);
 			
 	CMap* map = new CMap;
 	map->Load(L"Map_Stage01", L"texture\\Background\\Stage_01.png");
@@ -59,9 +63,9 @@ void CScene_Stage_01::Enter()
 	AddObject(map, GROUP_GAMEOBJ::MAP);	
 
 	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::KNIGHT, GROUP_GAMEOBJ::MONSTER);
-	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::KNIGHT, GROUP_GAMEOBJ::TILE);	
+	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::KNIGHT, GROUP_GAMEOBJ::TILE);
 
-	//CCameraManager::getInst()->SetLookAt(fPoint(WINSIZEX / 2.f, WINSIZEY / 2.f));
+	//CCameraManager::GetInst()->SetLookAt(fPoint(WINSIZEX / 2.f, WINSIZEY / 2.f));
 	CCameraManager::getInst()->SetLookAt(fPoint(pKnight->GetPos().x, pKnight->GetPos().y));
 	CCameraManager::getInst()->SetTargetObj(pKnight);
 
@@ -70,4 +74,7 @@ void CScene_Stage_01::Enter()
 
 void CScene_Stage_01::Exit()
 {
+	DeleteAll();
+
+	CCollisionManager::getInst()->Reset();
 }

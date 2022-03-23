@@ -53,7 +53,7 @@ void CTexture::Load(const wstring& strFilePath)
 	assert(m_hBMP);		// 이미지가 없다면 assert
 
 	// 비트맵과 연결할 DC
-	m_hDC = CreateCompatibleDC(CCore::getInst()->GetMainDC());
+	m_hDC = CreateCompatibleDC(CCore::GetInst()->GetMainDC());
 
 	// 비트맵과 DC 연결
 	HBITMAP hPrevBit = (HBITMAP)SelectObject(m_hDC, m_hBMP);

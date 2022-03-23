@@ -52,6 +52,7 @@ void CScene_Town::Enter()
 	CKnight* pKnight = new CKnight;
 	pKnight->SetPos(fPoint(3130, 2090));
 	AddObject(pKnight, GROUP_GAMEOBJ::KNIGHT);
+	pKnight->RegisterPlayer();
 
 	CMap* map = new CMap;
 	map->Load(L"Map_Town", L"texture\\map\\Map_Town1.png");

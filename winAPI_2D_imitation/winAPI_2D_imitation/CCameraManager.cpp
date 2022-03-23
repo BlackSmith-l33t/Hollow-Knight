@@ -168,7 +168,7 @@ void CCameraManager::CalDiff()
 	{
 		fPoint fptCenter = fPoint(WINSIZEX / 2.f, WINSIZEY / 2.f);
 
-		m_fptCurLookAt = m_fptPrevLookAt + (m_fptLookAt - m_fptPrevLookAt).normalize() * m_fSpeed * fDT;
+		m_fptCurLookAt = m_fptPrevLookAt + (m_fptLookAt - m_fptPrevLookAt).Normalize() * m_fSpeed * fDT;
 		m_fptDiff = m_fptCurLookAt - fptCenter;
 		m_fptPrevLookAt = m_fptCurLookAt;
 	}

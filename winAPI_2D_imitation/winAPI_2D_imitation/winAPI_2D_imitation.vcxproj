@@ -149,6 +149,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AI.h" />
     <ClInclude Include="CAnimation.h" />
     <ClInclude Include="CAnimator.h" />
     <ClInclude Include="CBackGround.h" />
@@ -162,11 +163,13 @@
     <ClInclude Include="CGameObject.h" />
     <ClInclude Include="CGravity.h" />
     <ClInclude Include="CGround.h" />
+    <ClInclude Include="CIdleState.h" />
     <ClInclude Include="CImageButton.h" />
     <ClInclude Include="CImageObject.h" />
     <ClInclude Include="CKeyManager.h" />
     <ClInclude Include="CKnight.h" />
     <ClInclude Include="CMap.h" />
+    <ClInclude Include="CMissile.h" />
     <ClInclude Include="CMonster.h" />
     <ClInclude Include="CPanelUI.h" />
     <ClInclude Include="CPathManager.h" />
@@ -182,10 +185,12 @@
     <ClInclude Include="CScene_Town.h" />
     <ClInclude Include="CSound.h" />
     <ClInclude Include="CSoundManager.h" />
+    <ClInclude Include="CState.h" />
     <ClInclude Include="CTexture.h" />
     <ClInclude Include="CTile.h" />
     <ClInclude Include="CTileButton.h" />
     <ClInclude Include="CTimeManager.h" />
+    <ClInclude Include="CTraceState.h" />
     <ClInclude Include="CUI.h" />
     <ClInclude Include="CUIManager.h" />
     <ClInclude Include="framework.h" />
@@ -197,6 +202,7 @@
     <ClInclude Include="winAPI_2D_imitation.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AI.cpp" />
     <ClCompile Include="CAnimation.cpp" />
     <ClCompile Include="CAnimator.cpp" />
     <ClCompile Include="CBackGround.cpp" />
@@ -210,11 +216,13 @@
     <ClCompile Include="CGameObject.cpp" />
     <ClCompile Include="CGravity.cpp" />
     <ClCompile Include="CGround.cpp" />
+    <ClCompile Include="CIdleState.cpp" />
     <ClCompile Include="CImageButton.cpp" />
     <ClCompile Include="CImageObject.cpp" />
     <ClCompile Include="CKeyManager.cpp" />
     <ClCompile Include="CKnight.cpp" />
     <ClCompile Include="CMap.cpp" />
+    <ClCompile Include="CMissile.cpp" />
     <ClCompile Include="CMonster.cpp" />
     <ClCompile Include="CPanelUI.cpp" />
     <ClCompile Include="CPathManager.cpp" />
@@ -230,10 +238,12 @@
     <ClCompile Include="CScene_Town.cpp" />
     <ClCompile Include="CSound.cpp" />
     <ClCompile Include="CSoundManager.cpp" />
+    <ClCompile Include="CState.cpp" />
     <ClCompile Include="CTexture.cpp" />
     <ClCompile Include="CTile.cpp" />
     <ClCompile Include="CTileButton.cpp" />
     <ClCompile Include="CTimeManager.cpp" />
+    <ClCompile Include="CTraceState.cpp" />
     <ClCompile Include="CUI.cpp" />
     <ClCompile Include="CUIManager.cpp" />
     <ClCompile Include="winAPI_2D_imitation.cpp" />

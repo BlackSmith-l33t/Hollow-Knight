@@ -32,9 +32,9 @@ void CScene_Tool::update()
 {
 	CScene::update();
 
-	if (KeyDown(VK_ESCAPE))
+	if (KeyDown(VK_TAB))
 	{
-		ChangeScn(GROUP_SCENE::STAGE_01);
+		ChangeScn(GROUP_SCENE::TITLE);
 	}
 
 	if (Key('A'))
@@ -333,12 +333,13 @@ void ClickTileGroupButton(DWORD_PTR param1, DWORD_PTR param2)
 	CButtonUI* button = (CButtonUI*)param2;
 	scene_tool->ClickTileGroup(button);
 }
+
 void CScene_Tool::ClickTileGroup(CButtonUI* button)
 {
 	if (m_gTile == GROUP_TILE::NONE)
 	{
 		m_gTile = GROUP_TILE::GROUND;
-		button->SetText(L"Ground");
+		button->SetText(L"GROUND");
 	}
 	else if (m_gTile == GROUP_TILE::GROUND)
 	{
@@ -407,24 +408,16 @@ void CScene_Tool::PrintMap()
 	fPoint pos = CCameraManager::getInst()->GetLookAt();
 	pos = pos - fPoint(WINSIZEX / 2.f, WINSIZEY / 2.f);
 
-	//CRenderManager::getInst()->RenderImage(
-	//	m_pMap,
-	//	0 - pos.x,
-	//	0 - pos.y,
-	//	2 * m_pMap->GetWidth() - pos.x,
-	//	2 * m_pMap->GetHeight() - pos.y
-	//);
-
 	CRenderManager::getInst()->RenderImage(
 		m_pMap,
 		0 - pos.x,
 		0 - pos.y,
-		m_pMap->GetWidth() - pos.x,
-		m_pMap->GetHeight() - pos.y
+		2 * m_pMap->GetWidth() - pos.x,
+		2 * m_pMap->GetHeight() - pos.y
 	);
 }
 
-void CScene_Tool::PrintTileLine() 
+void CScene_Tool::PrintTileLine()
 {
 	fPoint pos = CCameraManager::getInst()->GetLookAt();
 	pos = pos - fPoint(WINSIZEX / 2.f, WINSIZEY / 2.f);
@@ -527,7 +520,7 @@ INT_PTR CALLBACK TileWinProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPar
 
 			return (INT_PTR)TRUE;
 		}
-		else if (LOWORD(wParam) == IDC_BUTTON_SIZE) 
+		else if (LOWORD(wParam) == IDC_BUTTON_SIZE)
 		{
 			int x = GetDlgItemInt(hDlg, IDC_EDIT_SIZEX, nullptr, false);
 			int y = GetDlgItemInt(hDlg, IDC_EDIT_SIZEY, nullptr, false);
@@ -539,10 +532,6 @@ INT_PTR CALLBACK TileWinProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPar
 
 			pToolScene->DeleteGroup(GROUP_GAMEOBJ::TILE);
 			pToolScene->CreateTile(x, y);
-		}
-		else if (LOWORD(wParam) == IDCANCEL)
-		{
-			DestroyWindow(hDlg);
 		}
 		break;
 	}
