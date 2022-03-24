@@ -6,7 +6,7 @@
 
 CGround::CGround()
 {
-    CreateCollider();    
+    CreateCollider();
 }
 
 CGround::~CGround()
@@ -25,7 +25,7 @@ void CGround::start()
 }
 
 void CGround::update()
-{    
+{
 }
 
 
@@ -33,23 +33,27 @@ void CGround::OnCollisionEnter(CCollider* _pOther)
 {
     Logger::debug(L"OnCollisionEnter");
     CGameObject* pOtherObj = _pOther->GetObj();
-    if (pOtherObj->GetObjType() == GROUP_GAMEOBJ::KNIGHT  ||
+    if (pOtherObj->GetObjType() == GROUP_GAMEOBJ::KNIGHT ||
         pOtherObj->GetObjType() == GROUP_GAMEOBJ::MONSTER)
     {
         pOtherObj->GetGravity()->SetGround(true);
-        
+
         fVec2 fvObjPos = _pOther->GetFinalPos();
         fVec2 fvObjScale = _pOther->GetScale();
 
         fVec2 fvPos = GetCollider()->GetFinalPos();
         fVec2 fvSalse = GetCollider()->GetScale();
 
-        float fLen = abs(fvObjPos.y - fvPos.y);
-        float fValue = (fvObjScale.y / 2.f + fvSalse.y / 2.f) - fLen;
+        //fvPos.x + (fvSalse.x / 2.f) == (_pOther->GetFinalPos().x - _pOther->GetScale().x / 2.f)
+        if (fvPos.y + (fvSalse.y / 2.f) > (_pOther->GetFinalPos().y + _pOther->GetScale().y))
+        {
+            pOtherObj->m_fvVelocity.x = 0.f;
+            fvObjPos = pOtherObj->GetPos();
+            pOtherObj->SetPos(fvObjPos);
+        }
 
-        fvObjPos = pOtherObj->GetPos();
-        fvObjPos.y -= fValue;
-        pOtherObj->SetPos(fvObjPos);   
+        pOtherObj->SetPos(fPoint(fvObjPos.x, fvPos.y - (fvObjScale.y + fvSalse.y) / 2.f + 1.f));
+        pOtherObj->m_fGAccel = 0.f;
     }
 }
 
@@ -68,17 +72,22 @@ void CGround::OnCollision(CCollider* _pOther)
         fVec2 fvPos = GetCollider()->GetFinalPos();
         fVec2 fvSalse = GetCollider()->GetScale();
 
-        float fLen = abs(fvObjPos.y - fvPos.y);
-        float fValue = (fvObjScale.y / 2.f + fvSalse.y / 2.f) - fLen;
+        if (fvPos.y + (fvSalse.y / 2.f) > (_pOther->GetFinalPos().y + _pOther->GetScale().y))
+        {
+            pOtherObj->m_fvVelocity.x = 0.f;
+            fvObjPos = pOtherObj->GetPos();
+            pOtherObj->SetPos(fvObjPos);
+        }
 
-        fvObjPos = pOtherObj->GetPos();
-        fvObjPos.y -= fValue;
-        pOtherObj->SetPos(fvObjPos);
+        pOtherObj->SetPos(fPoint(fvObjPos.x, fvPos.y - (fvObjScale.y + fvSalse.y) / 2.f + 1.f));
+        pOtherObj->m_fGAccel = 0.f;
+
     }
 }
 
 void CGround::OnCollisionExit(CCollider* _pOther)
 {
+    Logger::debug(L"OnCollisionExit");
     CGameObject* pOtherObj = _pOther->GetObj();
     if (pOtherObj->GetObjType() == GROUP_GAMEOBJ::KNIGHT ||
         pOtherObj->GetObjType() == GROUP_GAMEOBJ::MONSTER)

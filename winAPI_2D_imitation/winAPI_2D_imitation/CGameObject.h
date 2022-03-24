@@ -8,18 +8,20 @@ class CGround;
 class CGameObject
 {
 	friend class CEventManager;
+	friend class CGround;
 
 protected:
 	wstring m_strName;
 	fPoint  m_fptPos;
 	fPoint  m_fptScale;
+	fVec2   m_fvVelocity;
 
 	GROUP_GAMEOBJ m_ObjGroup;
 
 	// Component
 	CCollider* m_pCollider;
 	CAnimator* m_pAnimator;
-	CGravity*  m_pGravity;
+	CGravity* m_pGravity;
 
 	bool	   m_bGround;
 	bool	   m_bAlive;
@@ -27,6 +29,7 @@ protected:
 	void SetDead();
 
 	float m_fGravity;
+	float m_fGAccel;
 
 public:
 	CGameObject();
@@ -39,6 +42,7 @@ public:
 	void SetName(wstring name);
 	void SetObjType(GROUP_GAMEOBJ type);
 	void SetGround(bool bGround);
+	void SetVelocity(fVec2 _velocity);
 
 	fPoint GetPos();
 	fPoint GetScale();
@@ -49,7 +53,7 @@ public:
 
 	virtual void start() {};
 	virtual void update() = 0;			// 반드시 상속받은 객체가 update를 구현하도록 순수가상함수로 선언
-	virtual void finalupdate();			
+	virtual void finalupdate();
 	virtual void render();
 	virtual void component_render();	// 컴포넌트들의 영역을 표시하기 위해
 

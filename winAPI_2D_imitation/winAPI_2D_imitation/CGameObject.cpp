@@ -80,7 +80,12 @@ void CGameObject::SetObjType(GROUP_GAMEOBJ type)
 
 void CGameObject::SetGround(bool bGround)
 {
-	m_bGround = bGround;	
+	m_bGround = bGround;
+}
+
+void CGameObject::SetVelocity(fVec2 _velocity)
+{
+	m_fvVelocity = _velocity;
 }
 
 fPoint CGameObject::GetPos()
@@ -123,7 +128,7 @@ void CGameObject::finalupdate()
 	{
 		m_pGravity->finalupdate();
 	}
-	
+
 }
 
 void CGameObject::render()

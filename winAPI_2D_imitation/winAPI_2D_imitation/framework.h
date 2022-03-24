@@ -47,7 +47,7 @@ enum class GROUP_GAMEOBJ
 	SOUL_MISSILE,
 	MONSTER,
 	MONSTER_MISSILE,
-	GEO,	
+	GEO,
 
 	UI,		// UI는 모든 게임오브젝트 중 최상단 Layer에 위치
 	SIZE,
@@ -157,7 +157,7 @@ enum class TYPE_EVENT
 #define ChangeScn(scene)			CEventManager::getInst()->EventChangeScene(scene)
 #define ChangeAIState(ai, state)	CEventManager::getInst()->EventChangeAIState(ai, state)
 
-#define Gravity         500.f
+#define Gravity         1500.f
 //========================================
 //## 전역변수(인스턴스, 윈도우 핸들)	##
 //========================================

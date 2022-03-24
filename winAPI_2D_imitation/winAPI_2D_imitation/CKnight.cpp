@@ -9,17 +9,18 @@
 CKnight* CKnight::instance = nullptr;
 
 CKnight::CKnight()
-{	
-	m_fvVelocity	= { 0.f, 0.f };
+{
+	m_fvVelocity = { 0.f, 0.f };
+	m_fvCurDir = { 1.f, 0.f };
 	m_fvPrevDir = { 0.f, 0.f };
-	m_fGravity		= 1000.f;	
-	m_fGAccel		= 0.f;	
-	m_fJump			= 700.f;
-	m_MaxVelocity	= 400.f;
-	m_bAlive		= true;
-	m_bLeft			= false;
-	m_bAttack		= false;	
-	
+	m_fGravity = 1000.f;
+	m_fGAccel = 0.f;
+	m_fJump = 700.f;
+	m_MaxVelocity = 400.f;
+	m_bAlive = true;
+	m_bLeft = false;
+	m_bAttack = false;
+
 
 	m_eCurState = PLAYER_STATE::START;
 
@@ -33,35 +34,35 @@ CKnight::CKnight()
 	//GetCollider()->SetOffsetPos(fPoint(0.f, 0.f));
 
 	CreateAnimator();
-	GetAnimator()->CreateAnimation(L"Start_Pose",      m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.8f, 3);
+	GetAnimator()->CreateAnimation(L"Start_Pose", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.8f, 3);
 
-	GetAnimator()->CreateAnimation(L"Idle_Right",       m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.8f, 3);
-	GetAnimator()->CreateAnimation(L"Idle_Left",		   m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.5f, 4, true);
+	GetAnimator()->CreateAnimation(L"Idle_Right", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.8f, 3);
+	GetAnimator()->CreateAnimation(L"Idle_Left", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.5f, 4, true);
 
-	GetAnimator()->CreateAnimation(L"LookUP_Left",		   m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.5f, 4, true);
-	GetAnimator()->CreateAnimation(L"LookUP_Right",		   m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.5f, 4);
-	GetAnimator()->CreateAnimation(L"LookDown_Left",	m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.5f, 4, true);
-	GetAnimator()->CreateAnimation(L"LookDown_Right",	 m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.5f, 4);
+	GetAnimator()->CreateAnimation(L"LookUP_Left", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.5f, 4, true);
+	GetAnimator()->CreateAnimation(L"LookUP_Right", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.5f, 4);
+	GetAnimator()->CreateAnimation(L"LookDown_Left", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.5f, 4, true);
+	GetAnimator()->CreateAnimation(L"LookDown_Right", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.5f, 4);
 
-	GetAnimator()->CreateAnimation(L"Move_Left",		   m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 3, true);
-	GetAnimator()->CreateAnimation(L"Move_Right",		 m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 3);
-	GetAnimator()->CreateAnimation(L"Jump_Left",				   m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1, true);
-	GetAnimator()->CreateAnimation(L"Jump_Right",			   m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1);
-	GetAnimator()->CreateAnimation(L"Fall_Left",			   m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1, true);
-	GetAnimator()->CreateAnimation(L"Fall_Rgith",			   m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1);
-	GetAnimator()->CreateAnimation(L"Demaged_Left",		   m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1, true);
-	GetAnimator()->CreateAnimation(L"Demaged_Right",		   m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1);
+	GetAnimator()->CreateAnimation(L"Move_Left", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 3, true);
+	GetAnimator()->CreateAnimation(L"Move_Right", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 3);
+	GetAnimator()->CreateAnimation(L"Jump_Left", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1, true);
+	GetAnimator()->CreateAnimation(L"Jump_Right", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1);
+	GetAnimator()->CreateAnimation(L"Fall_Left", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1, true);
+	GetAnimator()->CreateAnimation(L"Fall_Rgith", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1);
+	GetAnimator()->CreateAnimation(L"Demaged_Left", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1, true);
+	GetAnimator()->CreateAnimation(L"Demaged_Right", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1);
 
-	GetAnimator()->CreateAnimation(L"Attack_Left",		   m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1, true);
-	GetAnimator()->CreateAnimation(L"Attack_Right",		   m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1);	
-	GetAnimator()->CreateAnimation(L"SoulMissile_Left",	   m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1, true);
-	GetAnimator()->CreateAnimation(L"SoulMissile_Right",	   m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1);
-	GetAnimator()->CreateAnimation(L"AttackUp_Left",      m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1, true);
-	GetAnimator()->CreateAnimation(L"AttackUP_Right",      m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1);
-	GetAnimator()->CreateAnimation(L"AttackDown_Left",  m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1, true);
-	GetAnimator()->CreateAnimation(L"AttackDown_Right",  m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1);
-	GetAnimator()->CreateAnimation(L"HP_Charge_Left",       m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1, true);
-	GetAnimator()->CreateAnimation(L"HP_Charge_Right",       m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1);
+	GetAnimator()->CreateAnimation(L"Attack_Left", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1, true);
+	GetAnimator()->CreateAnimation(L"Attack_Right", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1);
+	GetAnimator()->CreateAnimation(L"SoulMissile_Left", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1, true);
+	GetAnimator()->CreateAnimation(L"SoulMissile_Right", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1);
+	GetAnimator()->CreateAnimation(L"AttackUp_Left", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1, true);
+	GetAnimator()->CreateAnimation(L"AttackUP_Right", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1);
+	GetAnimator()->CreateAnimation(L"AttackDown_Left", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1, true);
+	GetAnimator()->CreateAnimation(L"AttackDown_Right", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1);
+	GetAnimator()->CreateAnimation(L"HP_Charge_Left", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1, true);
+	GetAnimator()->CreateAnimation(L"HP_Charge_Right", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1);
 
 	GetAnimator()->Play(L"Start_Pose");
 
@@ -88,14 +89,14 @@ CKnight* CKnight::Clone()
 }
 
 void CKnight::update()
-{	
+{
 	update_state();
 	update_move();
 	update_animation();
-		
+
 	//CCameraManager::getInst()->SetLookAt(GetPos());
 
-	GetAnimator()->update();		
+	GetAnimator()->update();
 }
 
 void CKnight::render()
@@ -198,7 +199,7 @@ void CKnight::update_move()
 		if (m_bLeft)
 		{
 			m_fvVelocity.x -= 100.f;
-			m_fvCurDir.x = -1;			
+			m_fvCurDir.x = -1;
 		}
 		else
 		{
@@ -212,26 +213,12 @@ void CKnight::update_move()
 		m_fvVelocity.x += 400.f;
 		m_fvCurDir.x = -1;
 		m_bLeft = true;
-
-		if (KeyDown('Z') && m_bGround)
-		{
-			m_bGround = false;
-			m_fGAccel -= m_fJump;
-			Logger::debug(L"Jump");
-		}
 	}
 	if (Key(VK_RIGHT))
 	{
 		m_fvVelocity.x += 400.f;
 		m_fvCurDir.x = 1;
 		m_bLeft = false;
-
-		if (KeyDown('Z') && m_bGround)
-		{
-			m_bGround = false;
-			m_fGAccel -= m_fJump;
-			Logger::debug(L"Jump");
-		}
 	}
 	if (Key(VK_UP) && !m_bAttack && m_bGround)
 	{
@@ -257,21 +244,9 @@ void CKnight::update_move()
 			CCameraManager::getInst()->SetLookAt(fPoint(m_fptCurView.x, m_fptCurView.y - m_fptCurView.y));
 		}
 	}
-	if (KeyDown('Z') && m_bGround)
+	if (Key('Z') && m_bGround)
 	{
-		if (Key(VK_LEFT))
-		{
-			m_fvVelocity.x += 400.f;
-			m_fvCurDir.x = -1;
-			m_bLeft = true;
-		}
-		if (Key(VK_RIGHT))
-		{
-			m_fvVelocity.x += 400.f;
-			m_fvCurDir.x = 1;
-			m_bLeft = false;
-		}
-
+		m_fptPos.y -= 10.f;
 		m_bGround = false;
 		m_fGAccel -= m_fJump;
 		Logger::debug(L"Jump");
@@ -284,17 +259,15 @@ void CKnight::update_move()
 
 	m_fGAccel += Gravity * fDT;
 
-	if (m_fGAccel >= 2000.f)
+	if (m_fGAccel >= 1000.f)
 	{
-		m_fGAccel = 2000.f;
+		m_fGAccel = 1000.f;
 	}
 	if (m_MaxVelocity <= m_fvVelocity.x || m_MaxVelocity <= m_fvVelocity.y)
 	{
 		m_fvVelocity.x = m_MaxVelocity;
 		m_fvVelocity.y = m_MaxVelocity;
 	}
-
-	//m_fvVelocity = { 0.f, 0.f };
 }
 
 #pragma endregion
@@ -419,7 +392,7 @@ void CKnight::update_animation()
 	{
 		GetAnimator()->Play(L"SoulMissile_Right");
 	}
-	
+
 	//SOULCHARGE
 	if (m_bLeft && m_eCurState == PLAYER_STATE::SOULCHARGE)
 	{
@@ -434,6 +407,13 @@ void CKnight::update_animation()
 
 void CKnight::OnCollisionEnter(CCollider* _pOther)
 {
+
+	if (_pOther->GetObj()->GetObjType() == GROUP_GAMEOBJ::GROUND)
+	{
+		//m_fGAccel = 0.f;
+	}
+
+
 	if (_pOther->GetObj()->GetObjType() == GROUP_GAMEOBJ::MONSTER ||
 		_pOther->GetObj()->GetObjType() == GROUP_GAMEOBJ::MONSTER_MISSILE)
 	{

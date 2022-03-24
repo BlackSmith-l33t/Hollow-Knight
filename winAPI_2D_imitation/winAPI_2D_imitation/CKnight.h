@@ -6,14 +6,14 @@ class CState;
 
 class CKnight : public CGameObject
 {
-	friend CGround;
+	friend class CGround;
 private:
 	static CKnight* instance;
 
 	short m_pHP;			// HP
 	short m_pGeo;			// 게임 내 화폐
 
-	float m_fGAccel;		// 중력 가속도
+	//float m_fGAccel;		// 중력 가속도
 	float m_fMaxGAccel;		// 최대 중력 가속도
 	float m_fJump;			// 점프력
 	float m_MaxVelocity;    // 최대 속도 
@@ -29,8 +29,8 @@ private:
 	fPoint m_fptCurView;     // 현재 카메라 시점
 	fPoint m_fptPrevView;    // 이전 카메라 시점
 
-	PLAYER_STATE m_eCurState; 
-	PLAYER_STATE m_ePrevState; 
+	PLAYER_STATE m_eCurState;
+	PLAYER_STATE m_ePrevState;
 
 	void CreateSoulMissile();
 
@@ -47,7 +47,7 @@ public:
 
 	void update_state();
 	void update_move();
-	void update_animation();	
+	void update_animation();
 
 	virtual void OnCollision(CCollider* _pOther);
 	virtual void OnCollisionEnter(CCollider* _pOther);
