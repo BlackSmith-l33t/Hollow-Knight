@@ -23,8 +23,7 @@ void CCameraManager::init()
 }
 
 void CCameraManager::update()
-{
-	// TODO : 맵프레임을 벗어나지 않게 설정해야함.
+{	
 	if (m_pTargetObj)
 	{
 		if (m_pTargetObj->isDead())

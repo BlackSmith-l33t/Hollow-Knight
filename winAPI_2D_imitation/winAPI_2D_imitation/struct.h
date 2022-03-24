@@ -83,7 +83,7 @@ struct fPoint
 	float Length()
 	{
 		return (float)sqrt((double)x * x + (double)y * y);
-	}
+	}	
 };
 
 typedef iPoint iVec2;

@@ -34,8 +34,7 @@ void CGround::OnCollisionEnter(CCollider* _pOther)
     Logger::debug(L"OnCollisionEnter");
     CGameObject* pOtherObj = _pOther->GetObj();
     if (pOtherObj->GetObjType() == GROUP_GAMEOBJ::KNIGHT  ||
-        pOtherObj->GetObjType() == GROUP_GAMEOBJ::MONSTER ||
-        pOtherObj->GetObjType() == GROUP_GAMEOBJ::BOSS)
+        pOtherObj->GetObjType() == GROUP_GAMEOBJ::MONSTER)
     {
         pOtherObj->GetGravity()->SetGround(true);
         
@@ -59,8 +58,7 @@ void CGround::OnCollision(CCollider* _pOther)
     Logger::debug(L"OnCollision");
     CGameObject* pOtherObj = _pOther->GetObj();
     if (pOtherObj->GetObjType() == GROUP_GAMEOBJ::KNIGHT ||
-        pOtherObj->GetObjType() == GROUP_GAMEOBJ::MONSTER ||
-        pOtherObj->GetObjType() == GROUP_GAMEOBJ::BOSS)
+        pOtherObj->GetObjType() == GROUP_GAMEOBJ::MONSTER)
     {
         pOtherObj->GetGravity()->SetGround(true);
 
@@ -83,8 +81,7 @@ void CGround::OnCollisionExit(CCollider* _pOther)
 {
     CGameObject* pOtherObj = _pOther->GetObj();
     if (pOtherObj->GetObjType() == GROUP_GAMEOBJ::KNIGHT ||
-        pOtherObj->GetObjType() == GROUP_GAMEOBJ::MONSTER ||
-        pOtherObj->GetObjType() == GROUP_GAMEOBJ::BOSS)
+        pOtherObj->GetObjType() == GROUP_GAMEOBJ::MONSTER)
     {
         pOtherObj->GetGravity()->SetGround(false);
     }

@@ -44,9 +44,10 @@ enum class GROUP_GAMEOBJ
 	TILE,
 	GROUND,
 	KNIGHT,
+	SOUL_MISSILE,
 	MONSTER,
-	BOSS,
-	MISSILE_PLAYER,
+	MONSTER_MISSILE,
+	GEO,	
 
 	UI,		// UI는 모든 게임오브젝트 중 최상단 Layer에 위치
 	SIZE,
@@ -88,11 +89,17 @@ enum class STATE_MON
 
 enum class PLAYER_STATE
 {
+	START,
 	IDLE,
-	WAIK,
+	MOVE,
 	JUMP,
 	FALL,
 	ATTACK,
+	DAMAGED,
+	SOULMISSILE,
+	LOOKUP,
+	LOOKDOWN,
+	SOULCHARGE,
 	DEAD,
 
 	SIZE,
