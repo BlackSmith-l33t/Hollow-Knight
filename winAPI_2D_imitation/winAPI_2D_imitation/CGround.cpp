@@ -91,7 +91,7 @@ void CGround::OnCollisionExit(CCollider* _pOther)
     CGameObject* pOtherObj = _pOther->GetObj();
     if (pOtherObj->GetObjType() == GROUP_GAMEOBJ::KNIGHT ||
         pOtherObj->GetObjType() == GROUP_GAMEOBJ::MONSTER)
-    {     
-        pOtherObj->GetGravity()->SetGround(false);
+    {
+       pOtherObj->GetGravity()->SetGround(false);       
     }
 }

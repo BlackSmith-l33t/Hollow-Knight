@@ -15,7 +15,7 @@ CKnight::CKnight()
 	m_fvPrevDir = { 0.f, 0.f };
 	m_fGravity = 1000.f;
 	m_fGAccel = 0.f;
-	m_fJump = 700.f;
+	m_fJump = -800.f;
 	m_MaxVelocity = 400.f;
 	m_bAlive = true;
 	m_bLeft = false;
@@ -117,7 +117,7 @@ CKnight* CKnight::GetPlayer()
 #pragma region Update State
 void CKnight::update_state()
 {
-	if (m_fvVelocity.x == 0)
+	if (m_fvVelocity.x == 0 && m_bGround && m_eCurState != PLAYER_STATE::JUMP)
 	{
 		m_eCurState = PLAYER_STATE::IDLE;
 	}
@@ -127,15 +127,21 @@ void CKnight::update_state()
 		m_eCurState = PLAYER_STATE::FALL;
 	}
 
-	if (Key(VK_LEFT) && m_bGround)
+	if (Key(VK_LEFT))
 	{
-		m_eCurState = PLAYER_STATE::MOVE;
 		m_bLeft = true;
+		if (m_eCurState != PLAYER_STATE::JUMP)
+		{
+			m_eCurState = PLAYER_STATE::MOVE;
+		}		
 	}
 	if (Key(VK_RIGHT))
 	{
-		m_eCurState = PLAYER_STATE::MOVE;
 		m_bLeft = false;
+		if (m_eCurState != PLAYER_STATE::JUMP)
+		{
+			m_eCurState = PLAYER_STATE::MOVE;
+		}
 	}
 	if (Key(VK_UP) && !m_bAttack)
 	{
@@ -149,6 +155,7 @@ void CKnight::update_state()
 	if (KeyDown('Z') && m_bGround)
 	{
 		m_eCurState = PLAYER_STATE::JUMP;
+		//m_fvVelocity.x = -300.f;
 	}
 
 	if (KeyDown('X') && m_bGround)
@@ -210,13 +217,13 @@ void CKnight::update_move()
 
 	if (Key(VK_LEFT))
 	{
-		m_fvVelocity.x += 400.f;
+		m_fvVelocity.x += 300.f;
 		m_fvCurDir.x = -1;
 		m_bLeft = true;
 	}
 	if (Key(VK_RIGHT))
 	{
-		m_fvVelocity.x += 400.f;
+		m_fvVelocity.x += 300.f;
 		m_fvCurDir.x = 1;
 		m_bLeft = false;
 	}
@@ -244,11 +251,11 @@ void CKnight::update_move()
 			CCameraManager::getInst()->SetLookAt(fPoint(m_fptCurView.x, m_fptCurView.y - m_fptCurView.y));
 		}
 	}
-	if (Key('Z') && m_bGround)
+	if (KeyDown('Z') && m_bGround)
 	{
-		m_fptPos.y -= 10.f;
-		m_bGround = false;
-		m_fGAccel -= m_fJump;
+		m_fptPos.y -= 1.f;
+		m_fGAccel += m_fJump ;
+		pos.y += m_fGAccel * fDT;
 		Logger::debug(L"Jump");
 	}
 
@@ -259,15 +266,16 @@ void CKnight::update_move()
 
 	m_fGAccel += Gravity * fDT;
 
-	if (m_fGAccel >= 1000.f)
+	if (m_fGAccel >= 2000.f)
 	{
-		m_fGAccel = 1000.f;
+		m_fGAccel = 2000.f;
 	}
 	if (m_MaxVelocity <= m_fvVelocity.x || m_MaxVelocity <= m_fvVelocity.y)
 	{
 		m_fvVelocity.x = m_MaxVelocity;
 		m_fvVelocity.y = m_MaxVelocity;
 	}
+
 }
 
 #pragma endregion
@@ -407,7 +415,7 @@ void CKnight::update_animation()
 
 void CKnight::OnCollisionEnter(CCollider* _pOther)
 {
-
+	Logger::debug(L"Player_OnCollisionEnter");
 	if (_pOther->GetObj()->GetObjType() == GROUP_GAMEOBJ::GROUND)
 	{
 		//m_fGAccel = 0.f;
@@ -431,6 +439,13 @@ void CKnight::OnCollisionExit(CCollider* _pOther)
 		_pOther->GetObj()->GetObjType() == GROUP_GAMEOBJ::MONSTER_MISSILE)
 	{
 		m_bDamaged = false;
+	}
+
+	Logger::debug(L"Player_OnCollisionExit");
+	CGameObject* pOtherObj = _pOther->GetObj();
+	if (pOtherObj->GetObjType() == GROUP_GAMEOBJ::GROUND)
+	{
+		m_bGround = false;
 	}
 }
 
