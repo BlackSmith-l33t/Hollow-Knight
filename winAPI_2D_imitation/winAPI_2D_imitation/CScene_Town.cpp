@@ -82,7 +82,6 @@ void CScene_Town::Enter()
 	pGround_04->SetPos(fPoint(3320.f, 2280.f));
 	pGround_04->SetScale(fPoint(246.f, 64.f));
 	AddObject(pGround_04, GROUP_GAMEOBJ::GROUND);
-
 	CGround* pGround_05 = new CGround;
 	pGround_05->SetPos(fPoint(3800.f, 2280.f));
 	pGround_05->SetScale(fPoint(416.f, 64.f));

@@ -11,12 +11,12 @@ CKnight* CKnight::instance = nullptr;
 CKnight::CKnight()
 {
 	m_fvVelocity = { 0.f, 0.f };
-	m_fvCurDir = { 1.f, 0.f };
-	m_fvPrevDir = { 0.f, 0.f };
+	m_sCurDir = 1;
+	m_sPrevDir = 0;
 	m_fGravity = 1000.f;
 	m_fGAccel = 0.f;
 	m_fJump = -800.f;
-	m_MaxVelocity = 400.f;
+	m_MaxVelocity = 500.f;
 	m_bAlive = true;
 	m_bLeft = false;
 	m_bAttack = false;
@@ -35,6 +35,8 @@ CKnight::CKnight()
 
 	CreateAnimator();
 	GetAnimator()->CreateAnimation(L"Start_Pose", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.8f, 3);
+	GetAnimator()->CreateAnimation(L"Dead_Pose_Left", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.8f, 3, true);
+	GetAnimator()->CreateAnimation(L"Dead_Pose_Right", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.8f, 3);
 
 	GetAnimator()->CreateAnimation(L"Idle_Right", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.8f, 3);
 	GetAnimator()->CreateAnimation(L"Idle_Left", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.5f, 4, true);
@@ -94,6 +96,14 @@ void CKnight::update()
 	update_move();
 	update_animation();
 
+	if (Key(VK_LBUTTON)) // 테스트용 재시작 버튼
+	{
+		m_fptPos = (fPoint(3130, 2090));
+		m_bWallLeft = false;
+		m_bWallRight = false;
+		m_bWallUnder = false;
+	}
+
 	//CCameraManager::getInst()->SetLookAt(GetPos());
 
 	GetAnimator()->update();
@@ -117,7 +127,7 @@ CKnight* CKnight::GetPlayer()
 #pragma region Update State
 void CKnight::update_state()
 {
-	if (m_fvVelocity.x == 0 && m_bGround && m_eCurState != PLAYER_STATE::JUMP)
+	if (m_fvVelocity.x == 0 && m_bGround && m_ePrevState == PLAYER_STATE::JUMP)
 	{
 		m_eCurState = PLAYER_STATE::IDLE;
 	}
@@ -206,26 +216,32 @@ void CKnight::update_move()
 		if (m_bLeft)
 		{
 			m_fvVelocity.x -= 100.f;
-			m_fvCurDir.x = -1;
+			m_sCurDir = -1;
 		}
 		else
 		{
 			m_fvVelocity.x += 100.f;
-			m_fvCurDir.x = 1;
+			m_sCurDir = 1;
 		}
 	}
 
 	if (Key(VK_LEFT))
-	{
-		m_fvVelocity.x += 300.f;
-		m_fvCurDir.x = -1;
-		m_bLeft = true;
+	{		
+		if (!m_bWallRight)
+		{
+			m_fvVelocity.x += 400.f;
+			m_sCurDir = -1;
+			m_bLeft = true;
+		}	
 	}
 	if (Key(VK_RIGHT))
 	{
-		m_fvVelocity.x += 300.f;
-		m_fvCurDir.x = 1;
-		m_bLeft = false;
+		if (!m_bWallLeft)
+		{
+			m_fvVelocity.x += 400.f;
+			m_sCurDir = 1;
+			m_bLeft = false;
+		}
 	}
 	if (Key(VK_UP) && !m_bAttack && m_bGround)
 	{
@@ -254,12 +270,14 @@ void CKnight::update_move()
 	if (KeyDown('Z') && m_bGround)
 	{
 		m_fptPos.y -= 1.f;
-		m_fGAccel += m_fJump ;
+		m_fvVelocity.y = -800.f;
+		m_fGAccel += m_fvVelocity.y;
 		pos.y += m_fGAccel * fDT;
 		Logger::debug(L"Jump");
+		
 	}
 
-	pos.x += m_fvCurDir.x * m_fvVelocity.x * fDT;
+	pos.x += m_sCurDir* m_fvVelocity.x * fDT;
 	pos.y += m_fGAccel * fDT;
 
 	SetPos(pos);
@@ -276,6 +294,7 @@ void CKnight::update_move()
 		m_fvVelocity.y = m_MaxVelocity;
 	}
 
+	m_sPrevDir = m_sCurDir;
 }
 
 #pragma endregion
@@ -283,155 +302,187 @@ void CKnight::update_move()
 #pragma region Update Ainmation
 void CKnight::update_animation()
 {
-	// START
-	if (m_eCurState == PLAYER_STATE::START)
+	if (m_ePrevState == m_eCurState && m_sPrevDir == m_sCurDir)
 	{
+		return;
+	}
+
+	switch (m_eCurState)
+	{
+	case PLAYER_STATE::START:
 		GetAnimator()->Play(L"Start_Pose");
-	}
-
-	//IDLE
-	if (m_bLeft && m_eCurState == PLAYER_STATE::IDLE)
-	{
-		GetAnimator()->Play(L"Idle_Left");
-	}
-	else
-	{
-		GetAnimator()->Play(L"Idle_Right");
-	}
-
-	// MOVE
-	if (m_bLeft && m_eCurState == PLAYER_STATE::MOVE)
-	{
-		if (m_fvVelocity.x > 0)
+		break;
+	case PLAYER_STATE::IDLE:
+		if (m_fvVelocity.x == 0 && m_eCurState != PLAYER_STATE::JUMP)
 		{
-			GetAnimator()->Play(L"Move_Left");
+			if (m_sCurDir == -1)
+			{
+				GetAnimator()->Play(L"Idle_Left");
+			}
+			else
+			{
+				GetAnimator()->Play(L"Idle_Right");
+			}
+		}
+		break;
+	case PLAYER_STATE::MOVE:
+		if (m_sCurDir == -1)
+		{
+			if (m_fvVelocity.x > 0)
+			{
+				GetAnimator()->Play(L"Move_Left");
+			}
+			else
+			{
+				GetAnimator()->Play(L"Idle_Left");
+			}
 		}
 		else
 		{
-			GetAnimator()->Play(L"Idle_Left");
+			if (m_fvVelocity.x > 0)
+			{
+				GetAnimator()->Play(L"Move_Right");
+			}
+			else
+			{
+				GetAnimator()->Play(L"Idle_Right");
+			}
 		}
-	}
-	else
-	{
-		if (m_fvVelocity.x > 0)
+		break;
+	case PLAYER_STATE::JUMP:	
+		if (m_sCurDir == -1)
 		{
-			GetAnimator()->Play(L"Move_Right");
+			GetAnimator()->Play(L"Jump_Left");
 		}
 		else
 		{
-			GetAnimator()->Play(L"Idle_Right");
+			GetAnimator()->Play(L"Jump_Right");
 		}
-	}
-
-	// JUMP
-	if (m_bLeft && m_eCurState == PLAYER_STATE::JUMP && m_bGround)
-	{
-		GetAnimator()->Play(L"Jump_Left");
-	}
-	else
-	{
-		GetAnimator()->Play(L"Jump_Right");
-	}
-
-	// FALL
-	if (m_bLeft && m_eCurState == PLAYER_STATE::FALL && !m_bGround)
-	{
-		GetAnimator()->Play(L"Fall_Left");
-
-		if (m_bGround)
+		break;
+	case PLAYER_STATE::FALL:
+		if (m_sCurDir == -1)
 		{
-			m_eCurState == PLAYER_STATE::IDLE;
+			GetAnimator()->Play(L"Fall_Left");
 		}
-	}
-	else if (!m_bLeft && m_eCurState == PLAYER_STATE::FALL && !m_bGround)
-	{
-		GetAnimator()->Play(L"Fall_Right");
-
-		if (m_bGround)
+		else
 		{
-			m_eCurState == PLAYER_STATE::IDLE;
+			GetAnimator()->Play(L"Fall_Right");
 		}
-	}
-
-	// DEMAGED
-	if (m_bLeft && m_bDamaged && m_eCurState == PLAYER_STATE::DAMAGED)
-	{
-		GetAnimator()->Play(L"Demaged_Left");
-	}
-	else if (!m_bLeft && m_bDamaged && m_eCurState == PLAYER_STATE::DAMAGED)
-	{
-		GetAnimator()->Play(L"Demaged_Right");
-	}
-
-	// ATTACK
-	if (m_bLeft && m_eCurState == PLAYER_STATE::ATTACK)
-	{
-		GetAnimator()->Play(L"Attack_Left");
-
-		if (Key(VK_UP) && !m_bGround && m_bLeft && m_eCurState == PLAYER_STATE::ATTACK)
+		break;
+	case PLAYER_STATE::ATTACK:
+		if (m_sCurDir == -1)
 		{
-			GetAnimator()->Play(L"AttackUp_Left");
+			GetAnimator()->Play(L"Attack_Left");
+
+			if (Key(VK_UP) && !m_bGround)
+			{
+				GetAnimator()->Play(L"AttackUp_Left");
+			}
+
+			if (Key(VK_DOWN) && !m_bGround)
+			{
+				GetAnimator()->Play(L"AttackDown_Left");
+			}			
 		}
-		else if (Key(VK_UP) && !m_bGround && !m_bLeft && m_eCurState == PLAYER_STATE::ATTACK)
+		else
 		{
-			GetAnimator()->Play(L"AttackUp_Right");
-		}
+			GetAnimator()->Play(L"Attack_Right");
 
-		if (Key(VK_DOWN) && !m_bGround && m_bLeft && m_eCurState == PLAYER_STATE::ATTACK)
+			if (Key(VK_UP) && !m_bGround)
+			{
+				GetAnimator()->Play(L"AttackUp_Right");
+			}
+
+			if (Key(VK_DOWN) && !m_bGround)
+			{
+				GetAnimator()->Play(L"AttackDown_Right");
+			}
+		}
+		break;
+	case PLAYER_STATE::DAMAGED:
+		if (m_sCurDir == -1 && m_bDamaged)
 		{
-			GetAnimator()->Play(L"AttackDown_Left");
+			GetAnimator()->Play(L"Demaged_Left");
 		}
-		else if (Key(VK_DOWN) && !m_bGround && !m_bLeft && m_eCurState == PLAYER_STATE::ATTACK)
+		else if (m_sCurDir == 1 && m_bDamaged)
 		{
-			GetAnimator()->Play(L"AttackDown_Right");
+			GetAnimator()->Play(L"Demaged_Right");
 		}
-	}
-	else if (!m_bLeft && m_eCurState == PLAYER_STATE::ATTACK)
-	{
-		GetAnimator()->Play(L"Attack_Right");
-	}
+		break;
+	case PLAYER_STATE::SOULMISSILE:
+		if (m_sCurDir == -1)
+		{
+			GetAnimator()->Play(L"SoulMissile_Left");
+		}
+		else 
+		{
+			GetAnimator()->Play(L"SoulMissile_Right");
+		}
+		break;
+	case PLAYER_STATE::LOOKUP:
+		if (m_sCurDir == -1)
+		{
+			GetAnimator()->Play(L"LookUP_Left");
+		}
+		else
+		{
+			GetAnimator()->Play(L"LookUP_Right");
+		}
+		break;
+	case PLAYER_STATE::LOOKDOWN:
+		if (m_sCurDir == -1)
+		{
+			GetAnimator()->Play(L"LookDown_Left");
+		}
+		else
+		{
+			GetAnimator()->Play(L"LookDown_Right");
+		}
+		break;
+	case PLAYER_STATE::SOULCHARGE:
+		if (m_sCurDir == -1)
+		{
+			GetAnimator()->Play(L"HP_Charge_Left");
+		}
+		else 
+		{
+			GetAnimator()->Play(L"HP_Charge_Right");
+		}
+		break;
+	case PLAYER_STATE::DEAD:
+		if (m_sCurDir == -1)
+		{
+			GetAnimator()->Play(L"Dead_Pose_Left");
+		}
+		else
+		{
+			GetAnimator()->Play(L"Dead_Pose_Right");
+		}
+		break;
 
-	// SOULMISSILE
-	if (m_bLeft && m_eCurState == PLAYER_STATE::SOULMISSILE)
-	{
-		GetAnimator()->Play(L"SoulMissile_Left");
-	}
-	else if (!m_bLeft && m_eCurState == PLAYER_STATE::SOULMISSILE)
-	{
-		GetAnimator()->Play(L"SoulMissile_Right");
-	}
-
-	//SOULCHARGE
-	if (m_bLeft && m_eCurState == PLAYER_STATE::SOULCHARGE)
-	{
-		GetAnimator()->Play(L"HP_Charge_Left");
-	}
-	else if (!m_bLeft && m_eCurState == PLAYER_STATE::SOULCHARGE)
-	{
-		GetAnimator()->Play(L"HP_Charge_Right");
-	}
-}
-#pragma endregion
-
-void CKnight::OnCollisionEnter(CCollider* _pOther)
-{
-	Logger::debug(L"Player_OnCollisionEnter");
-	if (_pOther->GetObj()->GetObjType() == GROUP_GAMEOBJ::GROUND)
-	{
-		//m_fGAccel = 0.f;
-	}
-
-
-	if (_pOther->GetObj()->GetObjType() == GROUP_GAMEOBJ::MONSTER ||
-		_pOther->GetObj()->GetObjType() == GROUP_GAMEOBJ::MONSTER_MISSILE)
-	{
-		m_bDamaged = true;
-	}
+	default:
+		break;
+	}	
 }
 
 void CKnight::OnCollision(CCollider* _pOther)
 {
 }
+
+void CKnight::OnCollisionEnter(CCollider* _pOther)
+{
+	CGameObject* pOtherObj = _pOther->GetObj();
+	if (GROUP_GAMEOBJ::GROUND == pOtherObj->GetObjType())
+	{
+		fVec2 vPos = GetPos();
+		if (vPos.y < pOtherObj->GetPos().y)
+		{
+			m_eCurState = PLAYER_STATE::IDLE;
+		}
+	}
+}
+
+
 
 void CKnight::OnCollisionExit(CCollider* _pOther)
 {
@@ -447,6 +498,10 @@ void CKnight::OnCollisionExit(CCollider* _pOther)
 	{
 		m_bGround = false;
 	}
+
+	m_bWallLeft = false;
+	m_bWallRight = false;
+	m_bWallUnder = false;
 }
 
 void CKnight::CreateSoulMissile()

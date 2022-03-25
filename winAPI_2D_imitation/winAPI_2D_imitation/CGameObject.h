@@ -24,6 +24,9 @@ protected:
 	CGravity* m_pGravity;
 
 	bool	   m_bGround;
+	bool       m_bWallLeft;
+	bool       m_bWallRight;
+	bool       m_bWallUnder;
 	bool	   m_bAlive;
 
 	void SetDead();

@@ -28,7 +28,6 @@ void CGround::update()
 {    
 }
 
-
 void CGround::OnCollisionEnter(CCollider* _pOther)
 {
     Logger::debug(L"OnCollisionEnter");
@@ -36,24 +35,42 @@ void CGround::OnCollisionEnter(CCollider* _pOther)
     if (pOtherObj->GetObjType() == GROUP_GAMEOBJ::KNIGHT ||
         pOtherObj->GetObjType() == GROUP_GAMEOBJ::MONSTER)
     {
-        pOtherObj->GetGravity()->SetGround(true);
-
         fVec2 fvObjPos = _pOther->GetFinalPos();
         fVec2 fvObjScale = _pOther->GetScale();
 
         fVec2 fvPos = GetCollider()->GetFinalPos();
-        fVec2 fvSalse = GetCollider()->GetScale();
-          
-        //fvPos.x + (fvSalse.x / 2.f) == (_pOther->GetFinalPos().x - _pOther->GetScale().x / 2.f)
-      /*  if (fvPos.y + (fvSalse.y / 2.f) > (_pOther->GetFinalPos().y + _pOther->GetScale().y))
+        fVec2 fvScale = GetCollider()->GetScale();
+           
+        float wallX = fvPos.x + (fvScale.x / 2.f);
+        float wallY = fvPos.y - (fvScale.y / 2.f) + 20.f;
+        
+        float objX = fvObjPos.x - (fvObjScale.x / 2.f);
+        float objY = fvObjPos.y + (fvObjScale.y / 2.f);    
+
+        // TODO :  오른쪽 벽
+        if (wallX > objX && wallY < objY && !m_bGround)
         {
-            pOtherObj->m_fvVelocity.x = 0.f;
-            fvObjPos = pOtherObj->GetPos();
-            pOtherObj->SetPos(fvObjPos);
-        }      */        
-                      
-        pOtherObj->SetPos(fPoint(fvObjPos.x, fvPos.y - (fvObjScale.y + fvSalse.y) / 2.f + 1.f));
-        pOtherObj->m_fGAccel = 0.f;
+            Logger::debug(L"Wall_Right");
+            pOtherObj->m_bWallRight = true;
+        }
+        // TODO :  왼쪽 벽     
+        else if (wallX > objX && wallY < objY && !m_bGround)
+        {
+            Logger::debug(L"Wall_Left");
+            pOtherObj->m_bWallLeft = true;
+        }
+        // TODO :  아래 벽
+        else if (wallX > objX && wallY < objY && !m_bGround)
+        {
+            Logger::debug(L"Wall_Under");
+            pOtherObj->m_bWallUnder = true;
+        }
+        else if(!m_bWallLeft && !m_bWallRight && !m_bWallUnder)
+        {
+            pOtherObj->GetGravity()->SetGround(true);
+            pOtherObj->SetPos(fPoint(fvObjPos.x, fvPos.y - (fvObjScale.y + fvScale.y) / 2.f + 1.f));
+            pOtherObj->m_fGAccel = 0.f;
+        }
     }
 }
 
@@ -64,24 +81,42 @@ void CGround::OnCollision(CCollider* _pOther)
     if (pOtherObj->GetObjType() == GROUP_GAMEOBJ::KNIGHT ||
         pOtherObj->GetObjType() == GROUP_GAMEOBJ::MONSTER)
     {
-        pOtherObj->GetGravity()->SetGround(true);
-
         fVec2 fvObjPos = _pOther->GetFinalPos();
         fVec2 fvObjScale = _pOther->GetScale();
 
         fVec2 fvPos = GetCollider()->GetFinalPos();
-        fVec2 fvSalse = GetCollider()->GetScale();
-        
-        /*if (fvPos.y + (fvSalse.y / 2.f) > (_pOther->GetFinalPos().y + _pOther->GetScale().y))
+        fVec2 fvScale = GetCollider()->GetScale();
+
+        float wallX = fvPos.x + (fvScale.x / 2.f);
+        float wallY = fvPos.y - (fvScale.y / 2.f) + 20.f;
+
+        float objX = fvObjPos.x - (fvObjScale.x / 2.f);
+        float objY = fvObjPos.y + (fvObjScale.y / 2.f);
+
+        // 오른쪽 벽
+        if (wallX > objX && wallY < objY && !m_bGround)
         {
-            pOtherObj->m_fvVelocity.x = 0.f;
-            fvObjPos = pOtherObj->GetPos();
-            pOtherObj->SetPos(fvObjPos);
-        }*/
-        
-        pOtherObj->SetPos(fPoint(fvObjPos.x, fvPos.y - (fvObjScale.y + fvSalse.y) / 2.f + 1.f));
-        pOtherObj->m_fGAccel = 0.f;
-       
+            Logger::debug(L"Wall_Right");
+            pOtherObj->m_bWallRight = true;
+        }
+        // TODO :  왼쪽 벽     
+        else if (wallX > objX && wallY < objY && !m_bGround)
+        {
+            Logger::debug(L"Wall_Left");
+            pOtherObj->m_bWallLeft = true;
+        }
+        // TODO :  아래 벽
+        else if (wallX > objX && wallY < objY && !m_bGround)
+        {
+            Logger::debug(L"Wall_Under");
+            pOtherObj->m_bWallUnder = true;
+        }
+        else if (!m_bWallLeft && !m_bWallRight && !m_bWallUnder && !m_bGround)
+        {
+            pOtherObj->GetGravity()->SetGround(true);
+            pOtherObj->SetPos(fPoint(fvObjPos.x, fvPos.y - (fvObjScale.y + fvScale.y) / 2.f + 1.f));
+            pOtherObj->m_fGAccel = 0.f;
+        }
     }
 }
 
@@ -92,6 +127,7 @@ void CGround::OnCollisionExit(CCollider* _pOther)
     if (pOtherObj->GetObjType() == GROUP_GAMEOBJ::KNIGHT ||
         pOtherObj->GetObjType() == GROUP_GAMEOBJ::MONSTER)
     {
-       pOtherObj->GetGravity()->SetGround(false);       
+       pOtherObj->GetGravity()->SetGround(false);    
+      
     }
 }
