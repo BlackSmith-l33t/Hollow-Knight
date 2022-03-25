@@ -6,7 +6,7 @@
 
 CGround::CGround()
 {
-    CreateCollider();
+    CreateCollider();    
 }
 
 CGround::~CGround()
@@ -25,7 +25,7 @@ void CGround::start()
 }
 
 void CGround::update()
-{
+{    
 }
 
 
@@ -43,15 +43,15 @@ void CGround::OnCollisionEnter(CCollider* _pOther)
 
         fVec2 fvPos = GetCollider()->GetFinalPos();
         fVec2 fvSalse = GetCollider()->GetScale();
-
+          
         //fvPos.x + (fvSalse.x / 2.f) == (_pOther->GetFinalPos().x - _pOther->GetScale().x / 2.f)
-        if (fvPos.y + (fvSalse.y / 2.f) > (_pOther->GetFinalPos().y + _pOther->GetScale().y))
+      /*  if (fvPos.y + (fvSalse.y / 2.f) > (_pOther->GetFinalPos().y + _pOther->GetScale().y))
         {
             pOtherObj->m_fvVelocity.x = 0.f;
             fvObjPos = pOtherObj->GetPos();
             pOtherObj->SetPos(fvObjPos);
-        }
-
+        }      */        
+                      
         pOtherObj->SetPos(fPoint(fvObjPos.x, fvPos.y - (fvObjScale.y + fvSalse.y) / 2.f + 1.f));
         pOtherObj->m_fGAccel = 0.f;
     }
@@ -71,17 +71,17 @@ void CGround::OnCollision(CCollider* _pOther)
 
         fVec2 fvPos = GetCollider()->GetFinalPos();
         fVec2 fvSalse = GetCollider()->GetScale();
-
-        if (fvPos.y + (fvSalse.y / 2.f) > (_pOther->GetFinalPos().y + _pOther->GetScale().y))
+        
+        /*if (fvPos.y + (fvSalse.y / 2.f) > (_pOther->GetFinalPos().y + _pOther->GetScale().y))
         {
             pOtherObj->m_fvVelocity.x = 0.f;
             fvObjPos = pOtherObj->GetPos();
             pOtherObj->SetPos(fvObjPos);
-        }
-
+        }*/
+        
         pOtherObj->SetPos(fPoint(fvObjPos.x, fvPos.y - (fvObjScale.y + fvSalse.y) / 2.f + 1.f));
         pOtherObj->m_fGAccel = 0.f;
-
+       
     }
 }
 
@@ -91,7 +91,7 @@ void CGround::OnCollisionExit(CCollider* _pOther)
     CGameObject* pOtherObj = _pOther->GetObj();
     if (pOtherObj->GetObjType() == GROUP_GAMEOBJ::KNIGHT ||
         pOtherObj->GetObjType() == GROUP_GAMEOBJ::MONSTER)
-    {
+    {     
         pOtherObj->GetGravity()->SetGround(false);
     }
 }
