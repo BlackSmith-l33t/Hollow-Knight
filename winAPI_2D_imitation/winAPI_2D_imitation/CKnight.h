@@ -23,6 +23,7 @@ private:
 	bool  m_bLeft;			// 방향
 	bool  m_bAttack;        // 공격 여부 
 	bool  m_bDamaged;       // 공격 받은 여부
+	bool m_bFall;
 	
 
 	fVec2 m_fvVelocity;		// 속도

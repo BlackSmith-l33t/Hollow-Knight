@@ -42,30 +42,42 @@ void CGround::OnCollisionEnter(CCollider* _pOther)
         fVec2 fvPos = GetCollider()->GetFinalPos();
         fVec2 fvScale = GetCollider()->GetScale();
            
-        float wallX = fvPos.x + (fvScale.x / 2.f);
-        float wallY = fvPos.y - (fvScale.y / 2.f) + 20.f;
-        
-        float objX = fvObjPos.x - (fvObjScale.x / 2.f);
-        float objY = fvObjPos.y + (fvObjScale.y / 2.f);    
 
-        // 오른쪽 벽
-        if (wallX > objX && wallY < objY && !m_bCurGround)
+        // 오른쪽 Ground와 충돌시 
+        float fWallX_Right = fvPos.x + (fvScale.x / 2.f);
+        float fWallY_Top = fvPos.y;// -(fvScale.y / 2.f) + 20.f;
+        float fWallY_Bottom = fvPos.y + (fvScale.y / 2.f) - 30.f;
+
+        float objX_Left = fvObjPos.x - (fvObjScale.x / 2.f);
+        float objY_Bottom = fvObjPos.y + (fvObjScale.y / 2.f);
+
+        // 왼쪽 Ground와 충돌시 
+        float fWallX_Left = fvPos.x - (fvScale.x / 2.f);
+        //float fWallY_Left = fvPos.y - (fvScale.y / 2.f) + 20.f;
+
+        float objX_Right = fvObjPos.x + (fvObjScale.x / 2.f);    
+
+        // 아래쪽 Ground와 충돌시
+        float objY_Top = fvObjPos.y - (fvObjScale.y / 2.f);
+
+        // TODO :  아래 벽 
+        if (fWallY_Top <= objY_Top && fWallY_Bottom <= objY_Top)
         {
-            Logger::debug(L"Wall_Right");
-            pOtherObj->m_bWallRight = true;
+            Logger::debug(L"Wall_Under");
+            pOtherObj->m_bWallBottom = true;          
         }
-        // TODO :  왼쪽 벽     
-        else if (wallX > objX && wallY < objY && !m_bCurGround)
+        // 왼쪽 벽     
+        else if (fWallX_Left < objX_Right && fWallX_Left > objX_Left && fWallY_Top < objY_Bottom && !m_bCurGround)
         {
             Logger::debug(L"Wall_Left");
             pOtherObj->m_bWallLeft = true;
         }
-        // TODO :  아래 벽
-        else if (wallX > objX && wallY < objY && !m_bCurGround)
-        {
-            Logger::debug(L"Wall_Under");
-            pOtherObj->m_bWallUnder = true;
-        }
+        // 오른쪽 벽
+        else if (fWallX_Right > objX_Left && fWallX_Right < objX_Right && fWallY_Top < objY_Bottom && !m_bCurGround)
+        {          
+            Logger::debug(L"Wall_Right");
+            pOtherObj->m_bWallRight = true;
+        }      
         else if (!pOtherObj->m_bJump || pOtherObj->m_bCurGround)
         {
             Logger::debug(L"Ground");
@@ -74,6 +86,7 @@ void CGround::OnCollisionEnter(CCollider* _pOther)
             pOtherObj->m_fGAccel = 0.f;
             pOtherObj->m_bJump = false;
         }
+        
     }
 }
 
@@ -91,40 +104,56 @@ void CGround::OnCollision(CCollider* _pOther)
         fVec2 fvPos = GetCollider()->GetFinalPos();
         fVec2 fvScale = GetCollider()->GetScale();
 
-        float wallX = fvPos.x + (fvScale.x / 2.f);
-        float wallY = fvPos.y - (fvScale.y / 2.f) + 20.f;
+        // 오른쪽 Ground와 충돌시 
+        float fWallX_Right = fvPos.x + (fvScale.x / 2.f);
+        float fWallY_Top = fvPos.y;// -(fvScale.y / 2.f) + 20.f;
+        float fWallY_Bottom = fvPos.y + (fvScale.y / 2.f) - 30.f;
 
-        float objX = fvObjPos.x - (fvObjScale.x / 2.f);
-        float objY = fvObjPos.y + (fvObjScale.y / 2.f);
+        float objX_Left = fvObjPos.x - (fvObjScale.x / 2.f);
+        float objY_Bottom = fvObjPos.y + (fvObjScale.y / 2.f);
 
-        // 오른쪽 벽
-        if (wallX > objX && wallY < objY && !m_bCurGround)
+        // 왼쪽 Ground와 충돌시 
+        float fWallX_Left = fvPos.x - (fvScale.x / 2.f);       
+
+        float objX_Right = fvObjPos.x + (fvObjScale.x / 2.f);      
+     
+        // 아래쪽 Ground와 충돌시
+        float objY_Top = fvObjPos.y - (fvObjScale.y / 2.f);
+     
+
+        // TODO :  아래 벽 구현 중 / 프레임이 2000이 넘을 경우 충돌 무시 발생 : 원인 불명 
+        if (fWallY_Top <= objY_Top && fWallY_Bottom <= objY_Top)
         {
-            Logger::debug(L"Wall_Right");
-            pOtherObj->m_bWallRight = true;
+            Logger::debug(L"Wall_Under");
+            pOtherObj->m_bWallBottom = true;
+            
         }
-        // TODO :  왼쪽 벽     
-        else if (wallX > objX && wallY < objY && !m_bCurGround)
+        // 왼쪽 벽     
+        else if (fWallX_Left < objX_Right && fWallX_Left > objX_Left && fWallY_Top < objY_Bottom && !m_bCurGround)
         {
             Logger::debug(L"Wall_Left");
             pOtherObj->m_bWallLeft = true;
         }
-        // TODO :  아래 벽
-        else if (wallX > objX && wallY < objY && !m_bCurGround)
+        // 오른쪽 벽
+        else if (fWallX_Right > objX_Left && fWallX_Right < objX_Right && fWallY_Top < objY_Bottom && !m_bCurGround)
         {
-            Logger::debug(L"Wall_Under");
-            pOtherObj->m_bWallUnder = true;
-        }
+            if (fWallY_Top < objY_Top && fWallY_Bottom < objY_Top)
+            {
+                Logger::debug(L"Wall_Under");
+                pOtherObj->m_bWallBottom = true;
+                return;
+            }
+            Logger::debug(L"Wall_Right");
+            pOtherObj->m_bWallRight = true;
+        }      
         else if (!pOtherObj->m_bJump)
         {
-            Logger::debug(L"Ground");
-           
+            Logger::debug(L"Ground");           
             pOtherObj->SetPos(fPoint(fvObjPos.x, fvPos.y - (fvObjScale.y + fvScale.y) / 2.f + 1.f));
             pOtherObj->m_fGAccel = 0.f;    
             pOtherObj->m_bJump = false;
         }
     }
-    //!pOtherObj->m_bWallRight && !m_bPrevGround
 }
 
 void CGround::OnCollisionExit(CCollider* _pOther)

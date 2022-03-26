@@ -79,13 +79,19 @@ void CScene_Town::Enter()
 	AddObject(pGround_03, GROUP_GAMEOBJ::GROUND);
 
 	CGround* pGround_04 = new CGround;
-	pGround_04->SetPos(fPoint(3320.f, 2280.f));
-	pGround_04->SetScale(fPoint(246.f, 64.f));
+	pGround_04->SetPos(fPoint(3600.f, 2280.f));
+	pGround_04->SetScale(fPoint(800.f, 64.f));
 	AddObject(pGround_04, GROUP_GAMEOBJ::GROUND);
+
 	CGround* pGround_05 = new CGround;
-	pGround_05->SetPos(fPoint(3800.f, 2280.f));
-	pGround_05->SetScale(fPoint(416.f, 64.f));
+	pGround_05->SetPos(fPoint(3600.f, 2188.f));
+	pGround_05->SetScale(fPoint(200.f, 64.f));
 	AddObject(pGround_05, GROUP_GAMEOBJ::GROUND);
+
+	CGround* pGround_06 = new CGround;
+	pGround_06->SetPos(fPoint(3000.f, 1900.f));
+	pGround_06->SetScale(fPoint(200.f, 64.f));
+	AddObject(pGround_06, GROUP_GAMEOBJ::GROUND);
 	
 	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::KNIGHT, GROUP_GAMEOBJ::GROUND);
 	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::KNIGHT, GROUP_GAMEOBJ::TILE);

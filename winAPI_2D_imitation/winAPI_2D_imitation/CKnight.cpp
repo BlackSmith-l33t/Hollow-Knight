@@ -101,7 +101,7 @@ void CKnight::update()
 		m_fptPos = (fPoint(3130, 2090));
 		m_bWallLeft = false;
 		m_bWallRight = false;
-		m_bWallUnder = false;
+		m_bWallBottom = false;
 	}
 
 	//CCameraManager::getInst()->SetLookAt(GetPos());
@@ -267,6 +267,7 @@ void CKnight::update_move()
 			CCameraManager::getInst()->SetLookAt(fPoint(m_fptCurView.x, m_fptCurView.y - m_fptCurView.y));
 		}
 	}
+	// JUMP 
 	if (KeyDown('Z') && m_bCurGround)
 	{
 		m_fptPos.y -= 1.f;
@@ -275,6 +276,13 @@ void CKnight::update_move()
 		pos.y += m_fGAccel * fDT;
 		m_bJump = true;
 		Logger::debug(L"Jump");		
+	}
+
+	// FALL
+	if (m_eCurState == PLAYER_STATE::FALL && m_bWallBottom)
+	{	
+		m_fGAccel = 400.f;
+		Logger::debug(L"Fall");
 	}
 
 	pos.x += m_sCurDir* m_fvVelocity.x * fDT;
@@ -467,10 +475,12 @@ void CKnight::update_animation()
 
 void CKnight::OnCollision(CCollider* _pOther)
 {
+	Logger::debug(L"OnCollision_Knight");
 }
 
 void CKnight::OnCollisionEnter(CCollider* _pOther)
 {
+	Logger::debug(L"OnCollisionEnter_Knight");
 	CGameObject* pOtherObj = _pOther->GetObj();
 	if (GROUP_GAMEOBJ::GROUND == pOtherObj->GetObjType())
 	{
@@ -478,6 +488,12 @@ void CKnight::OnCollisionEnter(CCollider* _pOther)
 		if (vPos.y < pOtherObj->GetPos().y)
 		{
 			m_eCurState = PLAYER_STATE::IDLE;
+		}
+
+    	if (m_bWallBottom)
+		{
+			m_bFall = true;
+			m_eCurState = PLAYER_STATE::FALL;
 		}
 	}
 }
@@ -502,8 +518,7 @@ void CKnight::OnCollisionExit(CCollider* _pOther)
 	
 	m_bWallLeft = false;
 	m_bWallRight = false;
-	m_bWallUnder = false;
-	//m_bJump = false;
+	m_bWallBottom = false;
 }
 
 void CKnight::CreateSoulMissile()

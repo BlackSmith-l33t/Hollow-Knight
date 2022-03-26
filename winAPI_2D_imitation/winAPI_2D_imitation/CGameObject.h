@@ -27,7 +27,7 @@ protected:
 	bool	   m_bPrevGround;
 	bool       m_bWallLeft;
 	bool       m_bWallRight;
-	bool       m_bWallUnder;
+	bool       m_bWallBottom;
 	bool	   m_bAlive;
 	bool	   m_bJump;
 
