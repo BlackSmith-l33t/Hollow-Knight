@@ -25,11 +25,11 @@ void CGravity::update()
 
 void CGravity::SetGround(bool _bGround)
 {
-	m_bGround = _bGround;
-	if (m_bGround)
+	m_bCurGround = _bGround;
+	if (m_bCurGround)
 	{
 		m_pOwner->SetGravity(Gravity);	
-		m_pOwner->SetGround(m_bGround);
+		m_pOwner->SetGround(m_bCurGround);
 	}
 }
 

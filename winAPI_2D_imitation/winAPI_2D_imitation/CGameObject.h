@@ -23,11 +23,13 @@ protected:
 	CAnimator* m_pAnimator;
 	CGravity* m_pGravity;
 
-	bool	   m_bGround;
+	bool	   m_bCurGround;
+	bool	   m_bPrevGround;
 	bool       m_bWallLeft;
 	bool       m_bWallRight;
 	bool       m_bWallUnder;
 	bool	   m_bAlive;
+	bool	   m_bJump;
 
 	void SetDead();
 

@@ -127,12 +127,12 @@ CKnight* CKnight::GetPlayer()
 #pragma region Update State
 void CKnight::update_state()
 {
-	if (m_fvVelocity.x == 0 && m_bGround && m_ePrevState == PLAYER_STATE::JUMP)
+	if (m_fvVelocity.x == 0 && m_bCurGround && m_ePrevState == PLAYER_STATE::JUMP)
 	{
 		m_eCurState = PLAYER_STATE::IDLE;
 	}
 
-	if (!m_bGround && m_ePrevState == PLAYER_STATE::MOVE)
+	if (!m_bCurGround && m_ePrevState == PLAYER_STATE::MOVE)
 	{
 		m_eCurState = PLAYER_STATE::FALL;
 	}
@@ -162,18 +162,18 @@ void CKnight::update_state()
 		m_eCurState = PLAYER_STATE::LOOKDOWN;
 	}
 
-	if (KeyDown('Z') && m_bGround)
+	if (KeyDown('Z') && m_bCurGround)
 	{
 		m_eCurState = PLAYER_STATE::JUMP;
 		//m_fvVelocity.x = -300.f;
 	}
 
-	if (KeyDown('X') && m_bGround)
+	if (KeyDown('X') && m_bCurGround)
 	{
 		m_eCurState = PLAYER_STATE::ATTACK;
 	}
 
-	if (KeyDown('A') && m_bGround)
+	if (KeyDown('A') && m_bCurGround)
 	{
 		m_eCurState = PLAYER_STATE::SOULCHARGE;
 	}
@@ -243,7 +243,7 @@ void CKnight::update_move()
 			m_bLeft = false;
 		}
 	}
-	if (Key(VK_UP) && !m_bAttack && m_bGround)
+	if (Key(VK_UP) && !m_bAttack && m_bCurGround)
 	{
 		// TODO : 카메라 시점을 위로 (시점 이동이 좀더 느리고 부드럽게)
 		m_fptCurView.y -= 10.f;
@@ -255,7 +255,7 @@ void CKnight::update_move()
 			CCameraManager::getInst()->SetLookAt(fPoint(this->GetPos().x, m_fptCurView.y + m_fptCurView.y));
 		}
 	}
-	if (Key(VK_DOWN) && !m_bAttack && m_bGround)
+	if (Key(VK_DOWN) && !m_bAttack && m_bCurGround)
 	{
 		// TODO : 카메라 시점을 아래로 (시점 이동이 좀더 느리고 부드럽게)
 		m_fptCurView.y += 10.f;
@@ -267,14 +267,14 @@ void CKnight::update_move()
 			CCameraManager::getInst()->SetLookAt(fPoint(m_fptCurView.x, m_fptCurView.y - m_fptCurView.y));
 		}
 	}
-	if (KeyDown('Z') && m_bGround)
+	if (KeyDown('Z') && m_bCurGround)
 	{
 		m_fptPos.y -= 1.f;
 		m_fvVelocity.y = -800.f;
 		m_fGAccel += m_fvVelocity.y;
 		pos.y += m_fGAccel * fDT;
-		Logger::debug(L"Jump");
-		
+		m_bJump = true;
+		Logger::debug(L"Jump");		
 	}
 
 	pos.x += m_sCurDir* m_fvVelocity.x * fDT;
@@ -374,12 +374,12 @@ void CKnight::update_animation()
 		{
 			GetAnimator()->Play(L"Attack_Left");
 
-			if (Key(VK_UP) && !m_bGround)
+			if (Key(VK_UP) && !m_bCurGround)
 			{
 				GetAnimator()->Play(L"AttackUp_Left");
 			}
 
-			if (Key(VK_DOWN) && !m_bGround)
+			if (Key(VK_DOWN) && !m_bCurGround)
 			{
 				GetAnimator()->Play(L"AttackDown_Left");
 			}			
@@ -388,12 +388,12 @@ void CKnight::update_animation()
 		{
 			GetAnimator()->Play(L"Attack_Right");
 
-			if (Key(VK_UP) && !m_bGround)
+			if (Key(VK_UP) && !m_bCurGround)
 			{
 				GetAnimator()->Play(L"AttackUp_Right");
 			}
 
-			if (Key(VK_DOWN) && !m_bGround)
+			if (Key(VK_DOWN) && !m_bCurGround)
 			{
 				GetAnimator()->Play(L"AttackDown_Right");
 			}
@@ -496,12 +496,14 @@ void CKnight::OnCollisionExit(CCollider* _pOther)
 	CGameObject* pOtherObj = _pOther->GetObj();
 	if (pOtherObj->GetObjType() == GROUP_GAMEOBJ::GROUND)
 	{
-		m_bGround = false;
+		m_bPrevGround = m_bCurGround;
+		m_bCurGround = false;
 	}
-
+	
 	m_bWallLeft = false;
 	m_bWallRight = false;
 	m_bWallUnder = false;
+	//m_bJump = false;
 }
 
 void CKnight::CreateSoulMissile()

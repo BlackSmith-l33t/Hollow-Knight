@@ -80,7 +80,7 @@ void CGameObject::SetObjType(GROUP_GAMEOBJ type)
 
 void CGameObject::SetGround(bool bGround)
 {
-	m_bGround = bGround;
+	m_bCurGround = bGround;
 }
 
 void CGameObject::SetVelocity(fVec2 _velocity)
@@ -203,5 +203,5 @@ void CGameObject::SetGravity(float _fGravity)
 
 void CGameObject::GetGround(bool _bGround)
 {
-	m_bGround = _bGround;
+	m_bCurGround = _bGround;
 }
