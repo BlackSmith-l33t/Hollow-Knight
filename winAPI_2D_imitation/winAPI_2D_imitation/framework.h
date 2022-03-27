@@ -89,7 +89,7 @@ enum class STATE_MON
 
 enum class PLAYER_STATE
 {
-	START,
+	NONE,	
 	IDLE,
 	MOVE,
 	JUMP,
