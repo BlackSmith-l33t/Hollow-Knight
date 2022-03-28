@@ -21,34 +21,34 @@ CKnight::CKnight()
 	m_bLeft = false;
 	m_bAttack = false;
 
-	m_eCurState = PLAYER_STATE::NONE;
+	m_eCurState = PLAYER_STATE::IDLE;
 
 	//CD2DImage* m_pImg = CResourceManager::getInst()->LoadD2DImage(L"KnightImg", L"texture\\Animation\\Knight\\move4.png");
-	CD2DImage* m_pImg = CResourceManager::getInst()->LoadD2DImage(L"KnightImg", L"texture\\Animation\\Knight\\idle2.png");
+	CD2DImage* m_pImg = CResourceManager::getInst()->LoadD2DImage(L"KnightImg", L"texture\\Animation\\Knight\\knight_action.png");
 	SetName(L"Knight");
 	SetScale(fPoint(130.f, 130.f));
 
 	CreateGravity();
 	CreateCollider();
-	GetCollider()->SetScale(fPoint(40.f, 90.f));
-	//GetCollider()->SetOffsetPos(fPoint(0.f, 0.f));
+	GetCollider()->SetScale(fPoint(35.f, 130.f));
+	//GetCollider()->SetOffsetPos(fPoint(0.f, -10.f));
 
 	CreateAnimator();	
-	GetAnimator()->CreateAnimation(L"Idle_Left",  m_pImg, fPoint(0.f, 0.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.25f, 4, true);
-	GetAnimator()->CreateAnimation(L"Idle_Right", m_pImg, fPoint(0.f, 0.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.25f, 4);
+	GetAnimator()->CreateAnimation(L"Idle_Left",  m_pImg, fPoint(0.f, 0.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.2f, 4, true);
+	GetAnimator()->CreateAnimation(L"Idle_Right", m_pImg, fPoint(0.f, 0.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.2f, 4);
 
-	GetAnimator()->CreateAnimation(L"Move_Left",  m_pImg, fPoint(0.f, 0.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.1f, 8, true);
-	GetAnimator()->CreateAnimation(L"Move_Right", m_pImg, fPoint(0.f, 0.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.1f, 8);
+	GetAnimator()->CreateAnimation(L"Move_Left",  m_pImg, fPoint(0.f, 130.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.1f, 8, true);
+	GetAnimator()->CreateAnimation(L"Move_Right", m_pImg, fPoint(0.f, 130.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.1f, 8);
 
-	GetAnimator()->CreateAnimation(L"Jump_Left", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1, true);
-	GetAnimator()->CreateAnimation(L"Jump_Right", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1);
+	GetAnimator()->CreateAnimation(L"Jump_Left", m_pImg, fPoint(0.f, 260.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.08f, 9, true);
+	GetAnimator()->CreateAnimation(L"Jump_Right", m_pImg, fPoint(0.f, 260.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.08f, 9);
 
-	GetAnimator()->CreateAnimation(L"Fall_Left", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1, true);
-	GetAnimator()->CreateAnimation(L"Fall_Rgith", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1);
+	GetAnimator()->CreateAnimation(L"Fall_Left", m_pImg, fPoint(0.f, 390.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.1f, 9, true);
+	GetAnimator()->CreateAnimation(L"Fall_Rgith", m_pImg, fPoint(0.f, 390.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.1f, 9);
 
 	GetAnimator()->CreateAnimation(L"Attack_Left", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1, true);
 	GetAnimator()->CreateAnimation(L"Attack_Right", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1);
-
+	 
 	GetAnimator()->CreateAnimation(L"Dead_Pose_Left", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(130.f, 0.f), 0.8f, 11, true);
 	GetAnimator()->CreateAnimation(L"Dead_Pose_Right", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.8f, 3);
 
@@ -70,20 +70,14 @@ CKnight::CKnight()
 	GetAnimator()->CreateAnimation(L"LookUP_Right", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.5f, 4);
 	GetAnimator()->CreateAnimation(L"LookDown_Left", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.5f, 4, true);
 	GetAnimator()->CreateAnimation(L"LookDown_Right", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.5f, 4);	
+		
+	GetAnimator()->Play(L"Idle_Right");
 
-	
-
-
-
-
-	
-	//GetAnimator()->Play(L"Start_Pose");
-
-	/*CAnimation* pAni;
-	pAni = GetAnimator()->FindAnimation(L"LeftMove");
-	pAni->GetFrame(1).fptOffset = fPoint(0.f, -20.f);
-	pAni = GetAnimator()->FindAnimation(L"RightMove");
-	pAni->GetFrame(1).fptOffset = fPoint(0.f, -20.f);*/
+	//CAnimation* pAni;
+	//pAni = GetAnimator()->FindAnimation(L"Idle_Left");
+	//pAni->GetFrame(1).fptOffset = fPoint(0.f, -20.f);
+	//pAni = GetAnimator()->FindAnimation(L"Idle_Right");
+	//pAni->GetFrame(1).fptOffset = fPoint(0.f, -20.f);
 
 }
 
@@ -149,10 +143,10 @@ void CKnight::update_state()
 		m_eCurState = PLAYER_STATE::IDLE;
 	}
 
-	if (!m_bCurGround && m_ePrevState == PLAYER_STATE::MOVE)
+	/*if (!m_bCurGround && m_ePrevState == PLAYER_STATE::MOVE)
 	{
 		m_eCurState = PLAYER_STATE::FALL;
-	}
+	}*/
 
 	if (Key(VK_LEFT))
 	{
@@ -181,8 +175,7 @@ void CKnight::update_state()
 
 	if (KeyDown('Z') && m_bCurGround)
 	{
-		m_eCurState = PLAYER_STATE::JUMP;
-		//m_fvVelocity.x = -300.f;
+		m_eCurState = PLAYER_STATE::JUMP;		
 	}
 
 	if (KeyDown('X') && m_bCurGround)
@@ -291,14 +284,22 @@ void CKnight::update_move()
 		m_fvVelocity.y = -800.f;
 		m_fGAccel += m_fvVelocity.y;
 		pos.y += m_fGAccel * fDT;
-		m_bJump = true;
+		m_bJump = true;		
+		if (m_fGAccel > 0.f)
+		{
+			m_fGAccel = 400.f;
+			m_bJump = false;
+			m_eCurState == PLAYER_STATE::FALL;
+			Logger::debug(L"Fall");
+		}
 		Logger::debug(L"Jump");		
 	}
 
 	// FALL
-	if (m_eCurState == PLAYER_STATE::FALL && m_bWallBottom)
+	if (m_eCurState == PLAYER_STATE::JUMP && m_fGAccel > 0)
 	{	
 		m_fGAccel = 400.f;
+		m_bJump = false;
 		Logger::debug(L"Fall");
 	}
 
@@ -334,8 +335,6 @@ void CKnight::update_animation()
 
 	switch (m_eCurState)
 	{
-	 PLAYER_STATE::IDLE;
-		break;
 	case PLAYER_STATE::IDLE:
 		if (m_fvVelocity.x == 0 && m_eCurState != PLAYER_STATE::JUMP)
 		{
@@ -376,12 +375,12 @@ void CKnight::update_animation()
 	case PLAYER_STATE::JUMP:	
 		if (m_sCurDir == -1)
 		{
-			GetAnimator()->Play(L"Jump_Left");
+			GetAnimator()->Play(L"Jump_Left");			
 		}
 		else
 		{
-			GetAnimator()->Play(L"Jump_Right");
-		}
+			GetAnimator()->Play(L"Jump_Right");			
+		}		
 		break;
 	case PLAYER_STATE::FALL:
 		if (m_sCurDir == -1)
