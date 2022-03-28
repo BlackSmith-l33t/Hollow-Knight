@@ -58,10 +58,10 @@ void CScene_Town::Enter()
 	map->Load(L"Map_Town", L"texture\\map\\Map_Town1.png");
 	AddObject(map, GROUP_GAMEOBJ::MAP);
 
-	CBackGround* backGround = new CBackGround;
-	backGround->Load(L"BackGround_Town", L"texture\\background\\Background_Town.png");
-	//backGround->SetPos(fPoint(-100.f, -500.f));
-	AddObject(backGround, GROUP_GAMEOBJ::BACKGROUND);
+	//CBackGround* backGround = new CBackGround;
+	//backGround->Load(L"BackGround_Town", L"texture\\background\\Background_Town.png");
+	////backGround->SetPos(fPoint(-100.f, -500.f));
+	//AddObject(backGround, GROUP_GAMEOBJ::BACKGROUND);
 
 	CGround* pGround_01 = new CGround;
 	pGround_01->SetPos(fPoint(1662.f, 2178.f));

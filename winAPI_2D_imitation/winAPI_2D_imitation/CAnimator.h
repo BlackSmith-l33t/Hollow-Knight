@@ -11,7 +11,10 @@ class CAnimator
 private:
 	map<wstring, CAnimation*>	m_mapAni;
 	CAnimation* m_pCurAni;
+	CAnimation* m_pNextAni;
 	CGameObject* m_pOwner;
+
+	bool		m_bRepeat;
 
 public:
 	CAnimator();
@@ -19,13 +22,15 @@ public:
 	~CAnimator();
 
 	CGameObject* GetObj();
-
+	
 	void update();
 	void render();
+
 
 	void CreateAnimation(const wstring& strName, CD2DImage* tex, fPoint lt, fPoint slice,
 		fPoint step, float duration, UINT frmCount, bool reverse = false);
 	CAnimation* FindAnimation(const wstring& strName);
-	void Play(const wstring& strName);
+	void Play(const wstring& strName, bool bRepeat);
+	void PlayNextAnimation(const wstring& strName, bool bRepeat, const wstring& strNextName);
 };
 

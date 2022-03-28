@@ -21,7 +21,7 @@ CMonster::CMonster()
 
 	CreateAnimator();
 	GetAnimator()->CreateAnimation(L"PlayerStand", m_pImg, fPoint(0, 0), fPoint(32.f, 32.f), fPoint(32.f, 0), 0.1f, 5, true);
-	GetAnimator()->Play(L"PlayerStand");
+	GetAnimator()->Play(L"PlayerStand", false);
 }
 
 CMonster::~CMonster()

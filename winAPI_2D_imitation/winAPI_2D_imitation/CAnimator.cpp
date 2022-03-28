@@ -4,8 +4,11 @@
 
 CAnimator::CAnimator()
 {
+	m_mapAni = {};
 	m_pCurAni = nullptr;
+	m_pNextAni = nullptr;
 	m_pOwner = nullptr;
+	m_bRepeat = false;
 }
 
 CAnimator::CAnimator(const CAnimator& pOther)
@@ -40,6 +43,19 @@ void CAnimator::update()
 	if (nullptr != m_pCurAni)
 	{
 		m_pCurAni->update();
+
+		if (m_bRepeat && m_pCurAni->IsFinish())
+		{
+			m_pCurAni->SetFrame(0);
+		}
+		else if (!m_bRepeat && m_pCurAni->IsFinish() && nullptr != m_pNextAni)
+		{
+			m_pCurAni->SetFrame(0);
+			m_pCurAni = m_pNextAni;
+			m_pNextAni = nullptr;
+			m_pCurAni->SetFrame(0);
+			m_bRepeat = true;
+		}
 	}
 }
 
@@ -77,7 +93,25 @@ CAnimation* CAnimator::FindAnimation(const wstring& strName)
 	return iter->second;
 }
 
-void CAnimator::Play(const wstring& strName)
-{
+void CAnimator::Play(const wstring& strName, bool bRepeat)
+{	
+	if (m_pCurAni == FindAnimation(strName))
+	{
+		return;
+	}
 	m_pCurAni = FindAnimation(strName);
+	m_pCurAni->m_iCurFrm = 0;
+	m_bRepeat = bRepeat;
+}
+
+void CAnimator::PlayNextAnimation(const wstring& strName, bool bRepeat, const wstring& strNextName)
+{
+	if (m_pCurAni == FindAnimation(strName))
+	{
+		return;
+	}
+	m_pCurAni = FindAnimation(strName);
+	m_pNextAni = FindAnimation(strNextName);
+	m_pCurAni->m_iCurFrm = 0;
+	m_bRepeat = bRepeat;
 }

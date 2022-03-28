@@ -44,6 +44,7 @@ const wstring& CAnimation::GetName()
 
 void CAnimation::SetFrame(int frmIndex)
 {
+    m_bFinish = false;
     m_iCurFrm = frmIndex;
 }
 

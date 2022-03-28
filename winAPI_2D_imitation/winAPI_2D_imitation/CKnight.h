@@ -3,20 +3,21 @@
 
 class CD2DImage;
 class CState;
+class CAnimation;
 
 class CKnight : public CGameObject
 {
 	friend class CGround;
 private:
 	static CKnight* instance;
-
+	CAnimation* pAni;
+	
 	short m_pHP;			// HP
 	short m_pGeo;			// 게임 내 화폐
 	short m_sCurDir;       // 현재 방향
 	short m_sPrevDir;		// 이전 방향
 
-	//float m_fGAccel;		// 중력 가속도
-	float m_fMaxGAccel;		// 최대 중력 가속도
+	float m_fMaxAccel;		// 최대 중력 가속도
 	float m_fJump;			// 점프력
 	float m_MaxVelocity;    // 최대 속도 
 	
