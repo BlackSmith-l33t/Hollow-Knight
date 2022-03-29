@@ -36,9 +36,9 @@ CKnight::CKnight()
 	CreateAnimator();	
 	GetAnimator()->CreateAnimation(L"Idle_Left",  m_pImg, fPoint(0.f, 0.f),    fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.2f, 4, true);
 	GetAnimator()->CreateAnimation(L"Idle_Right", m_pImg, fPoint(0.f, 0.f),    fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.2f, 4);
-
-	GetAnimator()->CreateAnimation(L"Move_Left",  m_pImg, fPoint(0.f, 130.f),  fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.1f, 8, true);
-	GetAnimator()->CreateAnimation(L"Move_Right", m_pImg, fPoint(0.f, 130.f),  fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.1f, 8);
+	
+	GetAnimator()->CreateAnimation(L"Move_Left",  m_pImg, fPoint(0.f, 130.f),  fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.09f, 6, true);
+	GetAnimator()->CreateAnimation(L"Move_Right", m_pImg, fPoint(0.f, 130.f),  fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.09f, 6);
 
 	GetAnimator()->CreateAnimation(L"Jump_Left",  m_pImg,  fPoint(0.f, 260.f),  fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.1f,  8, true);
 	GetAnimator()->CreateAnimation(L"Jump_Right", m_pImg,  fPoint(0.f, 260.f),  fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.1f, 8);
@@ -101,9 +101,9 @@ void CKnight::update()
 	update_move();
 	update_animation();
 
-	if (Key(VK_LBUTTON)) // 테스트용 재시작 버튼
+	if (Key(VK_SPACE)) // 테스트용 재시작 버튼
 	{
-		m_fptPos = (fPoint(3130, 2090));
+		this->SetPos(fPoint(3000, 1700.f));
 		m_bWallLeft = false;
 		m_bWallRight = false;
 		m_bWallBottom = false;
@@ -137,10 +137,10 @@ void CKnight::update_state()
 	//	m_eCurState = PLAYER_STATE::IDLE;
 	//}
 
-	/*if (!m_bCurGround && m_ePrevState == PLAYER_STATE::MOVE)
+	if (m_fvVelocity.y <= 0 && !m_bCurGround && m_eCurState == PLAYER_STATE::IDLE)
 	{
 		m_eCurState = PLAYER_STATE::FALL;
-	}*/
+	}	
 
 	if (Key(VK_LEFT))
 	{
@@ -182,11 +182,11 @@ void CKnight::update_state()
 		m_eCurState = PLAYER_STATE::SOULCHARGE;
 	}
 
-	if (KeyDown(VK_SPACE))
+	/*if (KeyDown(VK_SPACE))
 	{
 		m_eCurState = PLAYER_STATE::SOULMISSILE;
 		CreateSoulMissile();
-	}
+	}*/
 
 	if (KeyDown('B'))
 	{
@@ -268,7 +268,6 @@ void CKnight::update_move()
 		if (KeyUp(VK_DOWN) && !m_bAttack)
 		{
 			m_fptCurView.y -= 10.f;
-			CCameraManager::getInst()->SetLookAt(fPoint(m_fptCurView.x, m_fptCurView.y - m_fptCurView.y));
 		}
 	}
 	// JUMP 
@@ -283,7 +282,7 @@ void CKnight::update_move()
 	}
 
 	//FALL
-	if (m_ePrevState == PLAYER_STATE::JUMP && m_fGAccel > 0.f)
+ 	if (m_ePrevState == PLAYER_STATE::JUMP && m_fGAccel > 0.f)
 	{	
 		m_fGAccel = 250.f;
 		m_bJump = false;
@@ -363,25 +362,33 @@ void CKnight::update_animation()
 	case PLAYER_STATE::JUMP:	
 		if (m_sCurDir == -1 && m_ePrevState == PLAYER_STATE::JUMP)
 		{			
-			GetAnimator()->Play(L"Jump_Left", false);
-			/*pAni = GetAnimator()->FindAnimation(L"Jump_Left");
-			pAni->SetFrame(0);*/
+			GetAnimator()->Play(L"Jump_Left", false);			
 		}
 		else if (m_sCurDir == 1 && m_ePrevState == PLAYER_STATE::JUMP)
 		{
-			GetAnimator()->Play(L"Jump_Right", false);
-			/*pAni = GetAnimator()->FindAnimation(L"Jump_Right");
-			pAni->SetFrame(0);*/
+			GetAnimator()->Play(L"Jump_Right", false);		
 		}		
 		break;
 	case PLAYER_STATE::FALL:
 		if (m_sCurDir == -1)
-		{
-			GetAnimator()->Play(L"Fall_Left", false);
+		{		
+			GetAnimator()->Play(L"Fall_Left", false);	
+
+			pAni = GetAnimator()->FindAnimation(L"Fall_Left");
+			if (!m_bCurGround && pAni->IsFindFrame(5))
+			{				
+				pAni->SetFrame(5);
+			}
 		}
 		else
 		{
 			GetAnimator()->Play(L"Fall_Right", false);
+
+			pAni = GetAnimator()->FindAnimation(L"Fall_Right");
+			if (!m_bCurGround && pAni->IsFindFrame(5))
+			{				
+				pAni->SetFrame(5);
+			}
 		}
 		break;
 	case PLAYER_STATE::ATTACK:

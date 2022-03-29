@@ -43,6 +43,7 @@ public:
 	void Create(CD2DImage* tex, fPoint lt, fPoint slice, fPoint step, float duration, UINT frmCount);	// 局聪皋捞记 积己
 
 	bool IsFinish() { return m_bFinish; }
+	bool IsFindFrame(int iFrame);
 
 };
 

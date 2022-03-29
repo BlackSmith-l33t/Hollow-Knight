@@ -50,7 +50,7 @@ void CScene_Town::Enter()
 
 	// Knight 생성
 	CKnight* pKnight = new CKnight;
-	pKnight->SetPos(fPoint(3130, 2000));
+	pKnight->SetPos(fPoint(3000, 1700.f));
 	AddObject(pKnight, GROUP_GAMEOBJ::KNIGHT);
 	pKnight->RegisterPlayer();
 
