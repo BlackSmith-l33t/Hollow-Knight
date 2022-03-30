@@ -11,6 +11,7 @@ CAnimation::CAnimation()
     m_pImg = nullptr;
     m_iCurFrm = 0;
     m_fAccTime = 0;
+    m_bFinish = false;
 }
 
 CAnimation::CAnimation(const CAnimation& pOther)
@@ -43,9 +44,11 @@ const wstring& CAnimation::GetName()
 }
 
 void CAnimation::SetFrame(int frmIndex)
-{
+{    
+    // TODO  : 체크
     m_bFinish = false;
     m_iCurFrm = frmIndex;
+    m_fAccTime = 0.f;
 }
 
 tAniFrm& CAnimation::GetFrame(int frmIndex)
@@ -55,18 +58,33 @@ tAniFrm& CAnimation::GetFrame(int frmIndex)
 
 void CAnimation::update()
 {
+    if (m_bFinish) return;
+
     m_fAccTime += fDT;
 
     if (m_vecFrm[m_iCurFrm].fDuration < m_fAccTime)
     {
         m_iCurFrm++;
-        m_iCurFrm %= m_vecFrm.size();
+
+        if (m_iCurFrm >= m_vecFrm.size())
+        {
+            m_bFinish = true;
+            m_iCurFrm = -1;
+            m_fAccTime = 0.f;
+            return;
+        }
+        else
+        {
+            m_iCurFrm %= m_vecFrm.size();            
+        }       
         m_fAccTime -= m_vecFrm[m_iCurFrm].fDuration;
     }
 }
 
 void CAnimation::render()
 {
+    if (m_bFinish) return;
+
     CGameObject* pObj = m_pAnimator->GetObj();
     fPoint fptPos = pObj->GetPos();
     fPoint fptScale = pObj->GetScale();
@@ -124,6 +142,11 @@ void CAnimation::Create(CD2DImage* img,     // 애니메이션의 이미지
 
         m_vecFrm.push_back(frm);
     }
+}
+
+bool CAnimation::IsFinish()
+{    
+    return m_bFinish; 
 }
 
 bool CAnimation::IsFindFrame(int iFrame)

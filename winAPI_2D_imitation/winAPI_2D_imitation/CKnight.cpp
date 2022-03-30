@@ -48,8 +48,11 @@ CKnight::CKnight()
 	GetAnimator()->CreateAnimation(L"Fall_Left", m_pImg, fPoint(0.f, 390.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.1f, 9, true);
 	GetAnimator()->CreateAnimation(L"Fall_Right", m_pImg, fPoint(0.f, 390.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.1f, 9);
 
-	GetAnimator()->CreateAnimation(L"Attack_Left", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1, true);
-	GetAnimator()->CreateAnimation(L"Attack_Right", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1);
+	GetAnimator()->CreateAnimation(L"Attack_Left", m_pImg, fPoint(0.f, 520.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.08f, 4, true);
+	GetAnimator()->CreateAnimation(L"Attack_Right", m_pImg, fPoint(0.f, 520.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.08f, 4);
+
+	GetAnimator()->CreateAnimation(L"SoulMissile_Left",  m_pImg, fPoint(0.f, 650.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.1f, 8, true);
+	GetAnimator()->CreateAnimation(L"SoulMissile_Right", m_pImg, fPoint(0.f, 650.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.1f, 8);
 
 	GetAnimator()->CreateAnimation(L"Dead_Pose_Left", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(130.f, 0.f), 0.8f, 11, true);
 	GetAnimator()->CreateAnimation(L"Dead_Pose_Right", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.8f, 3);
@@ -59,9 +62,6 @@ CKnight::CKnight()
 
 	GetAnimator()->CreateAnimation(L"HP_Charge_Left", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1, true);
 	GetAnimator()->CreateAnimation(L"HP_Charge_Right", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1);
-
-	GetAnimator()->CreateAnimation(L"SoulMissile_Left", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1, true);
-	GetAnimator()->CreateAnimation(L"SoulMissile_Right", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1);
 
 	GetAnimator()->CreateAnimation(L"AttackUp_Left", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1, true);
 	GetAnimator()->CreateAnimation(L"AttackUP_Right", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.25f, 1);
@@ -111,9 +111,6 @@ void CKnight::update()
 		m_bWallBottom = false;
 	}
 
-
-
-
 	//CCameraManager::getInst()->SetLookAt(GetPos());
 
 	GetAnimator()->update();
@@ -137,10 +134,10 @@ CKnight* CKnight::GetPlayer()
 #pragma region Update State
 void CKnight::update_state()
 {
-	//if (m_fvVelocity.x == 0 && m_bCurGround && m_ePrevState == PLAYER_STATE::JUMP)
-	//{
-	//	m_eCurState = PLAYER_STATE::IDLE;
-	//}
+	if (m_fvVelocity.x == 0 && m_bCurGround && m_eCurState != PLAYER_STATE::ATTACK)
+	{
+		m_eCurState = PLAYER_STATE::IDLE;
+	}
 
 	if (m_fvVelocity.y <= 0 && !m_bCurGround && m_eCurState == PLAYER_STATE::IDLE)
 	{
@@ -320,7 +317,7 @@ void CKnight::update_move()
 
 	SetPos(pos);
 
-	m_fGAccel += Gravity * fDT;
+	m_fGAccel += Gravity * fDT;	
 
 	if (m_fGAccel >= 2000.f)
 	{
@@ -399,30 +396,29 @@ void CKnight::update_animation()
 		{
 			GetAnimator()->Play(L"Fall_Left", false);
 
-			pAni = GetAnimator()->FindAnimation(L"Fall_Left");
-			if (!m_bCurGround || pAni->IsFindFrame(5))
-			{
-				pAni->SetFrame(5);
-				// TODO : 마지막 프레임에 duration 무한값 대입해보기
-			}
+			//pAni = GetAnimator()->FindAnimation(L"Fall_Left");
+			//if (!m_bCurGround || pAni->IsFindFrame(5))
+			//{
+			//	pAni->SetFrame(5);
+			//	// TODO : 마지막 프레임에 duration 무한값 대입해보기
+			//}
 		}
 		else
 		{
 			GetAnimator()->Play(L"Fall_Right", false);
 
-			pAni = GetAnimator()->FindAnimation(L"Fall_Right");
-			if (!m_bCurGround || pAni->IsFindFrame(5))
-			{
-				pAni->SetFrame(5);
-			}
+			//pAni = GetAnimator()->FindAnimation(L"Fall_Right");
+			//if (!m_bCurGround || pAni->IsFindFrame(5))
+			//{
+			//	pAni->SetFrame(5);
+			//}
 		}
 		break;
 	case PLAYER_STATE::ATTACK:
 		if (m_sCurDir == -1)
 		{
-			GetAnimator()->Play(L"Attack_Left", false);
-
-			if (Key(VK_UP) && !m_bCurGround)
+			GetAnimator()->Play(L"Attack_Left", false);			
+			/*if (Key(VK_UP) && !m_bCurGround)
 			{
 				GetAnimator()->Play(L"AttackUp_Left", false);
 			}
@@ -430,13 +426,12 @@ void CKnight::update_animation()
 			if (Key(VK_DOWN) && !m_bCurGround)
 			{
 				GetAnimator()->Play(L"AttackDown_Left", false);
-			}
+			}*/
 		}
 		else
 		{
-			GetAnimator()->Play(L"Attack_Right", false);
-
-			if (Key(VK_UP) && !m_bCurGround)
+			GetAnimator()->Play(L"Attack_Right", false);			
+			/*if (Key(VK_UP) && !m_bCurGround)
 			{
 				GetAnimator()->Play(L"AttackUp_Right", false);
 			}
@@ -444,7 +439,7 @@ void CKnight::update_animation()
 			if (Key(VK_DOWN) && !m_bCurGround)
 			{
 				GetAnimator()->Play(L"AttackDown_Right", false);
-			}
+			}*/
 		}
 		break;
 	case PLAYER_STATE::DAMAGED:

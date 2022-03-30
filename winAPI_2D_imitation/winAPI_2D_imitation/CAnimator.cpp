@@ -8,7 +8,7 @@ CAnimator::CAnimator()
 	m_pCurAni = nullptr;
 	m_pNextAni = nullptr;
 	m_pOwner = nullptr;
-	m_bRepeat = false;
+	m_bRepeat = false;	
 	m_iFrameIndex = 0;
 }
 
@@ -55,7 +55,7 @@ void CAnimator::update()
 			m_pCurAni = m_pNextAni;
 			m_pNextAni = nullptr;
 			m_pCurAni->SetFrame(0);
-			m_bRepeat = true;
+			m_bRepeat = false;
 		}
 	}
 }

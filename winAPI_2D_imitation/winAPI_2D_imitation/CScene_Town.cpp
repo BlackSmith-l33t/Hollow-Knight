@@ -64,7 +64,6 @@ void CScene_Town::Enter()
 
 	CBackGround* backGround = new CBackGround;
 	backGround->Load(L"BackGround_Town", L"texture\\background\\Background_Town.png");
-	//backGround->SetPos(fPoint(-100.f, -500.f));
 	AddObject(backGround, GROUP_GAMEOBJ::BACKGROUND);
 
 	CGround* pGround_01 = new CGround;
