@@ -104,7 +104,6 @@ void CAnimation::render()
             frm.fptLT.y + frm.fptSlice.y
         );
     }
-
 }
 
 void CAnimation::Create(CD2DImage* img,     // 애니메이션의 이미지
@@ -132,6 +131,6 @@ bool CAnimation::IsFindFrame(int iFrame)
     for (int i = 0; i < m_vecFrm.size(); i++)
     {
         if (m_iCurFrm == iFrame) return true;
-    }   
+    }
     return false;
 }

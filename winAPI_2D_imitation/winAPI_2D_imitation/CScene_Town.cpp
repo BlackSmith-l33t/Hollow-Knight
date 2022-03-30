@@ -6,6 +6,7 @@
 #include "CGameObject.h"
 #include "CKnight.h"
 #include "CGround.h"
+#include "CMonster.h"
 
 CScene_Town::CScene_Town()
 {
@@ -50,18 +51,21 @@ void CScene_Town::Enter()
 
 	// Knight 생성
 	CKnight* pKnight = new CKnight;
-	pKnight->SetPos(fPoint(3000, 1700.f));
+	pKnight->SetPos(fPoint(2000, 2178.f));
 	AddObject(pKnight, GROUP_GAMEOBJ::KNIGHT);
 	pKnight->RegisterPlayer();
+
+	CMonster* pMon = CMonster::Create(MON_TYPE::NORMAL, fPoint(2500.f, 2100.f));
+	AddObject(pMon, GROUP_GAMEOBJ::MONSTER);
 
 	CMap* map = new CMap;
 	map->Load(L"Map_Town", L"texture\\map\\Map_Town1.png");
 	AddObject(map, GROUP_GAMEOBJ::MAP);
 
-	//CBackGround* backGround = new CBackGround;
-	//backGround->Load(L"BackGround_Town", L"texture\\background\\Background_Town.png");
-	////backGround->SetPos(fPoint(-100.f, -500.f));
-	//AddObject(backGround, GROUP_GAMEOBJ::BACKGROUND);
+	CBackGround* backGround = new CBackGround;
+	backGround->Load(L"BackGround_Town", L"texture\\background\\Background_Town.png");
+	//backGround->SetPos(fPoint(-100.f, -500.f));
+	AddObject(backGround, GROUP_GAMEOBJ::BACKGROUND);
 
 	CGround* pGround_01 = new CGround;
 	pGround_01->SetPos(fPoint(1662.f, 2178.f));
@@ -92,9 +96,11 @@ void CScene_Town::Enter()
 	pGround_06->SetPos(fPoint(3000.f, 1900.f));
 	pGround_06->SetScale(fPoint(200.f, 64.f));
 	AddObject(pGround_06, GROUP_GAMEOBJ::GROUND);
-	
+
 	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::KNIGHT, GROUP_GAMEOBJ::GROUND);
 	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::KNIGHT, GROUP_GAMEOBJ::TILE);
+	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::NAIL, GROUP_GAMEOBJ::MONSTER);
+	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::KNIGHT, GROUP_GAMEOBJ::MONSTER);
 
 	//CCameraManager::getInst()->SetLookAt(fPoint(WINSIZEX / 2.f, WINSIZEY / 2.f));
 	//CCameraManager::getInst()->SetLookAt(fPoint(pKnight->GetPos().x, pKnight->GetPos().y));

@@ -82,6 +82,11 @@ void CCollider::render()
 	else
 		rgb = RGB(0, 255, 0);
 
+	if (GROUP_GAMEOBJ::NAIL == m_pOwner->GetObjType())
+	{
+		rgb = RGB(0, 0, 255);
+	}
+
 	fPoint fptRenderPos = CCameraManager::getInst()->GetRenderPos(m_fptFinalPos);
 
 	CRenderManager::getInst()->RenderRectangle(

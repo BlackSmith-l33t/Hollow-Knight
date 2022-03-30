@@ -56,11 +56,11 @@ void CScene_Stage_01::Enter()
 	// 몬스터 배치
 	CMonster* pMon = CMonster::Create(MON_TYPE::NORMAL, fPoint(500.f, 500.f));
 	AddObject(pMon, GROUP_GAMEOBJ::MONSTER);
-			
+
 	CMap* map = new CMap;
 	map->Load(L"Map_Stage01", L"texture\\Background\\Stage_01.png");
 	//map->SetPos(fPoint(100.f, -500.f));
-	AddObject(map, GROUP_GAMEOBJ::MAP);	
+	AddObject(map, GROUP_GAMEOBJ::MAP);
 
 	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::KNIGHT, GROUP_GAMEOBJ::MONSTER);
 	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::KNIGHT, GROUP_GAMEOBJ::TILE);

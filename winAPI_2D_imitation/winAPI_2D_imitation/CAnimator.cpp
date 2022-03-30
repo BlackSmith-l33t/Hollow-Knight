@@ -9,6 +9,7 @@ CAnimator::CAnimator()
 	m_pNextAni = nullptr;
 	m_pOwner = nullptr;
 	m_bRepeat = false;
+	m_iFrameIndex = 0;
 }
 
 CAnimator::CAnimator(const CAnimator& pOther)
@@ -94,7 +95,7 @@ CAnimation* CAnimator::FindAnimation(const wstring& strName)
 }
 
 void CAnimator::Play(const wstring& strName, bool bRepeat)
-{	
+{
 	if (m_pCurAni == FindAnimation(strName))
 	{
 		return;

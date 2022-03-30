@@ -44,6 +44,8 @@ enum class GROUP_GAMEOBJ
 	TILE,
 	GROUND,
 	KNIGHT,
+	NAIL,
+	EFFECT,
 	SOUL_MISSILE,
 	MONSTER,
 	MONSTER_MISSILE,
@@ -89,7 +91,7 @@ enum class STATE_MON
 
 enum class PLAYER_STATE
 {
-	NONE,	
+	NONE,
 	IDLE,
 	MOVE,
 	JUMP,

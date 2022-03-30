@@ -5,7 +5,7 @@ class CMissile : public CGameObject
 {
 private:
 	fVec2 m_fvDir;
-	float m_fSpeed = 400.f;
+	float m_fSpeed = 200.f;
 
 public:
 	CMissile();

@@ -7,6 +7,7 @@ class CD2DImage;
 class CAnimator
 {
 	friend class CGameObject;
+	friend class CKnight;
 
 private:
 	map<wstring, CAnimation*>	m_mapAni;
@@ -14,6 +15,7 @@ private:
 	CAnimation* m_pNextAni;
 	CGameObject* m_pOwner;
 
+	int			m_iFrameIndex;
 	bool		m_bRepeat;
 
 public:
@@ -22,7 +24,7 @@ public:
 	~CAnimator();
 
 	CGameObject* GetObj();
-	
+
 	void update();
 	void render();
 

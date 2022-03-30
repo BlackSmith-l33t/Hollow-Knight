@@ -4,6 +4,7 @@
 class CD2DImage;
 class CState;
 class CAnimation;
+class CNail;
 
 class CKnight : public CGameObject
 {
@@ -11,7 +12,8 @@ class CKnight : public CGameObject
 private:
 	static CKnight* instance;
 	CAnimation* pAni;
-	
+	CNail* pNail;
+
 	short m_pHP;			// HP
 	short m_pGeo;			// 게임 내 화폐
 	short m_sCurDir;       // 현재 방향
@@ -20,12 +22,12 @@ private:
 	float m_fMaxAccel;		// 최대 중력 가속도
 	float m_fJump;			// 점프력
 	float m_MaxVelocity;    // 최대 속도 
-	
+
 	bool  m_bLeft;			// 방향
 	bool  m_bAttack;        // 공격 여부 
 	bool  m_bDamaged;       // 공격 받은 여부
 	bool m_bFall;
-	
+
 
 	fVec2 m_fvVelocity;		// 속도
 
@@ -55,6 +57,8 @@ public:
 	virtual void OnCollision(CCollider* _pOther);
 	virtual void OnCollisionEnter(CCollider* _pOther);
 	virtual void OnCollisionExit(CCollider* _pOther);
+
+	void Attack();
 
 };
 
