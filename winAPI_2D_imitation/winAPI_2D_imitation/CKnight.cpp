@@ -39,14 +39,14 @@ CKnight::CKnight()
 	GetAnimator()->CreateAnimation(L"Idle_Left", m_pImg, fPoint(0.f, 0.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.2f, 4, true);
 	GetAnimator()->CreateAnimation(L"Idle_Right", m_pImg, fPoint(0.f, 0.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.2f, 4);
 
-	GetAnimator()->CreateAnimation(L"Move_Left", m_pImg, fPoint(0.f, 130.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.09f, 6, true);
-	GetAnimator()->CreateAnimation(L"Move_Right", m_pImg, fPoint(0.f, 130.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.09f, 6);
+	GetAnimator()->CreateAnimation(L"Move_Left", m_pImg, fPoint(0.f, 130.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.09f, 7, true);
+	GetAnimator()->CreateAnimation(L"Move_Right", m_pImg, fPoint(0.f, 130.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.09f, 7);
 
-	GetAnimator()->CreateAnimation(L"Jump_Left", m_pImg, fPoint(0.f, 260.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.1f, 8, true);
-	GetAnimator()->CreateAnimation(L"Jump_Right", m_pImg, fPoint(0.f, 260.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.1f, 8);
+	GetAnimator()->CreateAnimation(L"Jump_Left", m_pImg, fPoint(0.f, 260.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.1f, 7, true);
+	GetAnimator()->CreateAnimation(L"Jump_Right", m_pImg, fPoint(0.f, 260.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.1f, 7);
 
-	GetAnimator()->CreateAnimation(L"Fall_Left", m_pImg, fPoint(0.f, 390.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.1f, 9, true);
-	GetAnimator()->CreateAnimation(L"Fall_Right", m_pImg, fPoint(0.f, 390.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.1f, 9);
+	GetAnimator()->CreateAnimation(L"Fall_Left", m_pImg, fPoint(0.f, 390.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.1f, 5, true);
+	GetAnimator()->CreateAnimation(L"Fall_Right", m_pImg, fPoint(0.f, 390.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.1f, 5);
 
 	GetAnimator()->CreateAnimation(L"Attack_Left", m_pImg, fPoint(0.f, 520.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.08f, 4, true);
 	GetAnimator()->CreateAnimation(L"Attack_Right", m_pImg, fPoint(0.f, 520.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.08f, 4);
@@ -114,6 +114,13 @@ void CKnight::update()
 	//CCameraManager::getInst()->SetLookAt(GetPos());
 
 	GetAnimator()->update();
+
+	if (m_bAttack)
+	{
+		m_bAttack = false;
+	}
+
+	m_ePrevState = m_eCurState;
 }
 
 void CKnight::render()
@@ -134,7 +141,14 @@ CKnight* CKnight::GetPlayer()
 #pragma region Update State
 void CKnight::update_state()
 {
-	if (m_fvVelocity.x == 0 && m_bCurGround && m_eCurState != PLAYER_STATE::ATTACK)
+	if (m_fvVelocity.x == 0 && m_bCurGround && 
+		m_eCurState != PLAYER_STATE::ATTACK && 
+		m_eCurState != PLAYER_STATE::JUMP)
+	{
+		m_eCurState = PLAYER_STATE::IDLE;
+	}
+
+	if (!m_bAttack)
 	{
 		m_eCurState = PLAYER_STATE::IDLE;
 	}
@@ -175,10 +189,11 @@ void CKnight::update_state()
 	}
 
 	if (KeyDown('X'))
-	{
+	{	
 		m_eCurState = PLAYER_STATE::ATTACK;
+		m_bAttack = true;
 		Attack();
-	}
+	}	
 
 	if (KeyDown('A') && m_bCurGround)
 	{
@@ -201,7 +216,7 @@ void CKnight::update_state()
 		// TODO : Á¾·á ButtonUI
 	}
 
-	m_ePrevState = m_eCurState;
+	//m_ePrevState = m_eCurState;
 }
 #pragma endregion
 
@@ -281,7 +296,7 @@ void CKnight::update_move()
 		m_fGAccel += m_fvVelocity.y;
 		pos.y += m_fGAccel * fDT;
 		m_bJump = true;
-		Logger::debug(L"Jump");
+		//Logger::debug(L"Jump");
 	}
 
 	//FALL
@@ -341,7 +356,7 @@ void CKnight::update_animation()
 	{
 		return;
 	}*/
-
+	
 	switch (m_eCurState)
 	{
 	case PLAYER_STATE::IDLE:
@@ -426,7 +441,7 @@ void CKnight::update_animation()
 			if (Key(VK_DOWN) && !m_bCurGround)
 			{
 				GetAnimator()->Play(L"AttackDown_Left", false);
-			}*/
+			}*/			
 		}
 		else
 		{
@@ -439,7 +454,7 @@ void CKnight::update_animation()
 			if (Key(VK_DOWN) && !m_bCurGround)
 			{
 				GetAnimator()->Play(L"AttackDown_Right", false);
-			}*/
+			}*/			
 		}
 		break;
 	case PLAYER_STATE::DAMAGED:
@@ -561,7 +576,7 @@ void CKnight::Attack()
 	fPoint fptNailPos = GetPos();
 	fPoint fptHandPos = fPoint(m_fptPos.x, m_fptPos.y);
 
-	// Nail Object	
+	// Nail Object		
 	pNail = new CNail;
 	if (1 == m_sCurDir)
 	{

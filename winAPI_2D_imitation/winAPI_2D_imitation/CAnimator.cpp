@@ -49,6 +49,10 @@ void CAnimator::update()
 		{
 			m_pCurAni->SetFrame(0);
 		}
+		else if (!m_bRepeat && m_pCurAni->IsFinish())
+		{
+			m_pCurAni->SetFrame(m_pCurAni->m_vecFrm.size());
+		}
 		else if (!m_bRepeat && m_pCurAni->IsFinish() && nullptr != m_pNextAni)
 		{
 			m_pCurAni->SetFrame(0);

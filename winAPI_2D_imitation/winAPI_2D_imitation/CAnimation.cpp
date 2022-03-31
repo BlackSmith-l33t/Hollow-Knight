@@ -44,8 +44,7 @@ const wstring& CAnimation::GetName()
 }
 
 void CAnimation::SetFrame(int frmIndex)
-{    
-    // TODO  : üũ
+{      
     m_bFinish = false;
     m_iCurFrm = frmIndex;
     m_fAccTime = 0.f;
@@ -58,32 +57,26 @@ tAniFrm& CAnimation::GetFrame(int frmIndex)
 
 void CAnimation::update()
 {
-    if (m_bFinish) return;
-
     m_fAccTime += fDT;
 
     if (m_vecFrm[m_iCurFrm].fDuration < m_fAccTime)
-    {
-        m_iCurFrm++;
-
+    {        
         if (m_iCurFrm >= m_vecFrm.size())
         {
             m_bFinish = true;
             m_iCurFrm = -1;
             m_fAccTime = 0.f;
             return;
-        }
-        else
-        {
-            m_iCurFrm %= m_vecFrm.size();            
-        }       
+        }   
+        m_iCurFrm++;
+        m_iCurFrm %= m_vecFrm.size();
         m_fAccTime -= m_vecFrm[m_iCurFrm].fDuration;
     }
 }
 
 void CAnimation::render()
 {
-    if (m_bFinish) return;
+    //if (m_bFinish) return;
 
     CGameObject* pObj = m_pAnimator->GetObj();
     fPoint fptPos = pObj->GetPos();
