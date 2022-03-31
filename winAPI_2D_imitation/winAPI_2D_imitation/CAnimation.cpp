@@ -56,11 +56,14 @@ tAniFrm& CAnimation::GetFrame(int frmIndex)
 }
 
 void CAnimation::update()
-{
-    m_fAccTime += fDT;
+{    
+    if (m_bFinish) return;
+    m_fAccTime += fDT;  
 
     if (m_vecFrm[m_iCurFrm].fDuration < m_fAccTime)
     {        
+        // TODO : 외부에서 IsFinish 함수 호출시 false 반환 문제
+        ++m_iCurFrm;
         if (m_iCurFrm >= m_vecFrm.size())
         {
             m_bFinish = true;
@@ -68,7 +71,7 @@ void CAnimation::update()
             m_fAccTime = 0.f;
             return;
         }   
-        m_iCurFrm++;
+       
         m_iCurFrm %= m_vecFrm.size();
         m_fAccTime -= m_vecFrm[m_iCurFrm].fDuration;
     }
@@ -76,7 +79,7 @@ void CAnimation::update()
 
 void CAnimation::render()
 {
-    //if (m_bFinish) return;
+    if (m_bFinish) return;
 
     CGameObject* pObj = m_pAnimator->GetObj();
     fPoint fptPos = pObj->GetPos();

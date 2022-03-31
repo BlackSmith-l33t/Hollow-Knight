@@ -114,13 +114,8 @@ void CKnight::update()
 	//CCameraManager::getInst()->SetLookAt(GetPos());
 
 	GetAnimator()->update();
-
-	if (m_bAttack)
-	{
-		m_bAttack = false;
-	}
-
-	m_ePrevState = m_eCurState;
+	
+	//m_ePrevState = m_eCurState;
 }
 
 void CKnight::render()
@@ -148,12 +143,21 @@ void CKnight::update_state()
 		m_eCurState = PLAYER_STATE::IDLE;
 	}
 
-	if (!m_bAttack)
+	// TODO : °ø°Ý ¸ð¼Ç ¸ØÃã ¹ß»ý
+	if (m_bAttack && GetAnimator()->m_pCurAni->IsFinish())
 	{
-		m_eCurState = PLAYER_STATE::IDLE;
+		m_bAttack = false;
+		if (m_ePrevState == PLAYER_STATE::JUMP)
+		{
+			m_eCurState = PLAYER_STATE::JUMP;
+		}
+		else
+		{
+			m_eCurState = PLAYER_STATE::IDLE;
+		}
 	}
-
-	if (m_fvVelocity.y <= 0 && !m_bCurGround && m_eCurState == PLAYER_STATE::IDLE)
+	
+	if (!m_bCurGround && m_eCurState != PLAYER_STATE::JUMP)
 	{
 		m_eCurState = PLAYER_STATE::FALL;
 	}
@@ -216,7 +220,7 @@ void CKnight::update_state()
 		// TODO : Á¾·á ButtonUI
 	}
 
-	//m_ePrevState = m_eCurState;
+	m_ePrevState = m_eCurState;
 }
 #pragma endregion
 
@@ -294,7 +298,7 @@ void CKnight::update_move()
 		m_fptPos.y -= 1.f;
 		m_fvVelocity.y = -900.f;
 		m_fGAccel += m_fvVelocity.y;
-		pos.y += m_fGAccel * fDT;
+		//pos.y += m_fGAccel * fDT;
 		m_bJump = true;
 		//Logger::debug(L"Jump");
 	}
@@ -302,7 +306,7 @@ void CKnight::update_move()
 	//FALL
 	if (m_ePrevState == PLAYER_STATE::JUMP && m_fGAccel > 0.f)
 	{
-		m_fGAccel = 350.f;
+		m_fGAccel = 400.f;
 		m_bJump = false;
 		m_eCurState = PLAYER_STATE::FALL;
 		Logger::debug(L"Fall");
@@ -344,7 +348,7 @@ void CKnight::update_move()
 		m_fvVelocity.y = m_MaxVelocity;
 	}
 
-	m_sPrevDir = m_sCurDir;
+	//m_sPrevDir = m_sCurDir;
 }
 
 #pragma endregion
@@ -364,11 +368,11 @@ void CKnight::update_animation()
 		{
 			if (m_sCurDir == -1)
 			{
-				GetAnimator()->Play(L"Idle_Left", false);
+				GetAnimator()->Play(L"Idle_Left", true);
 			}
 			else
 			{
-				GetAnimator()->Play(L"Idle_Right", false);
+				GetAnimator()->Play(L"Idle_Right", true);
 			}
 		}
 		break;
@@ -377,31 +381,32 @@ void CKnight::update_animation()
 		{
 			if (m_fvVelocity.x > 0)
 			{
-				GetAnimator()->Play(L"Move_Left", false);
+				GetAnimator()->Play(L"Move_Left", true);
 			}
 			else
 			{
-				GetAnimator()->Play(L"Idle_Left", false);
+				GetAnimator()->Play(L"Idle_Left", true);
 			}
 		}
 		else
 		{
 			if (m_fvVelocity.x > 0)
 			{
-				GetAnimator()->Play(L"Move_Right", false);
+				GetAnimator()->Play(L"Move_Right", true);
 			}
 			else
 			{
-				GetAnimator()->Play(L"Idle_Right", false);
+				GetAnimator()->Play(L"Idle_Right", true);
 			}
 		}
 		break;
 	case PLAYER_STATE::JUMP:
-		if (m_sCurDir == -1 && m_ePrevState == PLAYER_STATE::JUMP)
+
+		if (m_sCurDir == -1)
 		{
 			GetAnimator()->Play(L"Jump_Left", false);
 		}
-		else if (m_sCurDir == 1 && m_ePrevState == PLAYER_STATE::JUMP)
+		else if (m_sCurDir == 1)
 		{
 			GetAnimator()->Play(L"Jump_Right", false);
 		}
@@ -433,28 +438,10 @@ void CKnight::update_animation()
 		if (m_sCurDir == -1)
 		{
 			GetAnimator()->Play(L"Attack_Left", false);			
-			/*if (Key(VK_UP) && !m_bCurGround)
-			{
-				GetAnimator()->Play(L"AttackUp_Left", false);
-			}
-
-			if (Key(VK_DOWN) && !m_bCurGround)
-			{
-				GetAnimator()->Play(L"AttackDown_Left", false);
-			}*/			
 		}
 		else
 		{
 			GetAnimator()->Play(L"Attack_Right", false);			
-			/*if (Key(VK_UP) && !m_bCurGround)
-			{
-				GetAnimator()->Play(L"AttackUp_Right", false);
-			}
-
-			if (Key(VK_DOWN) && !m_bCurGround)
-			{
-				GetAnimator()->Play(L"AttackDown_Right", false);
-			}*/			
 		}
 		break;
 	case PLAYER_STATE::DAMAGED:
