@@ -11,29 +11,34 @@ CKnight* CKnight::instance = nullptr;
 
 CKnight::CKnight()
 {
+	// Init
+	pNail = new CNail;
+
 	m_fvVelocity = { 0.f, 0.f };
+
 	m_sCurDir = 1;
 	m_sPrevDir = 0;
+	m_sAttackCount = 0;
+
 	m_fGravity = 1000.f;
 	m_fGAccel = 0.f;
 	m_fJump = -800.f;
-	m_MaxVelocity = 500.f;
+	m_fMaxVelocity = 500.f;
+	m_fAttackTime = 0;
+
 	m_bAlive = true;
 	m_bLeft = false;
 	m_bAttack = false;
-	pNail = new CNail;
 
 	m_eCurState = PLAYER_STATE::IDLE;
 
-	//CD2DImage* m_pImg = CResourceManager::getInst()->LoadD2DImage(L"KnightImg", L"texture\\Animation\\Knight\\move4.png");
-	CD2DImage* m_pImg = CResourceManager::getInst()->LoadD2DImage(L"KnightImg", L"texture\\Animation\\Knight\\knight_animation.png");
+	CD2DImage* m_pImg = CResourceManager::getInst()->LoadD2DImage(L"KnightImg", L"texture\\Animation\\Knight\\knight_animation3.png");
 	SetName(L"Knight");
 	SetScale(fPoint(130.f, 130.f));
 
 	CreateGravity();
 	CreateCollider();
 	GetCollider()->SetScale(fPoint(35.f, 130.f));
-	//GetCollider()->SetOffsetPos(fPoint(0.f, -10.f));
 
 	CreateAnimator();
 	GetAnimator()->CreateAnimation(L"Idle_Left", m_pImg, fPoint(0.f, 0.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.2f, 4, true);
@@ -48,8 +53,8 @@ CKnight::CKnight()
 	GetAnimator()->CreateAnimation(L"Fall_Left", m_pImg, fPoint(0.f, 390.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.1f, 5, true);
 	GetAnimator()->CreateAnimation(L"Fall_Right", m_pImg, fPoint(0.f, 390.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.1f, 5);
 
-	GetAnimator()->CreateAnimation(L"Attack_Left", m_pImg, fPoint(0.f, 520.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.08f, 4, true);
-	GetAnimator()->CreateAnimation(L"Attack_Right", m_pImg, fPoint(0.f, 520.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.08f, 4);
+	GetAnimator()->CreateAnimation(L"Attack_Left", m_pImg, fPoint(0.f, 520.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.08f, 6, true);
+	GetAnimator()->CreateAnimation(L"Attack_Right", m_pImg, fPoint(0.f, 520.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.08f, 6);
 
 	GetAnimator()->CreateAnimation(L"SoulMissile_Left",  m_pImg, fPoint(0.f, 650.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.1f, 8, true);
 	GetAnimator()->CreateAnimation(L"SoulMissile_Right", m_pImg, fPoint(0.f, 650.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.1f, 8);
@@ -143,8 +148,10 @@ void CKnight::update_state()
 		m_eCurState = PLAYER_STATE::IDLE;
 	}
 
+
+	//pAni = GetAnimator()->FindAnimation(L"Idle_Left");
 	// TODO : °ø°Ý ¸ð¼Ç ¸ØÃã ¹ß»ý
-	if (m_bAttack && GetAnimator()->m_pCurAni->IsFinish())
+	/*if (m_eCurState == PLAYER_STATE::ATTACK)
 	{
 		m_bAttack = false;
 		if (m_ePrevState == PLAYER_STATE::JUMP)
@@ -155,7 +162,7 @@ void CKnight::update_state()
 		{
 			m_eCurState = PLAYER_STATE::IDLE;
 		}
-	}
+	}*/
 	
 	if (!m_bCurGround && m_eCurState != PLAYER_STATE::JUMP)
 	{
@@ -342,10 +349,10 @@ void CKnight::update_move()
 	{
 		m_fGAccel = 2000.f;
 	}
-	if (m_MaxVelocity <= m_fvVelocity.x || m_MaxVelocity <= m_fvVelocity.y)
+	if (m_fMaxVelocity <= m_fvVelocity.x || m_fMaxVelocity <= m_fvVelocity.y)
 	{
-		m_fvVelocity.x = m_MaxVelocity;
-		m_fvVelocity.y = m_MaxVelocity;
+		m_fvVelocity.x = m_fMaxVelocity;
+		m_fvVelocity.y = m_fMaxVelocity;
 	}
 
 	//m_sPrevDir = m_sCurDir;
@@ -441,7 +448,7 @@ void CKnight::update_animation()
 		}
 		else
 		{
-			GetAnimator()->Play(L"Attack_Right", false);			
+			GetAnimator()->Play(L"Attack_Right", false);				
 		}
 		break;
 	case PLAYER_STATE::DAMAGED:
@@ -559,7 +566,7 @@ void CKnight::OnCollisionExit(CCollider* _pOther)
 }
 
 void CKnight::Attack()
-{
+{	
 	fPoint fptNailPos = GetPos();
 	fPoint fptHandPos = fPoint(m_fptPos.x, m_fptPos.y);
 
