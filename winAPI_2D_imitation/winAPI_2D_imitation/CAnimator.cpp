@@ -51,7 +51,7 @@ void CAnimator::update()
 		}
 		else if (!m_bRepeat && m_pCurAni->IsFinish())
 		{
-			m_pCurAni->SetFrame(m_pCurAni->m_vecFrm.size() - 1); // size - 1  해주어야 마지막 프레임 상태로 유지할 수 있다.
+			m_pCurAni->SetFrame(m_pCurAni->m_vecFrm.size()); // size - 1  해주어야 마지막 프레임 상태로 유지할 수 있다.
 		}
 		else if (!m_bRepeat && m_pCurAni->IsFinish() && nullptr != m_pNextAni)
 		{

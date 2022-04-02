@@ -18,12 +18,13 @@ private:
 	short m_sGeo;			// 게임 내 화폐
 	short m_sCurDir;       // 현재 방향
 	short m_sPrevDir;		// 이전 방향
-	short m_sAttackCount;
+	short m_sAttackTime;
+	short m_sAttackTimeLimit;
+	short m_sMissileAttackTimeLimit;
 
 	float m_fMaxAccel;		// 최대 중력 가속도
 	float m_fJump;			// 점프력
-	float m_fMaxVelocity;    // 최대 속도 
-	float m_fAttackTime;
+	float m_fMaxVelocity;    // 최대 속도	
 
 	bool  m_bLeft;			// 방향
 	bool  m_bAttack;        // 공격 여부 

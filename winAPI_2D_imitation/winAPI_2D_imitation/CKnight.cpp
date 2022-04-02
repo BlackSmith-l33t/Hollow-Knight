@@ -18,13 +18,14 @@ CKnight::CKnight()
 
 	m_sCurDir = 1;
 	m_sPrevDir = 0;
-	m_sAttackCount = 0;
+	m_sAttackTime = 0;
+	m_sAttackTimeLimit = 450;
+	m_sMissileAttackTimeLimit = 1700;
 
 	m_fGravity = 1000.f;
 	m_fGAccel = 0.f;
 	m_fJump = -800.f;
-	m_fMaxVelocity = 500.f;
-	m_fAttackTime = 0;
+	m_fMaxVelocity = 500.f;	
 
 	m_bAlive = true;
 	m_bLeft = false;
@@ -44,8 +45,8 @@ CKnight::CKnight()
 	GetAnimator()->CreateAnimation(L"Idle_Left", m_pImg, fPoint(0.f, 0.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.2f, 4, true);
 	GetAnimator()->CreateAnimation(L"Idle_Right", m_pImg, fPoint(0.f, 0.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.2f, 4);
 
-	GetAnimator()->CreateAnimation(L"Move_Left", m_pImg, fPoint(0.f, 130.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.09f, 7, true);
-	GetAnimator()->CreateAnimation(L"Move_Right", m_pImg, fPoint(0.f, 130.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.09f, 7);
+	GetAnimator()->CreateAnimation(L"Move_Left", m_pImg, fPoint(0.f, 130.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.09f, 6, true);
+	GetAnimator()->CreateAnimation(L"Move_Right", m_pImg, fPoint(0.f, 130.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.09f, 6);
 
 	GetAnimator()->CreateAnimation(L"Jump_Left", m_pImg, fPoint(0.f, 260.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.1f, 7, true);
 	GetAnimator()->CreateAnimation(L"Jump_Right", m_pImg, fPoint(0.f, 260.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.1f, 7);
@@ -53,11 +54,11 @@ CKnight::CKnight()
 	GetAnimator()->CreateAnimation(L"Fall_Left", m_pImg, fPoint(0.f, 390.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.1f, 5, true);
 	GetAnimator()->CreateAnimation(L"Fall_Right", m_pImg, fPoint(0.f, 390.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.1f, 5);
 
-	GetAnimator()->CreateAnimation(L"Attack_Left", m_pImg, fPoint(0.f, 520.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.08f, 6, true);
-	GetAnimator()->CreateAnimation(L"Attack_Right", m_pImg, fPoint(0.f, 520.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.08f, 6);
+	GetAnimator()->CreateAnimation(L"Attack_Left", m_pImg, fPoint(0.f, 520.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.07f, 6, true);
+	GetAnimator()->CreateAnimation(L"Attack_Right", m_pImg, fPoint(0.f, 520.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.07f, 6);
 
-	GetAnimator()->CreateAnimation(L"SoulMissile_Left",  m_pImg, fPoint(0.f, 650.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.1f, 8, true);
-	GetAnimator()->CreateAnimation(L"SoulMissile_Right", m_pImg, fPoint(0.f, 650.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.1f, 8);
+	GetAnimator()->CreateAnimation(L"SoulMissile_Left",  m_pImg, fPoint(0.f, 780.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.1f, 9, true);
+	GetAnimator()->CreateAnimation(L"SoulMissile_Right", m_pImg, fPoint(0.f, 780.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.1f, 9);
 
 	GetAnimator()->CreateAnimation(L"Dead_Pose_Left", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(130.f, 0.f), 0.8f, 11, true);
 	GetAnimator()->CreateAnimation(L"Dead_Pose_Right", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.8f, 3);
@@ -143,26 +144,25 @@ void CKnight::update_state()
 {
 	if (m_fvVelocity.x == 0 && m_bCurGround && 
 		m_eCurState != PLAYER_STATE::ATTACK && 
-		m_eCurState != PLAYER_STATE::JUMP)
+		m_eCurState != PLAYER_STATE::JUMP   &&
+		m_eCurState != PLAYER_STATE::SOULMISSILE)
 	{
 		m_eCurState = PLAYER_STATE::IDLE;
 	}
 
+	if (m_eCurState == PLAYER_STATE::ATTACK && m_sAttackTime >= m_sAttackTimeLimit)
+	{		
+		m_bAttack = false;
+		m_eCurState = PLAYER_STATE::IDLE;
+		m_sAttackTime = 0;
+	}
 
-	//pAni = GetAnimator()->FindAnimation(L"Idle_Left");
-	// TODO : 공격 모션 멈춤 발생
-	/*if (m_eCurState == PLAYER_STATE::ATTACK)
+	if (m_eCurState == PLAYER_STATE::SOULMISSILE && m_sAttackTime >= m_sMissileAttackTimeLimit)
 	{
 		m_bAttack = false;
-		if (m_ePrevState == PLAYER_STATE::JUMP)
-		{
-			m_eCurState = PLAYER_STATE::JUMP;
-		}
-		else
-		{
-			m_eCurState = PLAYER_STATE::IDLE;
-		}
-	}*/
+		m_eCurState = PLAYER_STATE::IDLE;
+		m_sAttackTime = 0;
+	}
 	
 	if (!m_bCurGround && m_eCurState != PLAYER_STATE::JUMP)
 	{
@@ -172,17 +172,31 @@ void CKnight::update_state()
 	if (Key(VK_LEFT))
 	{
 		m_bLeft = true;
-		if (m_eCurState != PLAYER_STATE::JUMP && m_eCurState != PLAYER_STATE::FALL)
+		if (m_eCurState != PLAYER_STATE::JUMP && m_eCurState != PLAYER_STATE::FALL && m_eCurState != PLAYER_STATE::ATTACK)
 		{
 			m_eCurState = PLAYER_STATE::MOVE;
+		}
+
+		if (KeyDown('X'))
+		{
+			m_eCurState = PLAYER_STATE::ATTACK;
+			m_bAttack = true;
+			Attack();
 		}
 	}
 	if (Key(VK_RIGHT))
 	{
 		m_bLeft = false;
-		if (m_eCurState != PLAYER_STATE::JUMP && m_eCurState != PLAYER_STATE::FALL)
+		if (m_eCurState != PLAYER_STATE::JUMP && m_eCurState != PLAYER_STATE::FALL && m_eCurState != PLAYER_STATE::ATTACK)
 		{
 			m_eCurState = PLAYER_STATE::MOVE;
+		}
+
+		if (Key(VK_RIGHT) && KeyDown('X'))
+		{
+			m_eCurState = PLAYER_STATE::ATTACK;
+			m_bAttack = true;
+			Attack();
 		}
 	}
 	if (Key(VK_UP) && !m_bAttack)
@@ -196,14 +210,17 @@ void CKnight::update_state()
 
 	if (KeyDown('Z') && m_bCurGround)
 	{
-		m_eCurState = PLAYER_STATE::JUMP;
+		if (m_eCurState != PLAYER_STATE::ATTACK)
+		{
+			m_eCurState = PLAYER_STATE::JUMP;
+		}
 	}
 
 	if (KeyDown('X'))
 	{	
 		m_eCurState = PLAYER_STATE::ATTACK;
 		m_bAttack = true;
-		Attack();
+		Attack(); 
 	}	
 
 	if (KeyDown('A') && m_bCurGround)
@@ -214,6 +231,7 @@ void CKnight::update_state()
 	if (KeyDown('C'))
 	{
 		m_eCurState = PLAYER_STATE::SOULMISSILE;
+		m_bAttack = true;
 		CreateSoulMissile();
 	}
 
@@ -421,34 +439,23 @@ void CKnight::update_animation()
 	case PLAYER_STATE::FALL:
 		if (m_sCurDir == -1)
 		{
-			GetAnimator()->Play(L"Fall_Left", false);
-
-			//pAni = GetAnimator()->FindAnimation(L"Fall_Left");
-			//if (!m_bCurGround || pAni->IsFindFrame(5))
-			//{
-			//	pAni->SetFrame(5);
-			//	// TODO : 마지막 프레임에 duration 무한값 대입해보기
-			//}
+			GetAnimator()->Play(L"Fall_Left", false);		
 		}
 		else
 		{
-			GetAnimator()->Play(L"Fall_Right", false);
-
-			//pAni = GetAnimator()->FindAnimation(L"Fall_Right");
-			//if (!m_bCurGround || pAni->IsFindFrame(5))
-			//{
-			//	pAni->SetFrame(5);
-			//}
+			GetAnimator()->Play(L"Fall_Right", false);		
 		}
 		break;
 	case PLAYER_STATE::ATTACK:
 		if (m_sCurDir == -1)
 		{
-			GetAnimator()->Play(L"Attack_Left", false);			
+			GetAnimator()->Play(L"Attack_Left", false);		
+			m_sAttackTime++;
 		}
 		else
 		{
 			GetAnimator()->Play(L"Attack_Right", false);				
+			m_sAttackTime++;
 		}
 		break;
 	case PLAYER_STATE::DAMAGED:
@@ -465,10 +472,12 @@ void CKnight::update_animation()
 		if (m_sCurDir == -1)
 		{
 			GetAnimator()->Play(L"SoulMissile_Left", false);
+			m_sAttackTime++;
 		}
 		else
 		{
 			GetAnimator()->Play(L"SoulMissile_Right", false);
+			m_sAttackTime++;
 		}
 		break;
 	case PLAYER_STATE::LOOKUP:
@@ -593,7 +602,7 @@ void CKnight::CreateSoulMissile()
 	// Misiile Object
 	CMissile* pMissile = new CMissile;
 	pMissile->SetPos(fpMissilePos);
-	pMissile->SetDir(fVec2(1, 0));
+	pMissile->SetDir(fVec2(m_sCurDir, 0));
 	pMissile->SetName(L"Missile_Player");
 
 	CreateObj(pMissile, GROUP_GAMEOBJ::SOUL_MISSILE);

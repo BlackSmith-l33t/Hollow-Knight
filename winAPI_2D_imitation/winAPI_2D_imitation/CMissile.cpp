@@ -1,6 +1,7 @@
 #include "framework.h"
 #include "CMissile.h"
 #include "CCollider.h"
+#include "CAnimator.h"
 
 CMissile* CMissile::Clone()
 {
@@ -9,12 +10,16 @@ CMissile* CMissile::Clone()
 
 CMissile::CMissile()
 {
+	//CD2DImage* m_pImg = CResourceManager::getInst()->LoadD2DImage(L"SoulMissileImg", L"texture\\Animation\\Effect\\effect.png");
 	SetScale(fPoint(25.f, 25.f));
 	m_fvDir = fVec2(0, 0);
 	SetName(L"Missile_Player");
 
 	CreateCollider();
 	GetCollider()->SetScale(fPoint(15.f, 15.f));
+
+	/*GetAnimator()->CreateAnimation(L"SoulMissile", m_pImg, fPoint(0.f, 780.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.1f, 9, true);
+	GetAnimator()->CreateAnimation(L"SoulMissile", m_pImg, fPoint(0.f, 780.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.1f, 9);*/
 }
 
 CMissile::~CMissile()
