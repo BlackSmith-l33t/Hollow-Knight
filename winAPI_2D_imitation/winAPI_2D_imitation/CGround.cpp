@@ -121,7 +121,7 @@ void CGround::OnCollision(CCollider* _pOther)
         float objY_Top = fvObjPos.y - (fvObjScale.y / 2.f);
      
 
-        // TODO :  아래 벽 구현 중 / 프레임이 2000이 넘을 경우 충돌 무시 발생 : 원인 불명 
+        // TODO :  아래 벽 
         if (fWallY_Top <= objY_Top && fWallY_Bottom <= objY_Top)
         {
             Logger::debug(L"Wall_Under");

@@ -596,6 +596,8 @@ void CKnight::Attack()
 
 void CKnight::CreateSoulMissile()
 {
+	// TODO : 미사일이 사라지지 않았다면 재발사 불가능 상태 설정
+
 	fPoint fpMissilePos = GetPos();
 	fpMissilePos.x += GetScale().x / 2.f;
 

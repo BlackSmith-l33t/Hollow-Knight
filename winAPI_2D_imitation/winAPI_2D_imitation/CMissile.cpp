@@ -35,8 +35,11 @@ void CMissile::update()
 
 	SetPos(pos);
 
-	if (pos.x < 0 || pos.x > WINSIZEX
-		|| pos.y < 0 || pos.y > WINSIZEY)
+	// TODO : 재설정이 필요함 - 현재 pos 값은 항상 window size를 초과함. 
+	fPoint fptRenderPos = CCameraManager::getInst()->
+	
+	if (pos.x < fptRenderPos.x || pos.x > fptRenderPos.x
+		|| pos.y < 0 || pos.y > fptRenderPos.y)
 		DeleteObj(this);
 }
 
