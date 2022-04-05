@@ -18,10 +18,12 @@ CKnight::CKnight()
 
 	m_sCurDir = 1;
 	m_sPrevDir = 0;
-	m_sAttackTime = 0;
+	m_sAttackTimer = 0;
 	m_sAttackTimeLimit = 450;
 	m_sMissileAttackTimeLimit = 1700;
-
+	m_sMissileStartCoolTime = 800;
+	m_sMissileActionCount = 0;
+	m_sMissileCount = 0;
 	m_fGravity = 1000.f;
 	m_fGAccel = 0.f;
 	m_fJump = -800.f;
@@ -148,20 +150,24 @@ void CKnight::update_state()
 		m_eCurState != PLAYER_STATE::SOULMISSILE)
 	{
 		m_eCurState = PLAYER_STATE::IDLE;
+		m_bAttack = false;	
+		m_sAttackTimer = 0;
+		m_sMissileActionCount = 0;
+		m_sMissileCount = 0;
 	}
 
-	if (m_eCurState == PLAYER_STATE::ATTACK && m_sAttackTime >= m_sAttackTimeLimit)
+	if (m_eCurState == PLAYER_STATE::ATTACK && m_sAttackTimer >= m_sAttackTimeLimit)
 	{		
 		m_bAttack = false;
 		m_eCurState = PLAYER_STATE::IDLE;
-		m_sAttackTime = 0;
+		m_sAttackTimer = 0;
 	}
 
-	if (m_eCurState == PLAYER_STATE::SOULMISSILE && m_sAttackTime >= m_sMissileAttackTimeLimit)
+	if (m_eCurState == PLAYER_STATE::SOULMISSILE && m_sAttackTimer >= m_sMissileAttackTimeLimit)
 	{
 		m_bAttack = false;
 		m_eCurState = PLAYER_STATE::IDLE;
-		m_sAttackTime = 0;
+		m_sAttackTimer = 0;
 	}
 	
 	if (!m_bCurGround && m_eCurState != PLAYER_STATE::JUMP)
@@ -228,11 +234,14 @@ void CKnight::update_state()
 		m_eCurState = PLAYER_STATE::SOULCHARGE;
 	}
 
-	if (KeyDown('C'))
+	if (KeyDown('C') && 0 == m_sMissileCount && 0 == m_sMissileActionCount)
 	{
 		m_eCurState = PLAYER_STATE::SOULMISSILE;
-		m_bAttack = true;
-		CreateSoulMissile();
+		m_bAttack = true;	
+		m_sMissileActionCount++;
+		
+
+		//CreateSoulMissile();
 	}
 
 	if (KeyDown('B'))
@@ -356,6 +365,13 @@ void CKnight::update_move()
 		}
 	}
 
+	// Missile
+	if (m_eCurState == PLAYER_STATE::SOULMISSILE && m_sAttackTimer >= m_sMissileStartCoolTime && 1 == m_sMissileActionCount)
+	{
+		CreateSoulMissile();	
+		m_sMissileActionCount = 0;
+		m_sMissileCount = 1;
+	}
 	pos.x += m_sCurDir * m_fvVelocity.x * fDT;
 	pos.y += m_fGAccel * fDT;
 
@@ -450,12 +466,12 @@ void CKnight::update_animation()
 		if (m_sCurDir == -1)
 		{
 			GetAnimator()->Play(L"Attack_Left", false);		
-			m_sAttackTime++;
+			m_sAttackTimer++;
 		}
 		else
 		{
 			GetAnimator()->Play(L"Attack_Right", false);				
-			m_sAttackTime++;
+			m_sAttackTimer++;
 		}
 		break;
 	case PLAYER_STATE::DAMAGED:
@@ -472,12 +488,12 @@ void CKnight::update_animation()
 		if (m_sCurDir == -1)
 		{
 			GetAnimator()->Play(L"SoulMissile_Left", false);
-			m_sAttackTime++;
+			m_sAttackTimer++;
 		}
 		else
 		{
 			GetAnimator()->Play(L"SoulMissile_Right", false);
-			m_sAttackTime++;
+			m_sAttackTimer++;
 		}
 		break;
 	case PLAYER_STATE::LOOKUP:
@@ -598,13 +614,24 @@ void CKnight::CreateSoulMissile()
 {
 	// TODO : 미사일이 사라지지 않았다면 재발사 불가능 상태 설정
 
-	fPoint fpMissilePos = GetPos();
-	fpMissilePos.x += GetScale().x / 2.f;
+	fPoint fpMissilePos = m_fptPos;
+	int iMissileOffSetX = 80;
+	int iMissileOffSetY = 20;
 
 	// Misiile Object
 	CMissile* pMissile = new CMissile;
-	pMissile->SetPos(fpMissilePos);
-	pMissile->SetDir(fVec2(m_sCurDir, 0));
+
+	if (0 < m_sCurDir)
+	{
+		pMissile->SetPos(fPoint(fpMissilePos.x + iMissileOffSetX, fpMissilePos.y + iMissileOffSetY));
+		pMissile->SetDir(fVec2(m_sCurDir, 0));
+	}
+	else
+	{
+		pMissile->SetPos(fPoint(fpMissilePos.x - iMissileOffSetX, fpMissilePos.y + iMissileOffSetY));
+		pMissile->SetDir(fVec2(m_sCurDir, 0));
+	}
+	
 	pMissile->SetName(L"Missile_Player");
 
 	CreateObj(pMissile, GROUP_GAMEOBJ::SOUL_MISSILE);

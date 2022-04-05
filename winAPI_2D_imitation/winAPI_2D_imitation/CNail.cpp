@@ -8,7 +8,7 @@ CNail::CNail()
 	m_fDration = 0.f;
 	m_fDeleteTime = 0.1f;
 	CreateCollider();
-	GetCollider()->SetScale(fPoint(80.f, 25.f));
+	GetCollider()->SetScale(fPoint(100.f, 100.f));
 }
 
 CNail::~CNail()
