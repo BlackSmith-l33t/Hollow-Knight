@@ -20,6 +20,8 @@ public:
 	virtual CMissile* Clone();
 
 	virtual void update();
+	void update_animation();
+
 	virtual void render();
 
 	void SetDir(fVec2 vec);

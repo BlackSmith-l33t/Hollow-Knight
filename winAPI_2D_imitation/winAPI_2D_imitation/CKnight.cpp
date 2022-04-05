@@ -59,8 +59,8 @@ CKnight::CKnight()
 	GetAnimator()->CreateAnimation(L"Attack_Left", m_pImg, fPoint(0.f, 520.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.07f, 6, true);
 	GetAnimator()->CreateAnimation(L"Attack_Right", m_pImg, fPoint(0.f, 520.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.07f, 6);
 
-	GetAnimator()->CreateAnimation(L"SoulMissile_Left",  m_pImg, fPoint(0.f, 780.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.1f, 9, true);
-	GetAnimator()->CreateAnimation(L"SoulMissile_Right", m_pImg, fPoint(0.f, 780.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.1f, 9);
+	GetAnimator()->CreateAnimation(L"MissileMotion_Left",  m_pImg, fPoint(0.f, 780.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.1f, 9, true);
+	GetAnimator()->CreateAnimation(L"MissileMotion_Right", m_pImg, fPoint(0.f, 780.f), fPoint(130.f, 130.f), fPoint(130.f, 0.f), 0.1f, 9);
 
 	GetAnimator()->CreateAnimation(L"Dead_Pose_Left", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(130.f, 0.f), 0.8f, 11, true);
 	GetAnimator()->CreateAnimation(L"Dead_Pose_Right", m_pImg, fPoint(0.f, 0.f), fPoint(125.f, 125.f), fPoint(125.f, 0.f), 0.8f, 3);
@@ -487,12 +487,12 @@ void CKnight::update_animation()
 	case PLAYER_STATE::SOULMISSILE:
 		if (m_sCurDir == -1)
 		{
-			GetAnimator()->Play(L"SoulMissile_Left", false);
+			GetAnimator()->Play(L"MissileMotion_Left", false);
 			m_sAttackTimer++;
 		}
 		else
 		{
-			GetAnimator()->Play(L"SoulMissile_Right", false);
+			GetAnimator()->Play(L"MissileMotion_Right", false);
 			m_sAttackTimer++;
 		}
 		break;
@@ -615,7 +615,7 @@ void CKnight::CreateSoulMissile()
 	// TODO : 미사일이 사라지지 않았다면 재발사 불가능 상태 설정
 
 	fPoint fpMissilePos = m_fptPos;
-	int iMissileOffSetX = 80;
+	int iMissileOffSetX = 150;
 	int iMissileOffSetY = 20;
 
 	// Misiile Object

@@ -2,6 +2,7 @@
 #include "CMissile.h"
 #include "CCollider.h"
 #include "CAnimator.h"
+#include "CAnimation.h"
 
 CMissile* CMissile::Clone()
 {
@@ -10,18 +11,21 @@ CMissile* CMissile::Clone()
 
 CMissile::CMissile()
 {
+	m_sAttackTimer = 0;
+	m_sAttackTimeLimit = 300;
 	CD2DImage* m_pImg = CResourceManager::getInst()->LoadD2DImage(L"SoulMissileImg", L"texture\\Animation\\Effect\\effect.png");
-	m_fSpeed = 500.f;
+	m_fSpeed = 700.f;
 	SetScale(fPoint(270.f, 130.f));
 	m_fvDir = fVec2(0, 0);
-	SetName(L"Missile_Player");
+	SetName(L"Missile");
 
 	CreateCollider();
 	GetCollider()->SetScale(fPoint(140.f, 50.f));
 
 	CreateAnimator();
-	GetAnimator()->CreateAnimation(L"SoulMissile_Left", m_pImg, fPoint(0.f, 0.f), fPoint(260.f, 130.f), fPoint(260.f, 0.f), 0.08f, 5, true);
-	GetAnimator()->CreateAnimation(L"SoulMissile_Right", m_pImg, fPoint(0.f, 0.f), fPoint(260.f, 130.f), fPoint(260.f, 0.f), 0.08f, 5);
+	GetAnimator()->CreateAnimation(L"SoulMissile_Left", m_pImg, fPoint(0.f, 0.f), fPoint(260.f, 130.f), fPoint(260.f, 0.f), 0.1f, 4, true);
+	GetAnimator()->CreateAnimation(L"SoulMissile_Right", m_pImg, fPoint(0.f, 0.f), fPoint(260.f, 130.f), fPoint(260.f, 0.f), 0.1f, 4);
+	
 	
 }
 
@@ -38,27 +42,8 @@ void CMissile::update()
 
 	SetPos(pos);
 
-	 
-	fPoint fptCurLookPos = CCameraManager::getInst()->GetLookAt();
-	
-	// TODO : 애니메이션 수정 중 / 반복 현상 발생
-	if (0 > m_fvDir.x)
-	{
-		GetAnimator()->Play(L"SoulMissile_Left", false);
-		m_sAttackTimer++;
-		if (pos.x < fptCurLookPos.x - WINSIZEX / 2.f)
-			DeleteObj(this);
-	}
-	else
-	{
-		GetAnimator()->Play(L"SoulMissile_Right", false);
-		m_sAttackTimer++;
-		if (pos.x > fptCurLookPos.x + WINSIZEX / 2.f)
-			DeleteObj(this);
-	}
-	
-	GetAnimator()->update();
-	
+	update_animation();
+	GetAnimator()->update();	
 }
 
 void CMissile::render()
@@ -84,5 +69,35 @@ void CMissile::OnCollisionEnter(CCollider* pOther)
 	{
 		Logger::debug(L"OnCollisionEnter_Monster");
 		DeleteObj(this);
+		m_sAttackTimer = 0;
 	}	
+}
+
+void CMissile::update_animation()
+{
+	// TODO : 애니메이션 수정 중 / 반복 현상 발생
+	if (0 > m_fvDir.x && m_sAttackTimer <= m_sAttackTimeLimit)
+	{
+		if (m_sAttackTimer >= m_sAttackTimeLimit)
+		{
+			CAnimation* pAni;
+			pAni = GetAnimator()->FindAnimation(L"SoulMissile_Left");
+			pAni->SetFrame(3);
+			return;
+		}
+		GetAnimator()->Play(L"SoulMissile_Left", false);
+		m_sAttackTimer++;
+	}
+ 	else if (0 < m_fvDir.x && m_sAttackTimer <= m_sAttackTimeLimit)
+	{
+		if (m_sAttackTimer >= m_sAttackTimeLimit)
+		{
+			CAnimation* pAni;
+			pAni = GetAnimator()->FindAnimation(L"SoulMissile_Right");
+		    pAni->SetFrame(3);
+			return;
+		}
+		GetAnimator()->Play(L"SoulMissile_Right", false);		
+		m_sAttackTimer++;	
+	}
 }

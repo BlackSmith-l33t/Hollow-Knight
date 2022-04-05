@@ -70,8 +70,8 @@ void CAnimation::update()
             m_fAccTime = 0.f;
             return;
         }   
-        ++m_iCurFrm;
-        m_iCurFrm %= m_vecFrm.size();
+        ++m_iCurFrm;       
+        m_iCurFrm %= m_vecFrm.size();       
         m_fAccTime -= m_vecFrm[m_iCurFrm].fDuration;
     }
 }
