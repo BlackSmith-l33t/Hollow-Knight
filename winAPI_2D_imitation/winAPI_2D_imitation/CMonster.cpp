@@ -8,20 +8,10 @@
 #include "CTraceState.h"
 
 CMonster::CMonster()
-{
-	CD2DImage* m_pImg = CResourceManager::getInst()->LoadD2DImage(L"MonsterTex", L"texture\\PlayerStand.png");
-
+{	
+	m_eMonsterType = MON_TYPE::NONE;
 	m_pAI = nullptr;
-
-	SetName(L"Monster");
-	SetScale(fPoint(100, 100));
-
-	CreateCollider();
-	GetCollider()->SetScale(fPoint(90.f, 90.f));
-
-	CreateAnimator();
-	GetAnimator()->CreateAnimation(L"PlayerStand", m_pImg, fPoint(0, 0), fPoint(32.f, 32.f), fPoint(32.f, 0), 0.1f, 5, true);
-	GetAnimator()->Play(L"PlayerStand", false);
+	m_tInfo = {};
 }
 
 CMonster::~CMonster()
@@ -51,6 +41,40 @@ CMonster* CMonster::Create(MON_TYPE type, fPoint pos)
 	case MON_TYPE::NORMAL:
 	{
 		pMon = new CMonster;
+		pMon->m_eMonsterType = type;
+		pMon->SetPos(pos);
+
+		pMon->SetName(L"Monster");
+		pMon->SetScale(fPoint(100, 100));
+		
+
+		pMon->CreateCollider();
+		pMon->GetCollider()->SetScale(fPoint(50.f, 50.f));
+		pMon->GetCollider()->SetOffsetPos(fPoint(0.f, 20.f));
+
+		CD2DImage* m_pImg = CResourceManager::getInst()->LoadD2DImage(L"MonsterTex", L"texture\\Animation\\Monsters\\monsters.png");
+		
+		pMon->CreateAnimator();
+		pMon->GetAnimator()->CreateAnimation(L"NormalMonster_MoveLeft", m_pImg, fPoint(0, 0), fPoint(130, 130), fPoint(130, 0), 0.2f, 5, true);
+		pMon->GetAnimator()->CreateAnimation(L"NormalMonster_MoveRight", m_pImg, fPoint(0, 0), fPoint(130, 130), fPoint(130, 0), 0.2f, 5);
+
+		tMonInfo info = {};
+		info.fAtt = 10.f;
+		info.fAttRange = 50.f;
+		info.fRecogRange = 300.f;
+		info.fHP = 100.f;
+		info.fSpeed = 150.f;
+
+	/*	AI* pAI = new AI;
+		pAI->AddState(new CIdleState(STATE_MON::PATROL));
+		pAI->SetCurState(STATE_MON::PATROL);
+		pMon->SetMonInfo(info);
+		pMon->SetAI(pAI);*/
+	}
+	break;
+	case MON_TYPE::TRACE:
+	{
+		pMon = new CMonster;
 		pMon->SetPos(pos);
 
 		tMonInfo info = {};
@@ -69,7 +93,43 @@ CMonster* CMonster::Create(MON_TYPE type, fPoint pos)
 	}
 	break;
 	case MON_TYPE::RANGE:
-		break;
+	{
+		pMon = new CMonster;
+		pMon->SetPos(pos);
+
+		tMonInfo info = {};
+		info.fAtt = 10.f;
+		info.fAttRange = 50.f;
+		info.fRecogRange = 300.f;
+		info.fHP = 100.f;
+		info.fSpeed = 150.f;
+
+		AI* pAI = new AI;
+		pAI->AddState(new CIdleState(STATE_MON::IDLE));
+		pAI->AddState(new CTraceState(STATE_MON::TRACE));
+		pAI->SetCurState(STATE_MON::IDLE);
+		pMon->SetMonInfo(info);
+		pMon->SetAI(pAI);
+	}
+	case MON_TYPE::BOSS:
+	{
+		pMon = new CMonster;
+		pMon->SetPos(pos);
+
+		tMonInfo info = {};
+		info.fAtt = 10.f;
+		info.fAttRange = 50.f;
+		info.fRecogRange = 300.f;
+		info.fHP = 100.f;
+		info.fSpeed = 150.f;
+
+		AI* pAI = new AI;
+		pAI->AddState(new CIdleState(STATE_MON::IDLE));
+		pAI->AddState(new CTraceState(STATE_MON::TRACE));
+		pAI->SetCurState(STATE_MON::IDLE);
+		pMon->SetMonInfo(info);
+		pMon->SetAI(pAI);
+	}
 	default:
 		break;
 	}
@@ -88,11 +148,19 @@ void CMonster::render()
 
 void CMonster::update()
 {
+	update_animation();
+
 	if (nullptr != GetAnimator())
 		GetAnimator()->update();
 	if (nullptr != m_pAI)
 		m_pAI->update();
 
+}
+
+void CMonster::update_animation()
+{
+	
+	GetAnimator()->Play(L"NormalMonster_MoveLeft", true);
 }
 
 float CMonster::GetSpeed()

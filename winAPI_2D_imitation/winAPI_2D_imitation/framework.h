@@ -84,6 +84,7 @@ enum class STATE_MON
 	TRACE,
 	ATT,
 	RUN,
+	FLY,
 	DEAD,
 
 	SIZE,

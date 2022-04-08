@@ -103,12 +103,6 @@
     <ClCompile Include="CImageButton.cpp">
       <Filter>Object\UI</Filter>
     </ClCompile>
-    <ClCompile Include="CKnight.cpp">
-      <Filter>Object\Character</Filter>
-    </ClCompile>
-    <ClCompile Include="CMonster.cpp">
-      <Filter>Object\Character</Filter>
-    </ClCompile>
     <ClCompile Include="CTileButton.cpp">
       <Filter>Object\UI</Filter>
     </ClCompile>
@@ -130,9 +124,6 @@
     <ClCompile Include="CIdleState.cpp">
       <Filter>Component\AI\State</Filter>
     </ClCompile>
-    <ClCompile Include="CMissile.cpp">
-      <Filter>Object\Character</Filter>
-    </ClCompile>
     <ClCompile Include="CTraceState.cpp">
       <Filter>Component\AI\State</Filter>
     </ClCompile>
@@ -141,6 +132,15 @@
     </ClCompile>
     <ClCompile Include="CNail.cpp">
       <Filter>Object\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonster.cpp">
+      <Filter>Object\Character\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="CKnight.cpp">
+      <Filter>Object\Character\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CMissile.cpp">
+      <Filter>Object\Character\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -264,12 +264,6 @@
     <ClInclude Include="CImageButton.h">
       <Filter>Object\UI</Filter>
     </ClInclude>
-    <ClInclude Include="CKnight.h">
-      <Filter>Object\Character</Filter>
-    </ClInclude>
-    <ClInclude Include="CMonster.h">
-      <Filter>Object\Character</Filter>
-    </ClInclude>
     <ClInclude Include="CTileButton.h">
       <Filter>Object\UI</Filter>
     </ClInclude>
@@ -291,9 +285,6 @@
     <ClInclude Include="CIdleState.h">
       <Filter>Component\AI\State</Filter>
     </ClInclude>
-    <ClInclude Include="CMissile.h">
-      <Filter>Object\Character</Filter>
-    </ClInclude>
     <ClInclude Include="CTraceState.h">
       <Filter>Component\AI\State</Filter>
     </ClInclude>
@@ -302,6 +293,15 @@
     </ClInclude>
     <ClInclude Include="CNail.h">
       <Filter>Object\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="CMonster.h">
+      <Filter>Object\Character\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="CKnight.h">
+      <Filter>Object\Character\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CMissile.h">
+      <Filter>Object\Character\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -387,6 +387,12 @@
     </Filter>
     <Filter Include="Object\Effect">
       <UniqueIdentifier>{5bbcd605-bf3f-4dd5-8506-7cc69b28d66a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Character\Monster">
+      <UniqueIdentifier>{11cad074-3d7f-4784-980b-1d0b81b8fa88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Character\Player">
+      <UniqueIdentifier>{201d374a-f1f1-4a9a-9c3c-3951db4ed1b2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

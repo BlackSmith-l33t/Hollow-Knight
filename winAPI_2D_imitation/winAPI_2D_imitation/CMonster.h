@@ -15,8 +15,11 @@ struct tMonInfo
 
 enum class MON_TYPE
 {
+	NONE,
 	NORMAL,
+	TRACE,
 	RANGE,
+	BOSS,
 
 	SIZE,
 };
@@ -25,7 +28,8 @@ class CMonster : public CGameObject
 {
 private:
 	tMonInfo m_tInfo;
-	AI* m_pAI;
+	AI* m_pAI;	
+	MON_TYPE m_eMonsterType;
 
 public:
 	CMonster();
@@ -36,6 +40,7 @@ public:
 
 	virtual void render();
 	virtual void update();
+	void update_animation();
 
 	float GetSpeed();
 	const tMonInfo& GetMonInfo();

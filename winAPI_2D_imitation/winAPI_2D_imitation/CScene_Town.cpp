@@ -53,9 +53,9 @@ void CScene_Town::Enter()
 	CKnight* pKnight = new CKnight;
 	pKnight->SetPos(fPoint(2000, 2178.f));
 	AddObject(pKnight, GROUP_GAMEOBJ::KNIGHT);
-	pKnight->RegisterPlayer();
+	pKnight->RegisterPlayer();	
 
-	CMonster* pMon = CMonster::Create(MON_TYPE::NORMAL, fPoint(2500.f, 2100.f));
+	CMonster* pMon = CMonster::Create(MON_TYPE::NORMAL, fPoint(2500.f, 2096.f));
 	AddObject(pMon, GROUP_GAMEOBJ::MONSTER);
 
 	CMap* map = new CMap;
