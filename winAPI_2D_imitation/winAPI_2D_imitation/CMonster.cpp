@@ -6,6 +6,7 @@
 #include "AI.h"
 #include "CIdleState.h"
 #include "CTraceState.h"
+#include "CPatrolState.h"
 
 CMonster::CMonster()
 {	
@@ -65,11 +66,13 @@ CMonster* CMonster::Create(MON_TYPE type, fPoint pos)
 		info.fHP = 100.f;
 		info.fSpeed = 150.f;
 
-	/*	AI* pAI = new AI;
-		pAI->AddState(new CIdleState(STATE_MON::PATROL));
+		// TODO : AI 패트롤 모드 생성 필요 / 플레이어 기본공격에 피격시 죽음 효과 설정
+
+		AI* pAI = new AI;
+		pAI->AddState(new CPatrolState(STATE_MON::PATROL));
 		pAI->SetCurState(STATE_MON::PATROL);
 		pMon->SetMonInfo(info);
-		pMon->SetAI(pAI);*/
+		pMon->SetAI(pAI);
 	}
 	break;
 	case MON_TYPE::TRACE:

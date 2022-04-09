@@ -142,6 +142,9 @@
     <ClCompile Include="CMissile.cpp">
       <Filter>Object\Character\Player</Filter>
     </ClCompile>
+    <ClCompile Include="CPatrolState.cpp">
+      <Filter>Component\AI\State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -302,6 +305,9 @@
     </ClInclude>
     <ClInclude Include="CMissile.h">
       <Filter>Object\Character\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CPatrolState.h">
+      <Filter>Component\AI\State</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
