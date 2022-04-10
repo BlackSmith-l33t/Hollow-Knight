@@ -3,9 +3,14 @@
 class CPatrolState : public CState
 {
 private:
-	fVec2 m_fPatrolInterval;
+	short m_sCurDir;
+
+	fPoint m_fPatrolSpeed;
+	fPoint m_fPatrolDistance;
 	fPoint m_fStartPos;
 	fPoint m_fEndPos;
+
+	bool m_bTurnOn;
 public:
 	CPatrolState(STATE_MON state);
 	virtual ~CPatrolState();

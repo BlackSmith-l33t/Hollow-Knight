@@ -195,7 +195,7 @@ void CMonster::SetMonInfo(const tMonInfo& info)
 void CMonster::OnCollisionEnter(CCollider* pOther)
 {
 	CGameObject* pOtherObj = pOther->GetObj();
-
+	Logger::debug(L"Missile OnCollisionEnter");
 	if (pOtherObj->GetName() == L"Missile_Player")
 	{
 		m_tInfo.fHP -= 1;
