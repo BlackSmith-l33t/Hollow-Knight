@@ -10,6 +10,7 @@
 
 CMonster::CMonster()
 {	
+	m_iDir = 0;
 	m_eMonsterType = MON_TYPE::NONE;
 	m_pAI = nullptr;
 	m_tInfo = {};
@@ -163,7 +164,14 @@ void CMonster::update()
 void CMonster::update_animation()
 {
 	
-	GetAnimator()->Play(L"NormalMonster_MoveLeft", true);
+	if (m_iDir == -1)
+	{
+		GetAnimator()->Play(L"NormalMonster_MoveLeft", true);
+	}
+	else
+	{
+		GetAnimator()->Play(L"NormalMonster_MoveRight", true);
+	}
 }
 
 float CMonster::GetSpeed()
@@ -190,6 +198,11 @@ void CMonster::SetAI(AI* ai)
 void CMonster::SetMonInfo(const tMonInfo& info)
 {
 	m_tInfo = info;
+}
+
+void CMonster::SetDir(int _dir)
+{
+	m_iDir = _dir;
 }
 
 void CMonster::OnCollisionEnter(CCollider* pOther)

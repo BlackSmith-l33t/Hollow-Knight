@@ -4,13 +4,13 @@
 class CMissile : public CGameObject
 {
 private:
-	short m_sAttackTimer;
-	short m_sAttackTimeLimit;
-	short m_sMissileAttackTimeLimit;
-	short m_sMissileStartCoolTime;
-	short m_sMissileActionCount;
-	short m_sMissileCount;
+	int m_iMissileActionCount;
+	int m_iMissileCount;
 
+	float m_fAttackTimer;
+	float m_fAttackTimeLimit;
+	float m_fMissileAttackTimeLimit;
+	float m_fMissileStartCoolTime;
 	float m_fSpeed;
 
 	fVec2 m_fvDir;

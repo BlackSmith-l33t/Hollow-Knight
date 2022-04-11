@@ -11,8 +11,8 @@ CMissile* CMissile::Clone()
 
 CMissile::CMissile()
 {
-	m_sAttackTimer = 0;
-	m_sAttackTimeLimit = 300;
+	m_fAttackTimer = 0;
+	m_fAttackTimeLimit = 300;
 	CD2DImage* m_pImg = CResourceManager::getInst()->LoadD2DImage(L"SoulMissileImg", L"texture\\Animation\\Effect\\effect.png");
 	m_fSpeed = 700.f;
 	SetScale(fPoint(270.f, 130.f));
@@ -69,16 +69,16 @@ void CMissile::OnCollisionEnter(CCollider* pOther)
 	{
 		Logger::debug(L"OnCollisionEnter_Monster");
 		DeleteObj(this);
-		m_sAttackTimer = 0;
+		m_fAttackTimer = 0;
 	}	
 }
 
 void CMissile::update_animation()
 {
 	// TODO : 애니메이션 수정 중 / 반복 현상 발생
-	if (0 > m_fvDir.x && m_sAttackTimer <= m_sAttackTimeLimit)
+	if (0 > m_fvDir.x && m_fAttackTimer <= m_fAttackTimeLimit)
 	{
-		if (m_sAttackTimer >= m_sAttackTimeLimit)
+		if (m_fAttackTimer >= m_fAttackTimeLimit)
 		{
 			CAnimation* pAni;
 			pAni = GetAnimator()->FindAnimation(L"SoulMissile_Left");
@@ -86,11 +86,11 @@ void CMissile::update_animation()
 			return;
 		}
 		GetAnimator()->Play(L"SoulMissile_Left", false);
-		m_sAttackTimer++;
+		m_fAttackTimer++;
 	}
- 	else if (0 < m_fvDir.x && m_sAttackTimer <= m_sAttackTimeLimit)
+ 	else if (0 < m_fvDir.x && m_fAttackTimer <= m_fAttackTimeLimit)
 	{
-		if (m_sAttackTimer >= m_sAttackTimeLimit)
+		if (m_fAttackTimer >= m_fAttackTimeLimit)
 		{
 			CAnimation* pAni;
 			pAni = GetAnimator()->FindAnimation(L"SoulMissile_Right");
@@ -98,6 +98,6 @@ void CMissile::update_animation()
 			return;
 		}
 		GetAnimator()->Play(L"SoulMissile_Right", false);		
-		m_sAttackTimer++;	
+		m_fAttackTimer++;	
 	}
 }

@@ -3,7 +3,7 @@
 class CPatrolState : public CState
 {
 private:
-	short m_sCurDir;
+	int m_iCurDir;
 
 	fPoint m_fPatrolSpeed;
 	fPoint m_fPatrolDistance;

@@ -27,6 +27,7 @@ enum class MON_TYPE
 class CMonster : public CGameObject
 {
 private:
+	int m_iDir;
 	tMonInfo m_tInfo;
 	AI* m_pAI;	
 	MON_TYPE m_eMonsterType;
@@ -48,7 +49,8 @@ public:
 	void SetSpeed(float speed);
 	void SetAI(AI* ai);
 	void SetMonInfo(const tMonInfo& info);
-
+	void SetDir(int _dir);
+	
 	void OnCollisionEnter(CCollider* pOther);
 };
 

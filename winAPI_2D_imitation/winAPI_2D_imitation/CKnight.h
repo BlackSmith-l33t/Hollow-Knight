@@ -14,17 +14,17 @@ private:
 	CAnimation* pAni;
 	CNail* pNail;
 
-	short m_sHP;			// HP
-	short m_sGeo;			// 게임 내 화폐
-	short m_sCurDir;       // 현재 방향
-	short m_sPrevDir;		// 이전 방향
-	short m_sAttackTimer;
-	short m_sAttackTimeLimit;
-	short m_sMissileAttackTimeLimit;
-	short m_sMissileStartCoolTime;
-	short m_sMissileActionCount;
-	short m_sMissileCount;
+	int m_sHP;			// HP
+	int m_sGeo;			// 게임 내 화폐
+	int m_iCurDir;       // 현재 방향
+	int m_iPrevDir;		// 이전 방향
+	int m_iMissileActionCount;
+	int m_iMissileCount;
 
+	float m_fAttackTimer;
+	float m_fAttackTimeLimit;
+	float m_fMissileAttackTimeLimit;
+	float m_fMissileStartCoolTime;
 	float m_fMaxAccel;		// 최대 중력 가속도
 	float m_fJump;			// 점프력
 	float m_fMaxVelocity;    // 최대 속도	
