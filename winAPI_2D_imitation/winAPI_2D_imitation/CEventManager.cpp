@@ -54,7 +54,7 @@ void CEventManager::Execute(const tEvent& event)
 		// lParam : AI
 		// wParam : next state
 		AI* pAI = (AI*)event.lParam;
-		STATE_MON nextState = (STATE_MON)event.wParam;
+		MON_STATE nextState = (MON_STATE)event.wParam;
 		pAI->ChangeState(nextState);
 	}
 	break;
@@ -111,7 +111,7 @@ void CEventManager::EventChangeScene(GROUP_SCENE scene)
 	AddEvent(event);
 }
 
-void CEventManager::EventChangeAIState(AI* ai, STATE_MON state)
+void CEventManager::EventChangeAIState(AI* ai, MON_STATE state)
 {
 	tEvent event = {};
 	event.eEven = TYPE_EVENT::CHANGE_AI_STATE;

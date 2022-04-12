@@ -77,8 +77,9 @@ enum class GROUP_TILE
 	SIZE,
 };
 
-enum class STATE_MON
+enum class MON_STATE
 {
+	NONE,
 	IDLE,
 	PATROL,
 	TRACE,

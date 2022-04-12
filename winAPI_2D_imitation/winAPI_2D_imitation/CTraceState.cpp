@@ -3,7 +3,7 @@
 #include "CKnight.h"
 #include "CMonster.h"
 
-CTraceState::CTraceState(STATE_MON state)
+CTraceState::CTraceState(MON_STATE state)
 	: CState(state)
 {
 }
@@ -29,7 +29,7 @@ void CTraceState::update()
 	float fLen = fvDiff.Length();
 	if (fLen >= pMonster->GetMonInfo().fRecogRange)
 	{
-		ChangeAIState(GetOwnerAI(), STATE_MON::IDLE);
+		ChangeAIState(GetOwnerAI(), MON_STATE::IDLE);
 	}
 
 	fPoint pos = pMonster->GetPos();

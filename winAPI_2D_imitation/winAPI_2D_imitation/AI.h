@@ -8,7 +8,7 @@ class AI
 	friend class CMonster;
 
 private:
-	map<STATE_MON, CState*> m_mapState;
+	map<MON_STATE, CState*> m_mapState;
 	CMonster* m_pOwner;
 	CState* m_pCurState;
 
@@ -17,13 +17,13 @@ public:
 	~AI();
 
 	CMonster* GetOwnerAI();
-	CState* GetState(STATE_MON state);
-	void SetCurState(STATE_MON state);
+	CState* GetState(MON_STATE state);
+	void SetCurState(MON_STATE state);
 
 	void update();
 
 	void AddState(CState* state);
-	void ChangeState(STATE_MON nextState);
+	void ChangeState(MON_STATE nextState);
 
 };
 

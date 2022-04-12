@@ -31,6 +31,7 @@ private:
 	tMonInfo m_tInfo;
 	AI* m_pAI;	
 	MON_TYPE m_eMonsterType;
+	MON_STATE m_eCurState;
 
 public:
 	CMonster();

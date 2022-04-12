@@ -2,9 +2,9 @@
 #include "CPatrolState.h"
 #include "CMonster.h"
 
-CPatrolState::CPatrolState(STATE_MON state) : CState(state)
+CPatrolState::CPatrolState(MON_STATE state) : CState(state)
 {	
-	m_iCurDir = 1;
+	m_iCurDir = -1;
 	m_fPatrolSpeed.x  = 200.f;
 	m_fPatrolDistance = {};
 	m_bTurnOn = false;
@@ -40,6 +40,8 @@ void CPatrolState::update()
 	}	
 	pMonster->SetPos(fptMonsterPos);
 
+	// TODO : Trace 타입 몬스터일 경우 state 변경을 구성해주어야함.
+	// partol -> idle -> trace -> idle -> patrol 순환 구조
 }
 
 void CPatrolState::Enter()

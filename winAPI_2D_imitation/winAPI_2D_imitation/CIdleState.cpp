@@ -3,7 +3,7 @@
 #include "CKnight.h"
 #include "CMonster.h"
 
-CIdleState::CIdleState(STATE_MON state)
+CIdleState::CIdleState(MON_STATE state)
 	: CState(state)
 {
 }
@@ -29,7 +29,7 @@ void CIdleState::update()
 	float fLen = fvDiff.Length();
 	if (fLen < pMonster->GetMonInfo().fRecogRange)
 	{
-		ChangeAIState(GetOwnerAI(), STATE_MON::TRACE);
+		ChangeAIState(GetOwnerAI(), MON_STATE::TRACE);
 	}
 
 }

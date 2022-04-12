@@ -3,7 +3,7 @@
 #include "AI.h"
 #include "CMonster.h"
 
-CState::CState(STATE_MON state)
+CState::CState(MON_STATE state)
 {
 	m_pOwnerAI = nullptr;
 	m_eState = state;
@@ -18,7 +18,7 @@ AI* CState::GetOwnerAI()
 	return m_pOwnerAI;
 }
 
-STATE_MON CState::GetType()
+MON_STATE CState::GetType()
 {
 	return m_eState;
 }

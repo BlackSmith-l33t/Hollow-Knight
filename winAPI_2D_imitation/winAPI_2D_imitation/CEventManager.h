@@ -27,6 +27,6 @@ public:
 	void EventCreateObject(CGameObject* pObj, GROUP_GAMEOBJ group);
 	void EventDeleteObject(CGameObject* pObj);
 	void EventChangeScene(GROUP_SCENE scene);
-	void EventChangeAIState(AI* ai, STATE_MON state);
+	void EventChangeAIState(AI* ai, MON_STATE state);
 };
 

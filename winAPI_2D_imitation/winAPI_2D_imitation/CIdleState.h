@@ -3,7 +3,7 @@
 class CIdleState : public CState
 {
 public:
-	CIdleState(STATE_MON state);
+	CIdleState(MON_STATE state);
 	virtual ~CIdleState();
 
 	virtual void update();

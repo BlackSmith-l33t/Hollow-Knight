@@ -9,14 +9,14 @@ class CState
 
 private:
 	AI* m_pOwnerAI;
-	STATE_MON m_eState;
+	MON_STATE m_eState;
 
 public:
-	CState(STATE_MON state);
+	CState(MON_STATE state);
 	virtual ~CState();
 
 	AI* GetOwnerAI();
-	STATE_MON GetType();
+	MON_STATE GetType();
 	CMonster* GetMonster();
 
 	virtual void update() = 0;

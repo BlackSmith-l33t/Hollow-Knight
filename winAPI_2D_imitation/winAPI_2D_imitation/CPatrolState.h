@@ -12,7 +12,7 @@ private:
 
 	bool m_bTurnOn;
 public:
-	CPatrolState(STATE_MON state);
+	CPatrolState(MON_STATE state);
 	virtual ~CPatrolState();
 
 	virtual void update();

@@ -3,7 +3,7 @@
 class CTraceState : public CState
 {
 public:
-	CTraceState(STATE_MON state);
+	CTraceState(MON_STATE state);
 	virtual ~CTraceState();
 
 	virtual void update();

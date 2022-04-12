@@ -8,12 +8,15 @@
 #include "CTraceState.h"
 #include "CPatrolState.h"
 
+// TODO : 플레이어 기본공격에 피격시 죽음 효과 설정
+
 CMonster::CMonster()
 {	
-	m_iDir = 0;
+	m_iDir = -1;
 	m_eMonsterType = MON_TYPE::NONE;
 	m_pAI = nullptr;
 	m_tInfo = {};
+	m_eCurState = MON_STATE::NONE;
 }
 
 CMonster::~CMonster()
@@ -48,7 +51,6 @@ CMonster* CMonster::Create(MON_TYPE type, fPoint pos)
 
 		pMon->SetName(L"Monster");
 		pMon->SetScale(fPoint(100, 100));
-		
 
 		pMon->CreateCollider();
 		pMon->GetCollider()->SetScale(fPoint(50.f, 50.f));
@@ -65,21 +67,30 @@ CMonster* CMonster::Create(MON_TYPE type, fPoint pos)
 		info.fAttRange = 50.f;
 		info.fRecogRange = 300.f;
 		info.fHP = 100.f;
-		info.fSpeed = 150.f;
-
-		// TODO : AI 패트롤 모드 생성 필요 / 플레이어 기본공격에 피격시 죽음 효과 설정
+		info.fSpeed = 150.f;		
 
 		AI* pAI = new AI;
-		pAI->AddState(new CPatrolState(STATE_MON::PATROL));
-		pAI->SetCurState(STATE_MON::PATROL);
+		pAI->AddState(new CPatrolState(MON_STATE::PATROL));
+		pAI->SetCurState(MON_STATE::PATROL);
 		pMon->SetMonInfo(info);
 		pMon->SetAI(pAI);
+		pMon->m_eCurState = MON_STATE::PATROL;
 	}
 	break;
 	case MON_TYPE::TRACE:
 	{
 		pMon = new CMonster;
 		pMon->SetPos(pos);
+
+		pMon->CreateCollider();
+		pMon->GetCollider()->SetScale(fPoint(50.f, 50.f));
+		pMon->GetCollider()->SetOffsetPos(fPoint(0.f, 20.f));
+
+		//CD2DImage* m_pImg = CResourceManager::getInst()->LoadD2DImage(L"MonsterTex", L"texture\\Animation\\Monsters\\monsters.png");
+
+		/*pMon->CreateAnimator();
+		pMon->GetAnimator()->CreateAnimation(L"TraceMonster_MoveLeft", m_pImg, fPoint(0, 0), fPoint(130, 130), fPoint(130, 0), 0.2f, 5, true);
+		pMon->GetAnimator()->CreateAnimation(L"TracelMonster_MoveRight", m_pImg, fPoint(0, 0), fPoint(130, 130), fPoint(130, 0), 0.2f, 5);*/
 
 		tMonInfo info = {};
 		info.fAtt = 10.f;
@@ -89,9 +100,9 @@ CMonster* CMonster::Create(MON_TYPE type, fPoint pos)
 		info.fSpeed = 150.f;
 
 		AI* pAI = new AI;
-		pAI->AddState(new CIdleState(STATE_MON::IDLE));
-		pAI->AddState(new CTraceState(STATE_MON::TRACE));
-		pAI->SetCurState(STATE_MON::IDLE);
+		pAI->AddState(new CIdleState(MON_STATE::IDLE));
+		pAI->AddState(new CTraceState(MON_STATE::TRACE));
+		pAI->SetCurState(MON_STATE::IDLE);
 		pMon->SetMonInfo(info);
 		pMon->SetAI(pAI);
 	}
@@ -109,9 +120,9 @@ CMonster* CMonster::Create(MON_TYPE type, fPoint pos)
 		info.fSpeed = 150.f;
 
 		AI* pAI = new AI;
-		pAI->AddState(new CIdleState(STATE_MON::IDLE));
-		pAI->AddState(new CTraceState(STATE_MON::TRACE));
-		pAI->SetCurState(STATE_MON::IDLE);
+		pAI->AddState(new CIdleState(MON_STATE::IDLE));
+		pAI->AddState(new CTraceState(MON_STATE::TRACE));
+		pAI->SetCurState(MON_STATE::IDLE);
 		pMon->SetMonInfo(info);
 		pMon->SetAI(pAI);
 	}
@@ -128,11 +139,11 @@ CMonster* CMonster::Create(MON_TYPE type, fPoint pos)
 		info.fSpeed = 150.f;
 
 		AI* pAI = new AI;
-		pAI->AddState(new CIdleState(STATE_MON::IDLE));
-		pAI->AddState(new CTraceState(STATE_MON::TRACE));
-		pAI->SetCurState(STATE_MON::IDLE);
+		pAI->AddState(new CIdleState(MON_STATE::IDLE));
+		pAI->AddState(new CTraceState(MON_STATE::TRACE));
+		pAI->SetCurState(MON_STATE::IDLE);
 		pMon->SetMonInfo(info);
-		pMon->SetAI(pAI);
+		pMon->SetAI(pAI);		
 	}
 	default:
 		break;
@@ -163,15 +174,21 @@ void CMonster::update()
 
 void CMonster::update_animation()
 {
-	
-	if (m_iDir == -1)
+	switch (m_eCurState)
 	{
-		GetAnimator()->Play(L"NormalMonster_MoveLeft", true);
-	}
-	else
-	{
-		GetAnimator()->Play(L"NormalMonster_MoveRight", true);
-	}
+	case MON_STATE::PATROL:
+		if (m_iDir == -1)
+		{
+			GetAnimator()->Play(L"NormalMonster_MoveLeft", true);
+		}
+		else
+		{
+			GetAnimator()->Play(L"NormalMonster_MoveRight", true);
+		}
+
+	default:
+		break;
+	}	
 }
 
 float CMonster::GetSpeed()

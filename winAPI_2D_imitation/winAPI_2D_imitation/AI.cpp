@@ -10,7 +10,7 @@ AI::AI()
 
 AI::~AI()
 {
-	for (map<STATE_MON, CState*>::iterator iter = m_mapState.begin(); iter != m_mapState.end(); iter++)
+	for (map<MON_STATE, CState*>::iterator iter = m_mapState.begin(); iter != m_mapState.end(); iter++)
 	{
 		if (nullptr != iter->second)
 			delete iter->second;
@@ -23,9 +23,9 @@ void AI::update()
 	m_pCurState->update();
 }
 
-CState* AI::GetState(STATE_MON state)
+CState* AI::GetState(MON_STATE state)
 {
-	map<STATE_MON, CState*>::iterator iter = m_mapState.find(state);
+	map<MON_STATE, CState*>::iterator iter = m_mapState.find(state);
 	if (m_mapState.end() == iter)
 	{
 		return nullptr;
@@ -38,7 +38,7 @@ CMonster* AI::GetOwnerAI()
 	return m_pOwner;
 }
 
-void AI::SetCurState(STATE_MON state)
+void AI::SetCurState(MON_STATE state)
 {
 	m_pCurState = GetState(state);
 	assert(m_pCurState);
@@ -53,7 +53,7 @@ void AI::AddState(CState* state)
 	state->m_pOwnerAI = this;
 }
 
-void AI::ChangeState(STATE_MON nextState)
+void AI::ChangeState(MON_STATE nextState)
 {
 	CState* pNextState = GetState(nextState);
 	assert(m_pCurState != pNextState);
