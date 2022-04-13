@@ -49,7 +49,7 @@ CMonster* CMonster::Create(MON_TYPE type, fPoint pos)
 		pMon->m_eMonsterType = type;
 		pMon->SetPos(pos);
 
-		pMon->SetName(L"Monster");
+		pMon->SetName(L"Monster_Normal");
 		pMon->SetScale(fPoint(100, 100));
 
 		pMon->CreateCollider();
@@ -77,20 +77,25 @@ CMonster* CMonster::Create(MON_TYPE type, fPoint pos)
 		pMon->m_eCurState = MON_STATE::PATROL;
 	}
 	break;
-	case MON_TYPE::TRACE:
+	case MON_TYPE::TRACE1:
 	{
+		// TODO : patrol -> trace -> patrol 
 		pMon = new CMonster;
+		pMon->m_eMonsterType = type;
 		pMon->SetPos(pos);
+
+		pMon->SetName(L"Monster_Trace");
+		pMon->SetScale(fPoint(100, 100));
 
 		pMon->CreateCollider();
 		pMon->GetCollider()->SetScale(fPoint(50.f, 50.f));
 		pMon->GetCollider()->SetOffsetPos(fPoint(0.f, 20.f));
 
-		//CD2DImage* m_pImg = CResourceManager::getInst()->LoadD2DImage(L"MonsterTex", L"texture\\Animation\\Monsters\\monsters.png");
+		CD2DImage* m_pImg = CResourceManager::getInst()->LoadD2DImage(L"MonsterTex", L"texture\\Animation\\Monsters\\monsters.png");
 
-		/*pMon->CreateAnimator();
-		pMon->GetAnimator()->CreateAnimation(L"TraceMonster_MoveLeft", m_pImg, fPoint(0, 0), fPoint(130, 130), fPoint(130, 0), 0.2f, 5, true);
-		pMon->GetAnimator()->CreateAnimation(L"TracelMonster_MoveRight", m_pImg, fPoint(0, 0), fPoint(130, 130), fPoint(130, 0), 0.2f, 5);*/
+		pMon->CreateAnimator();
+		pMon->GetAnimator()->CreateAnimation(L"NormalMonster_MoveLeft", m_pImg, fPoint(0, 0), fPoint(130, 130), fPoint(130, 0), 0.2f, 5, true);
+		pMon->GetAnimator()->CreateAnimation(L"NormalMonster_MoveRight", m_pImg, fPoint(0, 0), fPoint(130, 130), fPoint(130, 0), 0.2f, 5);
 
 		tMonInfo info = {};
 		info.fAtt = 10.f;
@@ -100,14 +105,50 @@ CMonster* CMonster::Create(MON_TYPE type, fPoint pos)
 		info.fSpeed = 150.f;
 
 		AI* pAI = new AI;
-		pAI->AddState(new CIdleState(MON_STATE::IDLE));
-		pAI->AddState(new CTraceState(MON_STATE::TRACE));
-		pAI->SetCurState(MON_STATE::IDLE);
+		pAI->AddState(new CPatrolState(MON_STATE::PATROL));
+		pAI->SetCurState(MON_STATE::PATROL);
 		pMon->SetMonInfo(info);
 		pMon->SetAI(pAI);
+		pMon->m_eCurState = MON_STATE::PATROL;
 	}
 	break;
-	case MON_TYPE::RANGE:
+	case MON_TYPE::TRACE2:
+	{
+		pMon = new CMonster;
+		pMon->m_eMonsterType = type;
+		pMon->SetPos(pos);
+
+		pMon->SetName(L"Monster_Trace2");
+		pMon->SetScale(fPoint(100, 100));
+
+		pMon->CreateCollider();
+		pMon->GetCollider()->SetScale(fPoint(50.f, 50.f));
+		pMon->GetCollider()->SetOffsetPos(fPoint(0.f, 20.f));
+
+		CD2DImage* m_pImg = CResourceManager::getInst()->LoadD2DImage(L"MonsterTex", L"texture\\Animation\\Monsters\\monsters.png");
+
+		pMon->CreateAnimator();
+		pMon->GetAnimator()->CreateAnimation(L"TraceMonster_MoveLeft", m_pImg, fPoint(0, 0), fPoint(130, 130), fPoint(130, 0), 0.2f, 5, true);
+		pMon->GetAnimator()->CreateAnimation(L"TracelMonster_MoveRight", m_pImg, fPoint(0, 0), fPoint(130, 130), fPoint(130, 0), 0.2f, 5);
+
+		tMonInfo info = {};
+		info.fAtt = 10.f;
+		info.fAttRange = 50.f;
+		info.fRecogRange = 300.f;
+		info.fHP = 100.f;
+		info.fSpeed = 150.f;
+
+		AI* pAI = new AI;
+		pAI->AddState(new CPatrolState(MON_STATE::PATROL));
+	/*	pAI->AddState(new CIdleState(MON_STATE::IDLE));
+		pAI->AddState(new CTraceState(MON_STATE::TRACE));*/
+		pAI->SetCurState(MON_STATE::PATROL);
+		pMon->SetMonInfo(info);
+		pMon->SetAI(pAI);
+		pMon->m_eCurState = MON_STATE::PATROL;
+	}
+	break;
+	case MON_TYPE::FLY:
 	{
 		pMon = new CMonster;
 		pMon->SetPos(pos);
@@ -176,15 +217,102 @@ void CMonster::update_animation()
 {
 	switch (m_eCurState)
 	{
+	case MON_STATE::IDLE:
+		if (m_eMonsterType == MON_TYPE::TRACE1)
+		{
+			if (m_iDir == -1)
+			{
+				GetAnimator()->Play(L"TraceMonster_IdleLeft", true);
+			}
+			else
+			{
+				GetAnimator()->Play(L"TraceMonster_IdleRight", true);
+			}
+
+			/*else if (m_eMonsterType == MON_TYPE::TRACE2)
+			{
+				if (m_iDir == -1)
+				{
+					GetAnimator()->Play(L"TraceMonster2_MoveLeft", true);
+				}
+				else
+				{
+					GetAnimator()->Play(L"TraceMonster2_MoveRight", true);
+				}
+			}*/
+		}
+		break;
 	case MON_STATE::PATROL:
-		if (m_iDir == -1)
+		if (m_eMonsterType == MON_TYPE::NORMAL)
 		{
-			GetAnimator()->Play(L"NormalMonster_MoveLeft", true);
+			if (m_iDir == -1)
+			{
+				GetAnimator()->Play(L"NormalMonster_MoveLeft", true);
+			}
+			else
+			{
+				GetAnimator()->Play(L"NormalMonster_MoveRight", true);
+			}
 		}
-		else
+		else if (m_eMonsterType == MON_TYPE::TRACE1)
 		{
-			GetAnimator()->Play(L"NormalMonster_MoveRight", true);
+			if (m_iDir == -1)
+			{
+				GetAnimator()->Play(L"NormalMonster_MoveLeft", true);
+			}
+			else
+			{
+				GetAnimator()->Play(L"NormalMonster_MoveRight", true);
+			}
 		}
+	/*	else if (m_eMonsterType == MON_TYPE::TRACE2)
+		{
+			if (m_iDir == -1)
+			{
+				GetAnimator()->Play(L"TraceMonster2_MoveLeft", true);
+			}
+			else
+			{
+				GetAnimator()->Play(L"TraceMonster2_MoveRight", true);
+			}
+		}
+		else if (m_eMonsterType == MON_TYPE::FLY)
+		{
+			if (m_iDir == -1)
+			{
+				GetAnimator()->Play(L"FlyMonster_MoveLeft", true);
+			}
+			else
+			{
+				GetAnimator()->Play(L"FlyMonster_MoveRight", true);
+			}
+		}*/
+		break;
+	case MON_STATE::TRACE:	
+		if (m_eMonsterType == MON_TYPE::TRACE1)
+		{
+			if (m_iDir == -1)
+			{
+				GetAnimator()->Play(L"NormalMonster_MoveLeft", true);
+			}
+			else
+			{
+				GetAnimator()->Play(L"NormalMonster_MoveRight", true);
+			}
+		}
+		/*
+		else if (m_eMonsterType == MON_TYPE::TRACE2)
+		{
+			if (m_iDir == -1)
+			{
+				GetAnimator()->Play(L"TraceMonster2_TraceLeft", true);
+			}
+			else
+			{
+				GetAnimator()->Play(L"TraceMonster2_TraceRight", true);
+			}
+		}*/
+		break;
 
 	default:
 		break;
@@ -199,6 +327,11 @@ float CMonster::GetSpeed()
 const tMonInfo& CMonster::GetMonInfo()
 {
 	return m_tInfo;
+}
+
+MON_TYPE CMonster::GetMonType()
+{
+	return m_eMonsterType;
 }
 
 void CMonster::SetSpeed(float speed)

@@ -17,8 +17,9 @@ enum class MON_TYPE
 {
 	NONE,
 	NORMAL,
-	TRACE,
-	RANGE,
+	TRACE1,
+	TRACE2,
+	FLY,
 	BOSS,
 
 	SIZE,
@@ -46,6 +47,7 @@ public:
 
 	float GetSpeed();
 	const tMonInfo& GetMonInfo();
+	MON_TYPE GetMonType();
 
 	void SetSpeed(float speed);
 	void SetAI(AI* ai);

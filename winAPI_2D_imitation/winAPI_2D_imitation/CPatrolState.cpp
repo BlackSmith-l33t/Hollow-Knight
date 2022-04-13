@@ -1,6 +1,7 @@
 #include "framework.h"
 #include "CPatrolState.h"
 #include "CMonster.h"
+#include "CKnight.h"
 
 CPatrolState::CPatrolState(MON_STATE state) : CState(state)
 {	
@@ -42,6 +43,26 @@ void CPatrolState::update()
 
 	// TODO : Trace 타입 몬스터일 경우 state 변경을 구성해주어야함.
 	// partol -> idle -> trace -> idle -> patrol 순환 구조
+
+	if (pMonster->GetMonType() != MON_TYPE::NORMAL)
+	{
+		CKnight* pKnight = CKnight::GetPlayer();
+		if (nullptr == pKnight)
+		{
+			return;
+		}
+
+		fPoint fptPlayerPos = pKnight->GetPos();
+
+		fptMonsterPos = pMonster->GetPos();
+
+		fVec2 fvDiff = fptPlayerPos - fptMonsterPos;
+		float fLen = fvDiff.Length();
+		if (fLen >= pMonster->GetMonInfo().fRecogRange)
+		{
+			ChangeAIState(GetOwnerAI(), MON_STATE::TRACE);
+		}
+	}
 }
 
 void CPatrolState::Enter()

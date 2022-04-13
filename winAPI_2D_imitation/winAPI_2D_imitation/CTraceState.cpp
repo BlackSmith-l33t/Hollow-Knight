@@ -29,7 +29,7 @@ void CTraceState::update()
 	float fLen = fvDiff.Length();
 	if (fLen >= pMonster->GetMonInfo().fRecogRange)
 	{
-		ChangeAIState(GetOwnerAI(), MON_STATE::IDLE);
+		ChangeAIState(GetOwnerAI(), MON_STATE::PATROL);
 	}
 
 	fPoint pos = pMonster->GetPos();

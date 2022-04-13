@@ -55,10 +55,10 @@ void CScene_Town::Enter()
 	AddObject(pKnight, GROUP_GAMEOBJ::KNIGHT);
 	pKnight->RegisterPlayer();	
 
-	CMonster* pMonNormal = CMonster::Create(MON_TYPE::NORMAL, fPoint(2500.f, 2096.f));
-	AddObject(pMonNormal, GROUP_GAMEOBJ::MONSTER);
+	/*CMonster* pMonNormal = CMonster::Create(MON_TYPE::NORMAL, fPoint(2500.f, 2096.f));
+	AddObject(pMonNormal, GROUP_GAMEOBJ::MONSTER);*/
 
-	CMonster* pMonTrace = CMonster::Create(MON_TYPE::TRACE, fPoint(1500.f, 2096.f));
+	CMonster* pMonTrace = CMonster::Create(MON_TYPE::TRACE1, fPoint(1500.f, 2096.f));
 	AddObject(pMonTrace, GROUP_GAMEOBJ::MONSTER);
 
 	/*CMonster* pMonTrace2 = CMonster::Create(MON_TYPE::TRACE, fPoint(1800.f, 2096.f));
