@@ -544,13 +544,13 @@ void CKnight::update_animation()
 
 void CKnight::OnCollision(CCollider* _pOther)
 {
-	Logger::debug(L"OnCollision_Knight");
+	
 }
 
 void CKnight::OnCollisionEnter(CCollider* _pOther)
-{
-	Logger::debug(L"OnCollisionEnter_Knight");
+{	
 	CGameObject* pOtherObj = _pOther->GetObj();
+
 	if (GROUP_GAMEOBJ::GROUND == pOtherObj->GetObjType())
 	{
 		fVec2 vPos = GetPos();
@@ -576,8 +576,7 @@ void CKnight::OnCollisionExit(CCollider* _pOther)
 	{
 		m_bDamaged = false;
 	}
-
-	Logger::debug(L"Player_OnCollisionExit");
+	
 	CGameObject* pOtherObj = _pOther->GetObj();
 	if (pOtherObj->GetObjType() == GROUP_GAMEOBJ::GROUND)
 	{

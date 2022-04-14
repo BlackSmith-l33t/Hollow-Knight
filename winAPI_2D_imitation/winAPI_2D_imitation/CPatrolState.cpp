@@ -31,14 +31,13 @@ void CPatrolState::update()
 		fptMonsterPos -= m_fPatrolSpeed.Normalize() * 50 * fDT;
 	}
 
-
 	if (m_fPatrolDistance.x >= 300.f)
 	{
 		m_iCurDir = m_iCurDir * -1;
 		pMonster->SetDir(m_iCurDir);
-		m_bTurnOn = !m_bTurnOn;		
+		m_bTurnOn = !m_bTurnOn;
 		m_fPatrolDistance.x = 0.f;
-	}	
+	}
 	pMonster->SetPos(fptMonsterPos);
 
 	// TODO : Trace 타입 몬스터일 경우 state 변경을 구성해주어야함.
@@ -53,22 +52,36 @@ void CPatrolState::update()
 		}
 
 		fPoint fptPlayerPos = pKnight->GetPos();
-
 		fptMonsterPos = pMonster->GetPos();
 
 		fVec2 fvDiff = fptPlayerPos - fptMonsterPos;
-		float fLen = fvDiff.Length();
-		if (fLen >= pMonster->GetMonInfo().fRecogRange)
-		{
-			ChangeAIState(GetOwnerAI(), MON_STATE::TRACE);
+		float fLen = fvDiff.Length();	
+
+		if (0 < fvDiff.x &&  pMonster->GetMonInfo().fRecogRange.y > fvDiff.y)
+		{			
+			if (fLen <= pMonster->GetMonInfo().fRecogRange.x)
+			{
+				pMonster->SetDir(1);
+				ChangeAIState(GetOwnerAI(), MON_STATE::IDLE);
+			}
 		}
+		else if (0 > fvDiff.x && pMonster->GetMonInfo().fRecogRange.y > fvDiff.y)
+		{
+			if (fLen >= pMonster->GetMonInfo().fRecogRange.x)
+			{
+				pMonster->SetDir(-1);
+				ChangeAIState(GetOwnerAI(), MON_STATE::IDLE);
+			}
+		}		
 	}
 }
 
 void CPatrolState::Enter()
 {
+	Logger::debug(L"Patrol ON!");
 }
 
 void CPatrolState::Exit()
 {
+	Logger::debug(L"Patrol OUT!");
 }

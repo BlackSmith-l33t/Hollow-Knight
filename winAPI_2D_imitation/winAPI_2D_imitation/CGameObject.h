@@ -11,6 +11,7 @@ class CGameObject
 	friend class CGround;
 
 protected:
+	int		m_iCurDir;
 	wstring m_strName;
 	fPoint  m_fptPos;
 	fPoint  m_fptScale;
@@ -42,6 +43,7 @@ public:
 	virtual ~CGameObject();
 	virtual CGameObject* Clone() = 0;
 
+	void SetDir(int dir);
 	void SetPos(fPoint pos);
 	void SetScale(fPoint scale);
 	void SetName(wstring name);
@@ -49,6 +51,7 @@ public:
 	void SetGround(bool bGround);
 	void SetVelocity(fVec2 _velocity);
 
+	int GetDir();
 	fPoint GetPos();
 	fPoint GetScale();
 	wstring GetName();

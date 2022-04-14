@@ -14,6 +14,9 @@ CTraceState::~CTraceState()
 
 void CTraceState::update()
 {
+	CMonster* pMonster = GetMonster();
+	fPoint fptMonsterPos = pMonster->GetPos();
+
 	CKnight* pKnight = CKnight::GetPlayer();
 	if (nullptr == pKnight)
 	{
@@ -21,26 +24,41 @@ void CTraceState::update()
 	}
 
 	fPoint fptPlayerPos = pKnight->GetPos();
-
-	CMonster* pMonster = GetMonster();
-	fPoint fptMonsterPos = pMonster->GetPos();
+	fptMonsterPos = pMonster->GetPos();
 
 	fVec2 fvDiff = fptPlayerPos - fptMonsterPos;
 	float fLen = fvDiff.Length();
-	if (fLen >= pMonster->GetMonInfo().fRecogRange)
-	{
-		ChangeAIState(GetOwnerAI(), MON_STATE::PATROL);
-	}
 
 	fPoint pos = pMonster->GetPos();
 	pos += fvDiff.Normalize() * 100 * fDT;
 	pMonster->SetPos(pos);
+
+	if (0 < fvDiff.x && pMonster->GetMonInfo().fRecogRange.y > fvDiff.y)
+	{
+		if (fLen >= pMonster->GetMonInfo().fRecogRange.x)
+		{
+			pMonster->SetDir(1);
+			ChangeAIState(GetOwnerAI(), MON_STATE::PATROL);
+		}
+	}
+	else if (0 > fvDiff.x && pMonster->GetMonInfo().fRecogRange.y > fvDiff.y)
+	{
+		if (fLen >= pMonster->GetMonInfo().fRecogRange.x)
+		{
+			pMonster->SetDir(-1);
+			ChangeAIState(GetOwnerAI(), MON_STATE::PATROL);
+		}
+	}
+
+	
 }
 
 void CTraceState::Enter()
 {
+	Logger::debug(L"Trace ON!");
 }
 
 void CTraceState::Exit()
 {
+	Logger::debug(L"Trace OUT!");
 }

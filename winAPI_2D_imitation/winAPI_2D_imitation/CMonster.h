@@ -7,10 +7,10 @@ class AI;
 struct tMonInfo
 {
 	float fSpeed;
-	float fHP;
-	float fRecogRange;
+	float fHP;	
 	float fAttRange;
 	float fAtt;
+	fPoint fRecogRange;
 };
 
 enum class MON_TYPE
@@ -27,8 +27,7 @@ enum class MON_TYPE
 
 class CMonster : public CGameObject
 {
-private:
-	int m_iDir;
+private:	
 	tMonInfo m_tInfo;
 	AI* m_pAI;	
 	MON_TYPE m_eMonsterType;
@@ -51,8 +50,7 @@ public:
 
 	void SetSpeed(float speed);
 	void SetAI(AI* ai);
-	void SetMonInfo(const tMonInfo& info);
-	void SetDir(int _dir);
+	void SetMonInfo(const tMonInfo& info);	
 	
 	void OnCollisionEnter(CCollider* pOther);
 };

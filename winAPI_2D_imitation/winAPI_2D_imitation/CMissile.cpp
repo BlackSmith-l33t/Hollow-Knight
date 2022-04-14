@@ -66,8 +66,7 @@ void CMissile::OnCollisionEnter(CCollider* pOther)
 {
 	CGameObject* pOtherObj = pOther->GetObj();
 	if (pOtherObj->GetName() == L"Monster" || pOtherObj->GetObjType() == GROUP_GAMEOBJ::GROUND)
-	{
-		Logger::debug(L"OnCollisionEnter_Monster");
+	{			
 		DeleteObj(this);
 		m_fAttackTimer = 0;
 	}	

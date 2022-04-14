@@ -14,6 +14,9 @@ CIdleState::~CIdleState()
 
 void CIdleState::update()
 {
+	CMonster* pMonster = GetMonster();
+	fPoint fptMonsterPos = pMonster->GetPos();
+
 	CKnight* pKnight = CKnight::GetPlayer();
 	if (nullptr == pKnight)
 	{
@@ -21,23 +24,36 @@ void CIdleState::update()
 	}
 
 	fPoint fptPlayerPos = pKnight->GetPos();
-
-	CMonster* pMonster = GetMonster();
-	fPoint fptMonsterPos = pMonster->GetPos();
+	fptMonsterPos = pMonster->GetPos();
 
 	fVec2 fvDiff = fptPlayerPos - fptMonsterPos;
 	float fLen = fvDiff.Length();
-	if (fLen < pMonster->GetMonInfo().fRecogRange)
+
+	if (0 < fvDiff.x && pMonster->GetMonInfo().fRecogRange.y > fvDiff.y)
 	{
-		ChangeAIState(GetOwnerAI(), MON_STATE::TRACE);
+		if (fLen <= pMonster->GetMonInfo().fRecogRange.x)
+		{
+			pMonster->SetDir(1);
+			ChangeAIState(GetOwnerAI(), MON_STATE::TRACE);
+		}
+	}
+	else if (0 > fvDiff.x && pMonster->GetMonInfo().fRecogRange.y > fvDiff.y)
+	{
+		if (fLen >= pMonster->GetMonInfo().fRecogRange.x)
+		{
+			pMonster->SetDir(-1);
+			ChangeAIState(GetOwnerAI(), MON_STATE::TRACE);
+		}
 	}
 
 }
 
 void CIdleState::Enter()
 {
+	Logger::debug(L"Idle ON!");
 }
 
 void CIdleState::Exit()
 {
+	Logger::debug(L"Idle ON!");
 }

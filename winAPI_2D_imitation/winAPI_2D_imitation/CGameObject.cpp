@@ -58,6 +58,11 @@ CGameObject::~CGameObject()
 	}
 }
 
+void CGameObject::SetDir(int dir)
+{
+	m_iCurDir = dir;
+}
+
 void CGameObject::SetPos(fPoint pos)
 {
 	m_fptPos = pos;
@@ -86,6 +91,11 @@ void CGameObject::SetGround(bool bGround)
 void CGameObject::SetVelocity(fVec2 _velocity)
 {
 	m_fvVelocity = _velocity;
+}
+
+int CGameObject::GetDir()
+{
+	return m_iCurDir;
 }
 
 fPoint CGameObject::GetPos()

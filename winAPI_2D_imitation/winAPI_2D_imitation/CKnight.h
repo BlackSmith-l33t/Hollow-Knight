@@ -14,9 +14,8 @@ private:
 	CAnimation* pAni;
 	CNail* pNail;
 
-	int m_sHP;			// HP
-	int m_sGeo;			// 게임 내 화폐
-	int m_iCurDir;       // 현재 방향
+	int m_iHP;			// HP
+	int m_iGeo;			// 게임 내 화폐	
 	int m_iPrevDir;		// 이전 방향
 	int m_iMissileActionCount;
 	int m_iMissileCount;

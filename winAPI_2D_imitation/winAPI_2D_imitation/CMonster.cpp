@@ -12,7 +12,7 @@
 
 CMonster::CMonster()
 {	
-	m_iDir = -1;
+	m_iCurDir = -1;
 	m_eMonsterType = MON_TYPE::NONE;
 	m_pAI = nullptr;
 	m_tInfo = {};
@@ -65,7 +65,7 @@ CMonster* CMonster::Create(MON_TYPE type, fPoint pos)
 		tMonInfo info = {};
 		info.fAtt = 10.f;
 		info.fAttRange = 50.f;
-		info.fRecogRange = 300.f;
+		info.fRecogRange.x = 300.f;
 		info.fHP = 100.f;
 		info.fSpeed = 150.f;		
 
@@ -94,18 +94,25 @@ CMonster* CMonster::Create(MON_TYPE type, fPoint pos)
 		CD2DImage* m_pImg = CResourceManager::getInst()->LoadD2DImage(L"MonsterTex", L"texture\\Animation\\Monsters\\monsters.png");
 
 		pMon->CreateAnimator();
+		pMon->GetAnimator()->CreateAnimation(L"NormalMonster_IdleLeft", m_pImg, fPoint(0, 0), fPoint(130, 130), fPoint(130, 0), 0.2f, 1, true);
+		pMon->GetAnimator()->CreateAnimation(L"NormalMonster_IdleRight", m_pImg, fPoint(0, 0), fPoint(130, 130), fPoint(130, 0), 0.2f, 1);
+
 		pMon->GetAnimator()->CreateAnimation(L"NormalMonster_MoveLeft", m_pImg, fPoint(0, 0), fPoint(130, 130), fPoint(130, 0), 0.2f, 5, true);
 		pMon->GetAnimator()->CreateAnimation(L"NormalMonster_MoveRight", m_pImg, fPoint(0, 0), fPoint(130, 130), fPoint(130, 0), 0.2f, 5);
 
 		tMonInfo info = {};
 		info.fAtt = 10.f;
 		info.fAttRange = 50.f;
-		info.fRecogRange = 300.f;
+		info.fRecogRange.x = 300.f;
+		info.fRecogRange.y = 100.f;
 		info.fHP = 100.f;
 		info.fSpeed = 150.f;
 
 		AI* pAI = new AI;
 		pAI->AddState(new CPatrolState(MON_STATE::PATROL));
+		pAI->AddState(new CTraceState(MON_STATE::TRACE));
+		pAI->AddState(new CIdleState(MON_STATE::IDLE));
+
 		pAI->SetCurState(MON_STATE::PATROL);
 		pMon->SetMonInfo(info);
 		pMon->SetAI(pAI);
@@ -134,14 +141,15 @@ CMonster* CMonster::Create(MON_TYPE type, fPoint pos)
 		tMonInfo info = {};
 		info.fAtt = 10.f;
 		info.fAttRange = 50.f;
-		info.fRecogRange = 300.f;
+		info.fRecogRange.x = 300.f;
+		info.fRecogRange.y = 100.f;
 		info.fHP = 100.f;
 		info.fSpeed = 150.f;
 
 		AI* pAI = new AI;
 		pAI->AddState(new CPatrolState(MON_STATE::PATROL));
-	/*	pAI->AddState(new CIdleState(MON_STATE::IDLE));
-		pAI->AddState(new CTraceState(MON_STATE::TRACE));*/
+		//pAI->AddState(new CIdleState(MON_STATE::IDLE));
+		pAI->AddState(new CTraceState(MON_STATE::TRACE));
 		pAI->SetCurState(MON_STATE::PATROL);
 		pMon->SetMonInfo(info);
 		pMon->SetAI(pAI);
@@ -156,7 +164,8 @@ CMonster* CMonster::Create(MON_TYPE type, fPoint pos)
 		tMonInfo info = {};
 		info.fAtt = 10.f;
 		info.fAttRange = 50.f;
-		info.fRecogRange = 300.f;
+		info.fRecogRange.x = 300.f;
+		info.fRecogRange.y = 50.f;
 		info.fHP = 100.f;
 		info.fSpeed = 150.f;
 
@@ -175,7 +184,8 @@ CMonster* CMonster::Create(MON_TYPE type, fPoint pos)
 		tMonInfo info = {};
 		info.fAtt = 10.f;
 		info.fAttRange = 50.f;
-		info.fRecogRange = 300.f;
+		info.fRecogRange.x = 300.f;
+		info.fRecogRange.y = 50.f;
 		info.fHP = 100.f;
 		info.fSpeed = 150.f;
 
@@ -220,13 +230,13 @@ void CMonster::update_animation()
 	case MON_STATE::IDLE:
 		if (m_eMonsterType == MON_TYPE::TRACE1)
 		{
-			if (m_iDir == -1)
+			if (m_iCurDir == -1)
 			{
-				GetAnimator()->Play(L"TraceMonster_IdleLeft", true);
+				GetAnimator()->Play(L"NormalMonster_IdleLeft", true);
 			}
 			else
 			{
-				GetAnimator()->Play(L"TraceMonster_IdleRight", true);
+				GetAnimator()->Play(L"NormalMonster_IdleRight", true);
 			}
 
 			/*else if (m_eMonsterType == MON_TYPE::TRACE2)
@@ -245,7 +255,7 @@ void CMonster::update_animation()
 	case MON_STATE::PATROL:
 		if (m_eMonsterType == MON_TYPE::NORMAL)
 		{
-			if (m_iDir == -1)
+			if (m_iCurDir == -1)
 			{
 				GetAnimator()->Play(L"NormalMonster_MoveLeft", true);
 			}
@@ -256,7 +266,7 @@ void CMonster::update_animation()
 		}
 		else if (m_eMonsterType == MON_TYPE::TRACE1)
 		{
-			if (m_iDir == -1)
+			if (m_iCurDir == -1)
 			{
 				GetAnimator()->Play(L"NormalMonster_MoveLeft", true);
 			}
@@ -291,7 +301,7 @@ void CMonster::update_animation()
 	case MON_STATE::TRACE:	
 		if (m_eMonsterType == MON_TYPE::TRACE1)
 		{
-			if (m_iDir == -1)
+			if (m_iCurDir == -1)
 			{
 				GetAnimator()->Play(L"NormalMonster_MoveLeft", true);
 			}
@@ -350,15 +360,10 @@ void CMonster::SetMonInfo(const tMonInfo& info)
 	m_tInfo = info;
 }
 
-void CMonster::SetDir(int _dir)
-{
-	m_iDir = _dir;
-}
-
 void CMonster::OnCollisionEnter(CCollider* pOther)
 {
 	CGameObject* pOtherObj = pOther->GetObj();
-	Logger::debug(L"Missile OnCollisionEnter");
+	//Logger::debug(L"Missile OnCollisionEnter");
 	if (pOtherObj->GetName() == L"Missile_Player")
 	{
 		m_tInfo.fHP -= 1;
