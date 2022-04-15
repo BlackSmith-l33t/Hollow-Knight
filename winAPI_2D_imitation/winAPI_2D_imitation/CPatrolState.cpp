@@ -20,9 +20,7 @@ void CPatrolState::update()
 	CMonster* pMonster = GetMonster();
 	fPoint fptMonsterPos = pMonster->GetPos();	
 
-	// TODO : Trace 타입 몬스터일 경우 state 변경을 구성해주어야함.
-
-	if (pMonster->GetMonType() != MON_TYPE::NORMAL)
+	if (pMonster->GetMonType() == MON_TYPE::TRACE)
 	{
 		CKnight* pKnight = CKnight::GetPlayer();
 		if (nullptr == pKnight)
@@ -50,6 +48,36 @@ void CPatrolState::update()
 			ChangeAIState(GetOwnerAI(), MON_STATE::TRACE);
 		}		
 	}
+	else if (pMonster->GetMonType() == MON_TYPE::FLY) 
+	{
+		CKnight* pKnight = CKnight::GetPlayer();
+		if (nullptr == pKnight)
+		{
+			return;
+		}
+
+		fPoint fptPlayerPos = pKnight->GetPos();
+		fptMonsterPos = pMonster->GetPos();
+
+		fVec2 fvDiff = fptPlayerPos - fptMonsterPos;
+		float fLen = fvDiff.Length();
+
+		if (fLen < pMonster->GetMonInfo().fRecogRange.x)
+		{
+			if (fvDiff.x > 0)
+			{
+				pMonster->SetDir(1);
+			}
+			else
+			{
+				pMonster->SetDir(-1);
+			}
+
+			ChangeAIState(GetOwnerAI(), MON_STATE::ATT);
+			Logger::debug(L"Patrol -> Attack");
+		}
+	}
+
 	m_fPatrolDistance += m_fPatrolSpeed.Normalize() * 50 * fDT;
 
 	if (m_bTurnOn)

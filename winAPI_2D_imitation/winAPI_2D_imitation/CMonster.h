@@ -17,8 +17,7 @@ enum class MON_TYPE
 {
 	NONE,
 	NORMAL,
-	TRACE1,
-	TRACE2,
+	TRACE,	
 	FLY,
 	BOSS,
 

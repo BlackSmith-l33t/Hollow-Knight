@@ -84,8 +84,6 @@ enum class MON_STATE
 	PATROL,
 	TRACE,
 	ATT,
-	RUN,
-	FLY,
 	DEAD,
 
 	SIZE,

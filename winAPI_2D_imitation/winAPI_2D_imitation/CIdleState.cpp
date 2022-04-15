@@ -34,7 +34,7 @@ void CIdleState::update()
 		if (fLen <= pMonster->GetMonInfo().fRecogRange.x)
 		{
 			pMonster->SetDir(1);
-			ChangeAIState(GetOwnerAI(), MON_STATE::TRACE);
+			ChangeAIState(GetOwnerAI(), MON_STATE::ATT);
 			Logger::debug(L"Trace Right");
 		}
 	}
@@ -43,7 +43,7 @@ void CIdleState::update()
 		if (fLen >= pMonster->GetMonInfo().fRecogRange.x)
 		{
 			pMonster->SetDir(-1);
-			ChangeAIState(GetOwnerAI(), MON_STATE::TRACE);
+			ChangeAIState(GetOwnerAI(), MON_STATE::ATT);
 			Logger::debug(L"Trace Left");
 		}
 	}

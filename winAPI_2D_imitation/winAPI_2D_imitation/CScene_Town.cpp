@@ -58,14 +58,14 @@ void CScene_Town::Enter()
 	/*CMonster* pMonNormal = CMonster::Create(MON_TYPE::NORMAL, fPoint(2500.f, 2096.f));
 	AddObject(pMonNormal, GROUP_GAMEOBJ::MONSTER);*/
 
-	CMonster* pMonTrace = CMonster::Create(MON_TYPE::TRACE1, fPoint(1500.f, 2096.f));
-	AddObject(pMonTrace, GROUP_GAMEOBJ::MONSTER);
+	/*CMonster* pMonTrace = CMonster::Create(MON_TYPE::TRACE1, fPoint(1500.f, 2096.f));
+	AddObject(pMonTrace, GROUP_GAMEOBJ::MONSTER);*/
 
 	/*CMonster* pMonTrace2 = CMonster::Create(MON_TYPE::TRACE, fPoint(1800.f, 2096.f));
-	AddObject(pMonTrace2, GROUP_GAMEOBJ::MONSTER);
+	AddObject(pMonTrace2, GROUP_GAMEOBJ::MONSTER);*/
 
-	CMonster* pMonRange = CMonster::Create(MON_TYPE::RANGE, fPoint(2500.f, 1800.f));
-	AddObject(pMonRange, GROUP_GAMEOBJ::MONSTER);*/
+	CMonster* pMonFly = CMonster::Create(MON_TYPE::FLY, fPoint(1800.f, 2096.f));
+	AddObject(pMonFly, GROUP_GAMEOBJ::MONSTER);
 
 
 	CMap* map = new CMap;
