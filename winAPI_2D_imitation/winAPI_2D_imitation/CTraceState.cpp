@@ -27,38 +27,32 @@ void CTraceState::update()
 	fptMonsterPos = pMonster->GetPos();
 
 	fVec2 fvDiff = fptPlayerPos - fptMonsterPos;
-	float fLen = fvDiff.Length();
+	float fLen = fvDiff.Length();	
+	if (fLen >= pMonster->GetMonInfo().fRecogRange.x)
+	{		
+		ChangeAIState(GetOwnerAI(), MON_STATE::PATROL);
+	}
 
 	fPoint pos = pMonster->GetPos();
-	pos += fvDiff.Normalize() * 100 * fDT;
+	pos.x += fvDiff.Normalize().x * 100 * fDT;
 	pMonster->SetPos(pos);
 
-	if (0 < fvDiff.x && pMonster->GetMonInfo().fRecogRange.y > fvDiff.y)
+	if (fvDiff.x > 0)
 	{
-		if (fLen >= pMonster->GetMonInfo().fRecogRange.x)
-		{
-			pMonster->SetDir(1);
-			ChangeAIState(GetOwnerAI(), MON_STATE::PATROL);
-		}
+		pMonster->SetDir(1);
 	}
-	else if (0 > fvDiff.x && pMonster->GetMonInfo().fRecogRange.y > fvDiff.y)
+	else
 	{
-		if (fLen >= pMonster->GetMonInfo().fRecogRange.x)
-		{
-			pMonster->SetDir(-1);
-			ChangeAIState(GetOwnerAI(), MON_STATE::PATROL);
-		}
+		pMonster->SetDir(-1);
 	}
-
-	
 }
 
 void CTraceState::Enter()
 {
-	Logger::debug(L"Trace ON!");
+	Logger::debug(L"Trace ON");
 }
 
 void CTraceState::Exit()
 {
-	Logger::debug(L"Trace OUT!");
+	Logger::debug(L"Trace OUT");
 }

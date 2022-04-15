@@ -110,8 +110,7 @@ CMonster* CMonster::Create(MON_TYPE type, fPoint pos)
 
 		AI* pAI = new AI;
 		pAI->AddState(new CPatrolState(MON_STATE::PATROL));
-		pAI->AddState(new CTraceState(MON_STATE::TRACE));
-		pAI->AddState(new CIdleState(MON_STATE::IDLE));
+		pAI->AddState(new CTraceState(MON_STATE::TRACE));	
 
 		pAI->SetCurState(MON_STATE::PATROL);
 		pMon->SetMonInfo(info);

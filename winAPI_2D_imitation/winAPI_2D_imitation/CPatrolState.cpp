@@ -18,30 +18,9 @@ CPatrolState::~CPatrolState()
 void CPatrolState::update()
 {
 	CMonster* pMonster = GetMonster();
-	fPoint fptMonsterPos = pMonster->GetPos();
-
-	m_fPatrolDistance += m_fPatrolSpeed.Normalize() * 50 * fDT;
-	
-	if (m_bTurnOn)
-	{
-		fptMonsterPos += m_fPatrolSpeed.Normalize() * 50 * fDT;
-	}
-	else
-	{		
-		fptMonsterPos -= m_fPatrolSpeed.Normalize() * 50 * fDT;
-	}
-
-	if (m_fPatrolDistance.x >= 300.f)
-	{
-		m_iCurDir = m_iCurDir * -1;
-		pMonster->SetDir(m_iCurDir);
-		m_bTurnOn = !m_bTurnOn;
-		m_fPatrolDistance.x = 0.f;
-	}
-	pMonster->SetPos(fptMonsterPos);
+	fPoint fptMonsterPos = pMonster->GetPos();	
 
 	// TODO : Trace 타입 몬스터일 경우 state 변경을 구성해주어야함.
-	// partol -> idle -> trace -> idle -> patrol 순환 구조
 
 	if (pMonster->GetMonType() != MON_TYPE::NORMAL)
 	{
@@ -55,33 +34,51 @@ void CPatrolState::update()
 		fptMonsterPos = pMonster->GetPos();
 
 		fVec2 fvDiff = fptPlayerPos - fptMonsterPos;
-		float fLen = fvDiff.Length();	
+		float fLen = fvDiff.Length();
 
-		if (0 < fvDiff.x &&  pMonster->GetMonInfo().fRecogRange.y > fvDiff.y)
-		{			
-			if (fLen <= pMonster->GetMonInfo().fRecogRange.x)
+		if (fLen < pMonster->GetMonInfo().fRecogRange.x)
+		{
+			if (fvDiff.x > 0)
 			{
 				pMonster->SetDir(1);
-				ChangeAIState(GetOwnerAI(), MON_STATE::IDLE);
 			}
-		}
-		else if (0 > fvDiff.x && pMonster->GetMonInfo().fRecogRange.y > fvDiff.y)
-		{
-			if (fLen >= pMonster->GetMonInfo().fRecogRange.x)
+			else
 			{
 				pMonster->SetDir(-1);
-				ChangeAIState(GetOwnerAI(), MON_STATE::IDLE);
 			}
+
+			ChangeAIState(GetOwnerAI(), MON_STATE::TRACE);
 		}		
 	}
+	m_fPatrolDistance += m_fPatrolSpeed.Normalize() * 50 * fDT;
+
+	if (m_bTurnOn)
+	{
+		fptMonsterPos.x += m_fPatrolSpeed.Normalize().x * 50 * fDT;
+		pMonster->SetDir(1);
+	}
+	else
+	{
+		fptMonsterPos.x -= m_fPatrolSpeed.Normalize().x * 50 * fDT;
+		pMonster->SetDir(-1);
+	}
+
+	if (m_fPatrolDistance.x >= 300.f)
+	{
+		m_iCurDir = m_iCurDir * -1;
+		pMonster->SetDir(m_iCurDir);
+		m_bTurnOn = !m_bTurnOn;
+		m_fPatrolDistance.x = 0.f;
+	}
+	pMonster->SetPos(fptMonsterPos);
 }
 
 void CPatrolState::Enter()
 {
-	Logger::debug(L"Patrol ON!");
+	Logger::debug(L"Patrol ON");
 }
 
 void CPatrolState::Exit()
 {
-	Logger::debug(L"Patrol OUT!");
+	Logger::debug(L"Patrol OUT");
 }

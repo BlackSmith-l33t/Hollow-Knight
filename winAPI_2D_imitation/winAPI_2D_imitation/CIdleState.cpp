@@ -35,6 +35,7 @@ void CIdleState::update()
 		{
 			pMonster->SetDir(1);
 			ChangeAIState(GetOwnerAI(), MON_STATE::TRACE);
+			Logger::debug(L"Trace Right");
 		}
 	}
 	else if (0 > fvDiff.x && pMonster->GetMonInfo().fRecogRange.y > fvDiff.y)
@@ -43,6 +44,7 @@ void CIdleState::update()
 		{
 			pMonster->SetDir(-1);
 			ChangeAIState(GetOwnerAI(), MON_STATE::TRACE);
+			Logger::debug(L"Trace Left");
 		}
 	}
 
@@ -50,10 +52,10 @@ void CIdleState::update()
 
 void CIdleState::Enter()
 {
-	Logger::debug(L"Idle ON!");
+	Logger::debug(L"Idle ON");
 }
 
 void CIdleState::Exit()
 {
-	Logger::debug(L"Idle ON!");
+	Logger::debug(L"Idle ON");
 }
