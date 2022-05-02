@@ -145,6 +145,12 @@
     <ClCompile Include="CPatrolState.cpp">
       <Filter>Component\AI\State</Filter>
     </ClCompile>
+    <ClCompile Include="CAttackState.cpp">
+      <Filter>Component\AI\State</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonsterMissile.cpp">
+      <Filter>Object\Character\Monster</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -308,6 +314,12 @@
     </ClInclude>
     <ClInclude Include="CPatrolState.h">
       <Filter>Component\AI\State</Filter>
+    </ClInclude>
+    <ClInclude Include="CAttackState.h">
+      <Filter>Component\AI\State</Filter>
+    </ClInclude>
+    <ClInclude Include="CMonsterMissile.h">
+      <Filter>Object\Character\Monster</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

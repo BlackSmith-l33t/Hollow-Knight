@@ -2,7 +2,7 @@
 #include "CState.h"
 class CAttackState : public CState
 {
-private:
+private:	
 
 public:
 	CAttackState(MON_STATE state);
@@ -11,7 +11,5 @@ public:
 	virtual void update();
 	virtual void Enter();
 	virtual void Exit();
-
-	void Attack();
 };
 

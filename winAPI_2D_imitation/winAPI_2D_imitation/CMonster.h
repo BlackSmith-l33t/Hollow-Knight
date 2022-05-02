@@ -32,6 +32,8 @@ private:
 	MON_TYPE m_eMonsterType;
 	MON_STATE m_eCurState;
 
+	bool m_bRangeAttack;
+
 public:
 	CMonster();
 	virtual ~CMonster();
@@ -52,5 +54,7 @@ public:
 	void SetMonInfo(const tMonInfo& info);	
 	
 	void OnCollisionEnter(CCollider* pOther);
+
+	void CreateMissile(fPoint targetPos);
 };
 

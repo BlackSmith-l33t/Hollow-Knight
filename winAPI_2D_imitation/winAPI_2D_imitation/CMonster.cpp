@@ -7,7 +7,8 @@
 #include "CIdleState.h"
 #include "CTraceState.h"
 #include "CPatrolState.h"
-
+#include "CAttackState.h"
+#include "CMonsterMissile.h"
 // TODO : 플레이어 기본공격에 피격시 죽음 효과 설정
 
 CMonster::CMonster()
@@ -17,6 +18,7 @@ CMonster::CMonster()
 	m_pAI = nullptr;
 	m_tInfo = {};
 	m_eCurState = MON_STATE::NONE;
+	m_bRangeAttack = false;
 }
 
 CMonster::~CMonster()
@@ -152,13 +154,13 @@ CMonster* CMonster::Create(MON_TYPE type, fPoint pos)
 		info.fSpeed = 150.f;
 
 		AI* pAI = new AI;
-		pAI->AddState(new CIdleState(MON_STATE::PATROL));
-		pAI->AddState(new CIdleState(MON_STATE::IDLE));
-		pAI->AddState(new CTraceState(MON_STATE::ATT));
+		pAI->AddState(new CPatrolState(MON_STATE::PATROL));		
+		pAI->AddState(new CAttackState(MON_STATE::ATT));
 		pAI->SetCurState(MON_STATE::PATROL);
 		pMon->SetMonInfo(info);
 		pMon->SetAI(pAI);
 	}
+	break;
 	case MON_TYPE::BOSS:
 	{
 		pMon = new CMonster;
@@ -204,6 +206,11 @@ void CMonster::update()
 	if (nullptr != m_pAI)
 		m_pAI->update();
 
+	if (m_bRangeAttack)
+	{
+
+		CreateMissile();
+	}
 }
 
 void CMonster::update_animation()
@@ -377,4 +384,35 @@ void CMonster::OnCollisionEnter(CCollider* pOther)
 		if (m_tInfo.fHP <= 0)
 			DeleteObj(this);
 	}
+}
+
+void CMonster::CreateMissile(fPoint targetPos)
+{
+	// TODO : 미사일이 사라지지 않았다면 재발사 불가능 상태 설정
+
+	fPoint fptMonsterMissilePos = targetPos;
+	int iMissileOffSetX = 150;
+	int iMissileOffSetY = 20;
+
+	// MonsterMisiile Object
+	CMonsterMissile* pMonsterMissile = new CMonsterMissile;
+
+
+
+	if (0 < m_iCurDir)
+	{
+		pMonsterMissile->SetPos(fPoint(fptMonsterMissilePos.x + iMissileOffSetX, fptMonsterMissilePos.y + iMissileOffSetY));
+
+		pMonsterMissile->SetDir(fVec2(m_iCurDir, 0));
+	}
+	else
+	{
+		pMonsterMissile->SetPos(fPoint(fptMonsterMissilePos.x - iMissileOffSetX, fptMonsterMissilePos.y + iMissileOffSetY));
+		pMonsterMissile->SetDir(fVec2(m_iCurDir, 0));
+	}
+
+	pMonsterMissile->SetName(L"Missile_Monster");
+
+	CreateObj(pMonsterMissile, GROUP_GAMEOBJ::MONSTER_MISSILE);
+
 }

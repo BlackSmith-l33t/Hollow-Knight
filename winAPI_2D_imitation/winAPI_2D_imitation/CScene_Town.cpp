@@ -64,7 +64,7 @@ void CScene_Town::Enter()
 	/*CMonster* pMonTrace2 = CMonster::Create(MON_TYPE::TRACE, fPoint(1800.f, 2096.f));
 	AddObject(pMonTrace2, GROUP_GAMEOBJ::MONSTER);*/
 
-	CMonster* pMonFly = CMonster::Create(MON_TYPE::FLY, fPoint(1800.f, 2096.f));
+	CMonster* pMonFly = CMonster::Create(MON_TYPE::FLY, fPoint(1800.f, 1900.f));
 	AddObject(pMonFly, GROUP_GAMEOBJ::MONSTER);
 
 
