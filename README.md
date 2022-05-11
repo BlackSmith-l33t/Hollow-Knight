@@ -1,2 +1,2 @@
 # Hollow Knight
-Hollow Knight Imitation 박성하
+Hollow Knight 모작 박성하
