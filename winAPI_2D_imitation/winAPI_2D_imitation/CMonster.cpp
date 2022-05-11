@@ -14,6 +14,7 @@
 CMonster::CMonster()
 {	
 	m_iCurDir = -1;
+	m_fptTargetPos = {};
 	m_eMonsterType = MON_TYPE::NONE;
 	m_pAI = nullptr;
 	m_tInfo = {};
@@ -205,12 +206,6 @@ void CMonster::update()
 		GetAnimator()->update();
 	if (nullptr != m_pAI)
 		m_pAI->update();
-
-	if (m_bRangeAttack)
-	{
-
-		CreateMissile();
-	}
 }
 
 void CMonster::update_animation()
@@ -384,35 +379,4 @@ void CMonster::OnCollisionEnter(CCollider* pOther)
 		if (m_tInfo.fHP <= 0)
 			DeleteObj(this);
 	}
-}
-
-void CMonster::CreateMissile(fPoint targetPos)
-{
-	// TODO : 미사일이 사라지지 않았다면 재발사 불가능 상태 설정
-
-	fPoint fptMonsterMissilePos = targetPos;
-	int iMissileOffSetX = 150;
-	int iMissileOffSetY = 20;
-
-	// MonsterMisiile Object
-	CMonsterMissile* pMonsterMissile = new CMonsterMissile;
-
-
-
-	if (0 < m_iCurDir)
-	{
-		pMonsterMissile->SetPos(fPoint(fptMonsterMissilePos.x + iMissileOffSetX, fptMonsterMissilePos.y + iMissileOffSetY));
-
-		pMonsterMissile->SetDir(fVec2(m_iCurDir, 0));
-	}
-	else
-	{
-		pMonsterMissile->SetPos(fPoint(fptMonsterMissilePos.x - iMissileOffSetX, fptMonsterMissilePos.y + iMissileOffSetY));
-		pMonsterMissile->SetDir(fVec2(m_iCurDir, 0));
-	}
-
-	pMonsterMissile->SetName(L"Missile_Monster");
-
-	CreateObj(pMonsterMissile, GROUP_GAMEOBJ::MONSTER_MISSILE);
-
 }

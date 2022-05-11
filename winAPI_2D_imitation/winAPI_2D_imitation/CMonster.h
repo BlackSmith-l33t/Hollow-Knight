@@ -55,6 +55,6 @@ public:
 	
 	void OnCollisionEnter(CCollider* pOther);
 
-	void CreateMissile(fPoint targetPos);
+	
 };
 
