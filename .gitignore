@@ -30,3 +30,5 @@
 *.exe
 *.out
 *.app
+
+winAPI_2D_imitation/Output/Release/content/
