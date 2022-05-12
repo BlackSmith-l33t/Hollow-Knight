@@ -10,7 +10,7 @@ CMissile* CMissile::Clone()
 }
 
 CMissile::CMissile()
-{
+{	
 	m_fAttackTimer = 0;
 	m_fAttackTimeLimit = 300;
 	CD2DImage* m_pImg = CResourceManager::getInst()->LoadD2DImage(L"SoulMissileImg", L"texture\\Animation\\Effect\\effect.png");
@@ -25,12 +25,13 @@ CMissile::CMissile()
 	CreateAnimator();
 	GetAnimator()->CreateAnimation(L"SoulMissile_Left", m_pImg, fPoint(0.f, 0.f), fPoint(260.f, 130.f), fPoint(260.f, 0.f), 0.1f, 4, true);
 	GetAnimator()->CreateAnimation(L"SoulMissile_Right", m_pImg, fPoint(0.f, 0.f), fPoint(260.f, 130.f), fPoint(260.f, 0.f), 0.1f, 4);
-	
-	
+		
 }
 
 CMissile::~CMissile()
 {
+	//DeleteObj(this);
+	// TODO : 일정 사거리 초과시 삭제 해주어야함.
 }
 
 void CMissile::update()
@@ -65,7 +66,9 @@ void CMissile::SetDir(float theta)
 void CMissile::OnCollisionEnter(CCollider* pOther)
 {
 	CGameObject* pOtherObj = pOther->GetObj();
-	if (pOtherObj->GetName() == L"Monster" || pOtherObj->GetObjType() == GROUP_GAMEOBJ::GROUND)
+	if (pOtherObj->GetName() == L"Monster" || 
+		pOtherObj->GetName() == L"Knight" ||
+		pOtherObj->GetObjType() == GROUP_GAMEOBJ::GROUND)
 	{			
 		DeleteObj(this);
 		m_fAttackTimer = 0;
@@ -74,29 +77,40 @@ void CMissile::OnCollisionEnter(CCollider* pOther)
 
 void CMissile::update_animation()
 {
-	// TODO : 애니메이션 수정 중 / 반복 현상 발생
-	if (0 > m_fvDir.x && m_fAttackTimer <= m_fAttackTimeLimit)
+	if (this->GetObjType() == GROUP_GAMEOBJ::SOUL_MISSILE)
 	{
-		if (m_fAttackTimer >= m_fAttackTimeLimit)
+		Logger::debug(L"Player Missile Fire");
+		if (0 > m_fvDir.x && m_fAttackTimer <= m_fAttackTimeLimit)
 		{
-			CAnimation* pAni;
-			pAni = GetAnimator()->FindAnimation(L"SoulMissile_Left");
-			pAni->SetFrame(3);
-			return;
+			if (m_fAttackTimer >= m_fAttackTimeLimit)
+			{
+				CAnimation* pAni;
+				pAni = GetAnimator()->FindAnimation(L"SoulMissile_Left");
+				pAni->SetFrame(3);
+				return;
+			}
+			GetAnimator()->Play(L"SoulMissile_Left", false);
+			m_fAttackTimer++;
 		}
-		GetAnimator()->Play(L"SoulMissile_Left", false);
-		m_fAttackTimer++;
+		else if (0 < m_fvDir.x && m_fAttackTimer <= m_fAttackTimeLimit)
+		{
+			if (m_fAttackTimer >= m_fAttackTimeLimit)
+			{
+				CAnimation* pAni;
+				pAni = GetAnimator()->FindAnimation(L"SoulMissile_Right");
+				pAni->SetFrame(3);
+				return;
+			}
+			GetAnimator()->Play(L"SoulMissile_Right", false);
+			m_fAttackTimer++;
+		}
 	}
- 	else if (0 < m_fvDir.x && m_fAttackTimer <= m_fAttackTimeLimit)
+	else if (this->GetObjType() == GROUP_GAMEOBJ::MONSTER_MISSILE)
 	{
-		if (m_fAttackTimer >= m_fAttackTimeLimit)
-		{
-			CAnimation* pAni;
-			pAni = GetAnimator()->FindAnimation(L"SoulMissile_Right");
-		    pAni->SetFrame(3);
-			return;
-		}
-		GetAnimator()->Play(L"SoulMissile_Right", false);		
-		m_fAttackTimer++;	
+		m_fSpeed = 300.f;
+		SetScale(fPoint(50.f, 50.f));			
+		GetCollider()->SetScale(fPoint(30.f, 30.f));
+
+		Logger::debug(L"Monster Missile Fire");
 	}
 }

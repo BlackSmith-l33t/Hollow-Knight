@@ -41,8 +41,8 @@ void CMonsterMissile::update()
 
 	SetPos(pos);
 
-	update_animation();
-	GetAnimator()->update();
+	//update_animation();
+	//GetAnimator()->update();
 }
 
 void CMonsterMissile::render()

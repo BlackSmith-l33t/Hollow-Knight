@@ -64,7 +64,7 @@ void CScene_Town::Enter()
 	/*CMonster* pMonTrace2 = CMonster::Create(MON_TYPE::TRACE, fPoint(1800.f, 2096.f));
 	AddObject(pMonTrace2, GROUP_GAMEOBJ::MONSTER);*/
 
-	CMonster* pMonFly = CMonster::Create(MON_TYPE::FLY, fPoint(1800.f, 1900.f));
+	CMonster* pMonFly = CMonster::Create(MON_TYPE::FLY, fPoint(1800.f, 1800.f));
 	AddObject(pMonFly, GROUP_GAMEOBJ::MONSTER);
 
 
@@ -112,6 +112,8 @@ void CScene_Town::Enter()
 	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::KNIGHT, GROUP_GAMEOBJ::MONSTER);
 	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::SOUL_MISSILE, GROUP_GAMEOBJ::MONSTER);
 	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::SOUL_MISSILE, GROUP_GAMEOBJ::GROUND);
+	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::MONSTER_MISSILE, GROUP_GAMEOBJ::GROUND);
+	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::MONSTER_MISSILE, GROUP_GAMEOBJ::KNIGHT);
 
 	//CCameraManager::getInst()->SetLookAt(fPoint(WINSIZEX / 2.f, WINSIZEY / 2.f));
 	//CCameraManager::getInst()->SetLookAt(fPoint(pKnight->GetPos().x, pKnight->GetPos().y));

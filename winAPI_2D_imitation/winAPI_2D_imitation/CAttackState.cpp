@@ -2,7 +2,7 @@
 #include "CAttackState.h"
 #include "CKnight.h"
 #include "CMonster.h"
-#include "CMonsterMissile.h"
+#include "CMissile.h"
 
 CAttackState::CAttackState(MON_STATE state) : CState(state)
 {
@@ -48,11 +48,10 @@ void CAttackState::update()
 		m_iCurDir = -1;
 	}	
 
+	// TODO : 미사일 발사
 
-	if (!bAttack)
-	{
-		CreateMissile(m_fptTargetPos);
-	}	
+	CreateMissile(fptMonsterPos);
+	
 }
 
 void CAttackState::Enter()
@@ -68,29 +67,27 @@ void CAttackState::Exit()
 void CAttackState::CreateMissile(fPoint targetPos)
 {
 	// TODO : 미사일이 사라지지 않았다면 재발사 불가능 상태 설정
-
+	Logger::debug(L"Monster Missile Create");
 	m_fptTargetPos = targetPos;
-	int iMissileOffSetX = 150;
-	int iMissileOffSetY = 20;
+	int iMissileOffSetX = 20;
+	int iMissileOffSetY = 50;
 
-	// [MonsterMisiile Object]
-	CMonsterMissile* pMonsterMissile = new CMonsterMissile;
-
-
+	// [MonsterMisiile Object]	
+	CMissile* pMissile = new CMissile;
 
 	if (0 < m_iCurDir)
 	{
-		pMonsterMissile->SetPos(fPoint(m_fptTargetPos.x + iMissileOffSetX, m_fptTargetPos.y + iMissileOffSetY));
-
-		pMonsterMissile->SetDir(fVec2(m_iCurDir, 0));
+		pMissile->SetPos(fPoint(m_fptTargetPos.x + iMissileOffSetX, m_fptTargetPos.y + iMissileOffSetY));
+		pMissile->SetDir(fVec2(m_iCurDir, 1));
 	}
 	else
 	{
-		pMonsterMissile->SetPos(fPoint(m_fptTargetPos.x - iMissileOffSetX, m_fptTargetPos.y + iMissileOffSetY));
-		pMonsterMissile->SetDir(fVec2(m_iCurDir, 0));
+		pMissile->SetPos(fPoint(m_fptTargetPos.x - iMissileOffSetX, m_fptTargetPos.y + iMissileOffSetY));
+		pMissile->SetDir(fVec2(m_iCurDir, 1));
 	}
 
-	pMonsterMissile->SetName(L"Missile_Monster");
+	pMissile->SetName(L"Missile_Monster");
 
-	CreateObj(pMonsterMissile, GROUP_GAMEOBJ::MONSTER_MISSILE);
+	CreateObj(pMissile, GROUP_GAMEOBJ::MONSTER_MISSILE);
 }
+

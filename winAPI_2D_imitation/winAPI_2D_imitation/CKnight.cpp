@@ -634,6 +634,7 @@ void CKnight::CreateSoulMissile()
 	pMissile->SetName(L"Missile_Player");
 
 	CreateObj(pMissile, GROUP_GAMEOBJ::SOUL_MISSILE);
+	pMissile->SetObjType(GROUP_GAMEOBJ::SOUL_MISSILE);
 }
 
 

@@ -27,6 +27,8 @@ enum class MON_TYPE
 class CMonster : public CGameObject
 {
 private:	
+	fPoint m_fptTargetPos;
+
 	tMonInfo m_tInfo;
 	AI* m_pAI;	
 	MON_TYPE m_eMonsterType;
@@ -53,8 +55,6 @@ public:
 	void SetAI(AI* ai);
 	void SetMonInfo(const tMonInfo& info);	
 	
-	void OnCollisionEnter(CCollider* pOther);
-
-	
+	void OnCollisionEnter(CCollider* pOther);	
 };
 

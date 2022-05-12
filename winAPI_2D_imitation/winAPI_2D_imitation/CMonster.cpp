@@ -149,7 +149,7 @@ CMonster* CMonster::Create(MON_TYPE type, fPoint pos)
 		tMonInfo info = {};
 		info.fAtt = 10.f;
 		info.fAttRange = 50.f;
-		info.fRecogRange.x = 300.f;
+		info.fRecogRange.x = 500.f;
 		info.fRecogRange.y = 50.f;
 		info.fHP = 100.f;
 		info.fSpeed = 150.f;
@@ -160,6 +160,8 @@ CMonster* CMonster::Create(MON_TYPE type, fPoint pos)
 		pAI->SetCurState(MON_STATE::PATROL);
 		pMon->SetMonInfo(info);
 		pMon->SetAI(pAI);
+
+		pMon->m_eCurState = MON_STATE::PATROL;
 	}
 	break;
 	case MON_TYPE::BOSS:
@@ -270,18 +272,18 @@ void CMonster::update_animation()
 			{
 				GetAnimator()->Play(L"TraceMonster2_MoveRight", true);
 			}
-		}
+		}*/
 		else if (m_eMonsterType == MON_TYPE::FLY)
 		{
-			if (m_iDir == -1)
+			if (m_iCurDir == -1)
 			{
-				GetAnimator()->Play(L"FlyMonster_MoveLeft", true);
+				GetAnimator()->Play(L"NormalMonster_MoveLeft", true);
 			}
 			else
 			{
-				GetAnimator()->Play(L"FlyMonster_MoveRight", true);
+				GetAnimator()->Play(L"NormalMonster_MoveRight", true);
 			}
-		}*/
+		}
 		break;
 	case MON_STATE::TRACE:	
 		if (m_eMonsterType == MON_TYPE::TRACE)
@@ -332,6 +334,17 @@ void CMonster::update_animation()
 				GetAnimator()->Play(L"TraceMonster2_TraceRight", true);
 			}
 		}*/
+		else if (m_eMonsterType == MON_TYPE::FLY)
+		{
+			if (m_iCurDir == -1)
+			{
+				GetAnimator()->Play(L"NormalMonster_MoveLeft", true);
+			}
+			else
+			{
+				GetAnimator()->Play(L"NormalMonster_MoveRight", true);
+			}
+		}
 		break;
 	default:
 		break;
@@ -380,3 +393,4 @@ void CMonster::OnCollisionEnter(CCollider* pOther)
 			DeleteObj(this);
 	}
 }
+

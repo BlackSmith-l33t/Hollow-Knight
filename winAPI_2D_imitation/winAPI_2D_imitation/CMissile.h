@@ -14,6 +14,7 @@ private:
 	float m_fSpeed;
 
 	fVec2 m_fvDir;
+
 public:
 	CMissile();
 	~CMissile();
