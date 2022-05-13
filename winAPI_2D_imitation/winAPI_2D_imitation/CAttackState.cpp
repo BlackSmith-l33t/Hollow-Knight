@@ -1,13 +1,17 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "framework.h"
 #include "CAttackState.h"
 #include "CKnight.h"
 #include "CMonster.h"
 #include "CMissile.h"
+#include <ctime>
 
 CAttackState::CAttackState(MON_STATE state) : CState(state)
 {
 	m_iCurDir = 0;
 	attackRange = 0.f;
+	attackDelay = 2.f;
+	lastSpawnTime = 0.f;
 
 	bAttack = false;
 }
@@ -49,9 +53,9 @@ void CAttackState::update()
 	}	
 
 	// TODO : 미사일 발사
-
-	CreateMissile(fptMonsterPos);
 	
+
+	CreateMissile(fptMonsterPos);	
 }
 
 void CAttackState::Enter()
@@ -65,8 +69,18 @@ void CAttackState::Exit()
 }
 
 void CAttackState::CreateMissile(fPoint targetPos)
-{
-	// TODO : 미사일이 사라지지 않았다면 재발사 불가능 상태 설정
+{	
+	time_t timer = time(NULL);
+	struct tm* t;
+	t = localtime(&timer);
+
+	if (t->tm_sec < lastSpawnTime + attackDelay)
+	{
+		return;
+	}
+
+	lastSpawnTime = t->tm_sec;
+
 	Logger::debug(L"Monster Missile Create");
 	m_fptTargetPos = targetPos;
 	int iMissileOffSetX = 20;

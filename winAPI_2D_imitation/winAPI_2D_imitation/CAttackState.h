@@ -5,7 +5,8 @@ class CAttackState : public CState
 private:	
 	int m_iCurDir;
 	float attackRange;
-	float attackCoolTime;
+	float attackDelay;
+	float lastSpawnTime;
 	fPoint m_fptTargetPos;
 
 	bool bAttack;
