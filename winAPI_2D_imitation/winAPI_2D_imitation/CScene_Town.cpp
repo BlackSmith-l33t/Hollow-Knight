@@ -58,23 +58,20 @@ void CScene_Town::Enter()
 	/*CMonster* pMonNormal = CMonster::Create(MON_TYPE::NORMAL, fPoint(2500.f, 2096.f));
 	AddObject(pMonNormal, GROUP_GAMEOBJ::MONSTER);*/
 
-	/*CMonster* pMonTrace = CMonster::Create(MON_TYPE::TRACE1, fPoint(1500.f, 2096.f));
-	AddObject(pMonTrace, GROUP_GAMEOBJ::MONSTER);*/
+	CMonster* pMonTrace = CMonster::Create(MON_TYPE::TRACE, fPoint(1500.f, 2096.f));
+	AddObject(pMonTrace, GROUP_GAMEOBJ::MONSTER);	
 
-	/*CMonster* pMonTrace2 = CMonster::Create(MON_TYPE::TRACE, fPoint(1800.f, 2096.f));
-	AddObject(pMonTrace2, GROUP_GAMEOBJ::MONSTER);*/
-
-	CMonster* pMonFly = CMonster::Create(MON_TYPE::FLY, fPoint(1800.f, 1800.f));
-	AddObject(pMonFly, GROUP_GAMEOBJ::MONSTER);
+	/*CMonster* pMonFly = CMonster::Create(MON_TYPE::FLY, fPoint(1800.f, 1800.f));
+	AddObject(pMonFly, GROUP_GAMEOBJ::MONSTER);*/
 
 
 	CMap* map = new CMap;
 	map->Load(L"Map_Town", L"texture\\map\\Map_Town1.png");
 	AddObject(map, GROUP_GAMEOBJ::MAP);
 
-	//CBackGround* backGround = new CBackGround;
-	//backGround->Load(L"BackGround_Town", L"texture\\background\\Background_Town.png");
-	//AddObject(backGround, GROUP_GAMEOBJ::BACKGROUND);
+	/*CBackGround* backGround = new CBackGround;
+	backGround->Load(L"BackGround_Town", L"texture\\background\\Background_Town.png");
+	AddObject(backGround, GROUP_GAMEOBJ::BACKGROUND);*/
 
 	CGround* pGround_01 = new CGround;
 	pGround_01->SetPos(fPoint(1662.f, 2178.f));
@@ -110,6 +107,7 @@ void CScene_Town::Enter()
 	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::KNIGHT, GROUP_GAMEOBJ::TILE);
 	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::NAIL, GROUP_GAMEOBJ::MONSTER);
 	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::KNIGHT, GROUP_GAMEOBJ::MONSTER);
+	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::MONSTER, GROUP_GAMEOBJ::GROUND);
 	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::SOUL_MISSILE, GROUP_GAMEOBJ::MONSTER);
 	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::SOUL_MISSILE, GROUP_GAMEOBJ::GROUND);
 	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::MONSTER_MISSILE, GROUP_GAMEOBJ::GROUND);
